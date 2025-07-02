@@ -5,11 +5,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { GoogleMap, useJsApiLoader, Marker,  TrafficLayer } from '@react-google-maps/api';
 
 const libraries = ['places'];
-const locationIQKey = 'pk.5f255296dd70866304b5b89b5fd836b2';
+const locationIQKey = import.meta.env.VITE_LOCATIONIQ_KEY;
 
 function App() {
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'AIzaSyCt8iYH8RfkVHNhBDxrB0mzCuf2jcgI-18',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries,
   });
 
