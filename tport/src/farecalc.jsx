@@ -8,7 +8,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const libraries = ['places'];
-const locationIQKey = import.meta.env.VITE_LOCATIONIQ_KEY;
+const locationIQKey = import.meta.env.VITE_LOCATIONIQ_KEY; // replaced with env file keys
 
 // Transport modes with pricing
 const transportModes = [
@@ -20,7 +20,7 @@ const transportModes = [
 
 function FareCalc() {
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY, // replaced with env file keys
     libraries,
   });
 
