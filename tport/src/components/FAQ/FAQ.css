@@ -78,3 +78,69 @@
   color: var(--gray);
   background: white;
 }
+
+/* Light mode (default) */
+.faq-section {
+  background: var(--card-bg); /* white */
+  color: var(--text);         /* black */
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Example: Make some text blue in light mode */
+.faq-section .faq-title-blue {
+  color: var(--primary);
+}
+
+/* Example: Make some text white in light mode */
+.faq-section .faq-title-white {
+  color: #fff;
+}
+
+/* Dark mode */
+[data-theme="dark"] .faq-section {
+  background: #000;           /* black */
+  color: #f0f0f0;             /* white */
+}
+
+/* Blue text in dark mode */
+[data-theme="dark"] .faq-section .faq-title-blue {
+  color: var(--primary);
+}
+
+/* White text in dark mode */
+[data-theme="dark"] .faq-section .faq-title-white {
+  color: #fff;
+}
+
+/* Dark mode: FAQ question boxes black, inactive text white */
+[data-theme="dark"] .faq-item {
+  background: #000;
+}
+
+[data-theme="dark"] .faq-question {
+  background: green;
+  color: #fff;
+}
+
+/* Active state: text blue, background slightly blue-tinted */
+[data-theme="dark"] .faq-question.active {
+  color: var(--primary);
+  background: rgba(0, 102, 255, 0.08);
+}
+
+.faq-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 40px;
+  color: var(--text);
+  position: relative;
+}
+
+[data-theme="dark"] .faq-answer {
+  color: #000; /* white text in dark mode */
+}
+
+[data-theme="light"] .faq-answer {
+  color: #000; /* black text in light mode */
+}

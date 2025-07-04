@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import './ServiceAlerts.css'; // Ensure you have the appropriate CSS for styling
 
 
 const ServiceAlerts = () => {
@@ -31,7 +32,7 @@ const ServiceAlerts = () => {
       setCurrentAlertIndex((prevIndex) => 
         prevIndex === alerts.filter(a => a.active).length - 1 ? 0 : prevIndex + 1
       );
-    }, 5000);
+    }, 2000);
     
     return () => clearInterval(interval);
   }, [alerts]);

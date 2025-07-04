@@ -1,5 +1,5 @@
 .service-alerts-container {
-  position: fixed;
+  
   top: 0;
   left: 0;
   width: 100%;
@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   gap: 15px;
-  background: var(--warning);
+  background: #0b70cf;
   color: white;
   font-weight: 500;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
@@ -17,7 +17,7 @@
 
 .alert-icon {
   font-size: 1.3rem;
-  animation: pulse 1.5s infinite;
+  animation: pulse 0.5s infinite;
 }
 
 .alert {

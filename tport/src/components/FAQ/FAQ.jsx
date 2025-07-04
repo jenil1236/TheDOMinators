@@ -38,6 +38,7 @@ const FAQ = () => {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
+        className='faq-title'
       >
         Frequently Asked Questions
       </motion.h2>

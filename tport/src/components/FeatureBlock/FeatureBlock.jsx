@@ -2,8 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import './FeatureBlock.css';
+import future from '/src/assets/videos/future.mp4';
+import smartParking from '/src/assets/videos/parking.mp4';
+import carPooling from '/src/assets/videos/carpool.mp4';
+import route from '/src/assets/videos/routefare.mp4';
+import busBooking from '/src/assets/videos/bus.mp4';
 
-const FeatureBlock = ({ title, description, image, reverse }) => {
+const FeatureBlock = ({ title, description, video, link, reverse }) => {
   return (
     <motion.div 
       className={`feature-block ${reverse ? 'reverse' : ''}`}
@@ -35,7 +40,15 @@ const FeatureBlock = ({ title, description, image, reverse }) => {
           transition={{ delay: 0.6, duration: 0.6 }}
           viewport={{ once: true }}
         >
-          
+          <Link to={link}>
+            <motion.button 
+              className="feature-button"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Explore More
+            </motion.button>
+          </Link>
         </motion.div>
       </div>
       
@@ -46,7 +59,15 @@ const FeatureBlock = ({ title, description, image, reverse }) => {
         transition={{ duration: 0.7 }}
         viewport={{ once: true }}
       >
-        <div className="feature-image" style={{ backgroundImage: `url(${image})` }} />
+        <video
+          className="feature-video"
+          src={video}
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
         <div className="image-overlay" />
       </motion.div>
     </motion.div>
