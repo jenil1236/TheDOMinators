@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner</title>
+</head>
+
+<body>
+    <h2> Owner Info </h2>
+    <p>Name: <%= owner.name %>
+    </p>
+    <p>Email: <%= owner.email %>
+    </p>
+    <p>Phone: <%= owner.phone %>
+    </p>
+    <hr><br>
+    <h2>Your Parking Lots: </h2>
+    <% for (const parking of owner.parkings) { %>
+        <div>
+            <div>
+                Parking Name: <%= parking.name %>
+            </div>
+            <div>
+                Location: <%= parking.location %>
+            </div>
+            <div>
+                Total Slots: <%= parking.totalSlots %>
+            </div>
+            <div>
+                Available Slots: <%= parking.availableSlots %>
+            </div>
+            <div>
+                Rate per Hour: ₹<%= parking.rate %>
+            </div>
+        </div><br>
+    <% } %>
+        <hr>
+        <br>
+        <b>Create Parking: </b><a href="/parkings/owner/<%= owner._id %>/new">Click here</a>
+</body>
+
+</html>

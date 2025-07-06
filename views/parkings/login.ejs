@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+
+<body>
+  <h1>Sign In</h1>
+  <form action="/parkings/login" method="POST" autocomplete="off">
+    <!-- Email -->
+    <div>
+      <label for="email">Email:</label><br>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <br>
+
+    <!-- Password -->
+    <div>
+      <label for="password">Password:</label><br>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <br>
+
+    <!-- Submit -->
+    <button type="submit">Log In</button>
+  </form>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Parking</title>
+</head>
+<body>
+    <h2> User Info </h2>
+    <p>Name: <%= user.name %>
+    </p>
+    <p>Email: <%= user.email %>
+    </p>
+    <p>Phone: <%= user.phone %>
+    </p>
+    <hr><br>
+    <h2>Available Parking Lots</h2>
+    <% for (const parking of allParkings) { %>
+        <div>
+            <div>
+                Parking Name: <%= parking.name %>
+            </div>
+            <div>
+                Location: <%= parking.location %>
+            </div>
+            <div>
+                Total Slots: <%= parking.totalSlots %>
+            </div>
+            <div>
+                Available Slots: <%= parking.availableSlots %>
+            </div>
+            <div>
+                Rate per Hour: ₹<%= parking.rate %>
+            </div>
+            <div>
+                <a href="/parkings/<%= user._id %>/book/<%= parking._id %>">Book</a>
+            </div>
+        </div><br>
+    <% } %> <hr><br>
+    <h2>Booked Parking Lots</h2>
+    <% for (const parking of user.parkings) { %>
+        <% if(!parking.owner.equals(user._id)) { %>
+            <div>
+                <div>
+                    Parking Name: <%= parking.name %>
+                </div>
+                <div>
+                    Location: <%= parking.location %>
+                </div>
+                <div>
+                    Rate per Hour: ₹<%= parking.rate %>
+                </div>
+            </div><br>
+        <% } %>
+    <% } %>
+</body>
+</html>

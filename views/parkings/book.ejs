@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Parking</title>
+</head>
+
+<body>
+    <h2>Parking Lot Details</h2>
+    <div>
+        <div>
+            Parking Name: <%= parking.name %>
+        </div>
+        <div>
+            Location: <%= parking.location %>
+        </div>
+        <div>
+            Total Slots: <%= parking.totalSlots %>
+        </div>
+        <div>
+            Available Slots: <%= parking.availableSlots %>
+        </div>
+        <div>
+            Open Time: <%= parking.openTime %>
+        </div>
+        <div>
+            Closing Time: <%= parking.closeTime %>
+        </div>
+        <div>
+            Rate per Hour: ₹<%= parking.rate %>
+        </div>
+    </div><br>
+    <form action="" method="post">
+        <label for="vehicle">Vehicle type </label>
+        <select name="vehicle" id="vehicle" required>
+            <option value="" selected disabled>Select One</option>
+            <option value="2">Two - Wheeler</option>
+            <option value="3">Three - Wheeler</option>
+            <option value="4">Four - Wheeler</option>
+        </select>
+        <button> Confirm </button>
+    </form>
+</body>
+
+</html>
