@@ -8,7 +8,7 @@ import './Combii.css'; // Import your CSS styles
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const libraries = ['places', 'geometry'];
-const GOOGLE_API_KEY = 'AIzaSyCt8iYH8RfkVHNhBDxrB0mzCuf2jcgI-18';
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 // Transport modes with pricing
 const transportModes = [
