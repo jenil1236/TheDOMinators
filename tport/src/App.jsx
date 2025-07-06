@@ -53,27 +53,30 @@ import HomePage from './pages/HomePage';
 import Footer from './components/Footer/Footer';
 import ServiceAlerts from './components/ServiceAlerts/ServiceAlerts';
 import ChatBot from './components/ChatBot/ChatBot';
+import Combii from './components/Calculator/Combii';
 
 function App() {
   return (
-    <ThemeProvider>
-      <Router>
-        <div className="app">
+    // <ThemeProvider>
+    //   <Router>
+    //     <div className="app">
           
-          <Navbar />
-          <ChatBot />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            {/* <Route path="/smart-parking" element={<SmartParking />} />
-            <Route path="/car-pooling" element={<CarPooling />} />
-            <Route path="/route-calculator" element={<ShortestRoute />} />
-            <Route path="/bus-info" element={<BusBooking />} />
-            <Route path="/future-transport" element={<FutureTransport />} /> */}
-          </Routes>
-          <Footer />
-        </div>
-      </Router>
-    </ThemeProvider>
+    //       <Navbar />
+    //       <ChatBot />
+    //       <Routes>
+    //         <Route path="/" element={<HomePage />} />
+    //         <Route path="/smart-parking" element={<SmartParking />} />
+    //         <Route path="/car-pooling" element={<CarPooling />} />
+    //         <Route path="/route-calculator" element={<ShortestRoute />} />
+    //         <Route path="/bus-info" element={<BusBooking />} />
+    //         <Route path="/future-transport" element={<FutureTransport />} />
+    //       </Routes>
+    //       <Footer />
+    //     </div>
+    //   </Router>
+    // </ThemeProvider>
+    <Combii/>
+
   );
 }
 
