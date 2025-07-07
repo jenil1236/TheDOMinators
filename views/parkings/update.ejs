@@ -38,10 +38,18 @@
 
     </form>
     <script>
-        document.getElementById('totalSlots').addEventListener('input', e => {
+        let diff;
+        const slot = document.getElementById('totalSlots');
+        document.addEventListener('DOMContentLoaded', () => {
+            const totalSlots = slot.value;
+            const availableSlots = document.getElementById('availableSlots').value;
+            diff = totalSlots - availableSlots;
+            slot.min = diff;
+        })
+        slot.addEventListener('input', e => {
             const availableSlots = document.getElementById('availableSlots');
-            availableSlots.value = e.target.value;
-            availableSlots.max = e.target.value;
+            availableSlots.value = e.target.value - diff;
+            availableSlots.max = e.target.value - diff;
         });
     </script>
 </body>
