@@ -6,6 +6,10 @@ const userSchema = new Schema({
     email: String,
     password: String,
     phone: String,
+    vehicle: {
+        type: String,
+        enum: ['car', 'bike', 'auto']
+    },
     parkings: [
         {
             type: Schema.Types.ObjectId,
@@ -14,4 +18,5 @@ const userSchema = new Schema({
     ],
 });
 
+// userSchema.virtuals('slot')
 module.exports = mongoose.model('User', userSchema);

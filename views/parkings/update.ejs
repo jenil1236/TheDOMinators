@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Parking</title>
+</head>
+
+<body>
+
+    <h2>Edit Parking Lot</h2>
+
+    <form action="/parkings/owner/<%= id %>/<%= parking._id %>?_method=PUT" method="POST">
+
+        <label for="name">Parking Name:</label>
+        <input type="text" id="name" name="name" value="<%= parking.name %>" required><br><br>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" value="<%= parking.location %>" required><br><br>
+
+        <label for="totalSlots">Total Slots:</label>
+        <input type="number" id="totalSlots" name="totalSlots" value="<%= parking.totalSlots %>" required><br><br>
+
+        <label for="availableSlots">Available Slots:</label>
+        <input type="number" id="availableSlots" name="availableSlots" value="<%= parking.availableSlots %>"
+            required><br><br>
+
+        <label for="openTime">Open Time:</label>
+        <input type="time" id="openTime" name="openTime" value="<%= parking.openTime %>" required><br><br>
+
+        <label for="closeTime">Close Time:</label>
+        <input type="time" id="closeTime" name="closeTime" value="<%= parking.closeTime %>" required><br><br>
+
+        <label for="rate">Rate per Hour (₹):</label>
+        <input type="number" id="rate" name="rate" value="<%= parking.rate %>" required><br><br>
+
+        <button type="submit">Update Parking</button>
+
+    </form>
+    <script>
+        document.getElementById('totalSlots').addEventListener('input', e => {
+            const availableSlots = document.getElementById('availableSlots');
+            availableSlots.value = e.target.value;
+            availableSlots.max = e.target.value;
+        });
+    </script>
+</body>
+
+</html>

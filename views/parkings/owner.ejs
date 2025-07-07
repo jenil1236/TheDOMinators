@@ -18,6 +18,7 @@
     <hr><br>
     <h2>Your Parking Lots: </h2>
     <% for (const parking of owner.parkings) { %>
+    <% if(parking.owner.equals(owner._id)) { %>
         <div>
             <div>
                 Parking Name: <%= parking.name %>
@@ -26,15 +27,11 @@
                 Location: <%= parking.location %>
             </div>
             <div>
-                Total Slots: <%= parking.totalSlots %>
-            </div>
-            <div>
-                Available Slots: <%= parking.availableSlots %>
-            </div>
-            <div>
                 Rate per Hour: ₹<%= parking.rate %>
             </div>
+            <a href="/parkings/owner/<%= owner._id %>/<%= parking._id %>">Details</a>
         </div><br>
+    <% } %>
     <% } %>
         <hr>
         <br>
