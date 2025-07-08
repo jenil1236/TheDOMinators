@@ -9,24 +9,31 @@
 
 <body>
   <h1>Sign In</h1>
-  <form action="/parkings/login" method="POST" autocomplete="off">
-    <!-- Email -->
+
+  <form action="/login" method="POST" autocomplete="off">
+    <div>
+      <label for="username">Username:</label><br>
+      <input type="username" id="username" name="username" required>
+    </div>
+    <br>
+
     <div>
       <label for="email">Email:</label><br>
       <input type="email" id="email" name="email" required>
     </div>
     <br>
 
-    <!-- Password -->
     <div>
       <label for="password">Password:</label><br>
       <input type="password" id="password" name="password" required>
     </div>
     <br>
 
-    <!-- Submit -->
     <button type="submit">Log In</button>
   </form>
+  <hr><br>
+    If you are an admin - 
+    <a href="/admin/login">ADMIN LOGIN</a>
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Parking = require('../models/parking');
+const User = require('../models/user');
 const cities = require('./cities');
 const dbUrl = 'mongodb://127.0.0.1:27017/Transport';
 
@@ -13,6 +14,14 @@ db.once('open', () => {
 
 const seedDB = async () => {
     await Parking.deleteMany({});
+    const owner = await User.findById('686cdf8a6c64ffda433fcbdb');
+    if(!owner) {
+        console.log('owner not found')
+        process.exit(1);
+    }
+    else{
+        console.log(owner);
+    }
     for (let i = 0; i < 100; i++) {
         const random162 = Math.floor(Math.random() * 162);
         const rate = Math.floor(Math.random() * 20 + 10);
@@ -24,7 +33,7 @@ const seedDB = async () => {
             availableSlots: 10,
             openTime: '12:30',
             closeTime: '23:30',
-            owner: '686a98ebfc8896b7f6a44699',
+            owner: owner._id,
             geometry: {
                 type: 'Point',
                 coordinates: [
@@ -34,7 +43,9 @@ const seedDB = async () => {
             },
         });
         await parking.save();
+        owner.parkings.push(parking._id);
     }
+    await owner.save();
 }
 seedDB().then(() => { db.close() })
 

@@ -10,7 +10,7 @@
 
     <h2>Edit Parking Lot</h2>
 
-    <form action="/parkings/owner/<%= id %>/<%= parking._id %>?_method=PUT" method="POST">
+    <form action="/parkings/owner/<%= parking._id %>?_method=PUT" method="POST">
 
         <label for="name">Parking Name:</label>
         <input type="text" id="name" name="name" value="<%= parking.name %>" required><br><br>
@@ -39,14 +39,14 @@
     </form>
     <script>
         let diff;
-        const slot = document.getElementById('totalSlots');
         document.addEventListener('DOMContentLoaded', () => {
+            const slot = document.getElementById('totalSlots');
             const totalSlots = slot.value;
             const availableSlots = document.getElementById('availableSlots').value;
             diff = totalSlots - availableSlots;
             slot.min = diff;
         })
-        slot.addEventListener('input', e => {
+        document.getElementById('totalSlots').addEventListener('input', e => {
             const availableSlots = document.getElementById('availableSlots');
             availableSlots.value = e.target.value - diff;
             availableSlots.max = e.target.value - diff;

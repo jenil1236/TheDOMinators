@@ -29,13 +29,13 @@
             <div>
                 Rate per Hour: ₹<%= parking.rate %>
             </div>
-            <a href="/parkings/owner/<%= owner._id %>/<%= parking._id %>">Details</a>
+            <a href="/parkings/owner/<%= parking._id %>">Details</a>
         </div><br>
     <% } %>
     <% } %>
         <hr>
         <br>
-        <b>Create Parking: </b><a href="/parkings/owner/<%= owner._id %>/new">Click here</a>
+        <b>Create Parking: </b><a href="/parkings/owner/new">Click here</a>
 </body>
 
 </html>

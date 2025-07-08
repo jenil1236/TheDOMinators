@@ -38,6 +38,12 @@
             Rate per Hour: ₹<%= parking.rate %>
         </div>
     </div><br>
+    <% if(!isAdmin) { %>
+        <a href="/parkings/owner/<%= parking._id %>/edit">Update Parking</a>
+    <% } %>
+    <form action="/parkings/owner/<%= parking._id %>?_method=DELETE" method="POST">
+        <button> Delete Parking </button>
+    </form> <hr><br>
     <h2> Users of this Parking Lot </h2>
     <% for (const user of parking.users) { %>
         <div>
@@ -49,14 +55,11 @@
         <div>
             Phone: <%= user.user.phone %>
         </div>
-        <form action="/parkings/owner/<%= id %>/<%= parking._id %>/<%= user.user._id %>?_method=DELETE" method="POST">
+        <form action="/parkings/owner/<%= parking._id %>/<%= user.user._id %>?_method=DELETE" method="POST">
             <button>Remove User</button>
         </form><br>
     <% } %>
-    <a href="/parkings/owner/<%= id %>/<%= parking._id %>/edit">Update Parking</a>
-    <form action="/parkings/owner/<%= id %>/<%= parking._id %>?_method=DELETE" method="POST">
-        <button> Delete Parking </button>
-    </form>
+    
     <script>
         const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>'
         const parking = <%- JSON.stringify(parking) %>

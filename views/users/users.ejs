@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Users</title>
+</head>
+<body>
+    <% for (const user of users) { %>
+        <div>
+            Name: <%= user.name %>
+        </div>
+        <div>
+            Email: <%= user.email %>
+        </div>
+        <div>
+            Phone: <%= user.phone %>
+        </div>
+        <form action="/users/<%= user._id %>?_method=DELETE" method="POST">
+            <button>Remove User</button>
+        </form><br>
+    <% } %>
+</body>
+</html>
