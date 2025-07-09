@@ -1,0 +1,10 @@
+# Ignore root-level node_modules
+/node_modules/
+
+# Ignore all .env files in root or subfolders
+.env
+**/.env
+
+# Optional: Also ignore logs or OS files
+*.log
+.DS_Store

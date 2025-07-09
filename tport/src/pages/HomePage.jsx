@@ -119,7 +119,9 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
+      
       <Hero />
+      
       
       <div className="features-section">
         {features.map((feature, index) => (
