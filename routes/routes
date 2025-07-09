@@ -1,0 +1,62 @@
+const express = require('express');
+const User = require('../models/user');
+const Parking = require('../models/parking');
+const { isLoggedIn } = require('../middleware');
+const passport = require('passport');
+
+const router = express.Router();
+
+router.route('/register')
+    .get((req, res) => {
+        res.render('users/register');
+    })
+    .post(async (req, res, next) => {
+        try {
+            const { name, phone, email, password, username } = req.body;
+            const newUser = new User({ name, phone, email, username });
+            const registeredUser = await User.register(newUser, password);
+            req.login(registeredUser, err => {
+                if (err)
+                    return next(err);
+
+                res.redirect('/parkings');
+            })
+        }
+        catch (e) {
+            res.redirect('/register');
+        }
+    })
+
+router.route('/login')
+    .get((req, res) => {
+        res.render('users/login');
+    })
+    .post(passport.authenticate('local', { failureRedirect: '/login' }), async (req, res) => {
+        res.redirect('/parkings');
+    })
+
+router.get('/logout', (req, res, next) => {
+    req.logout(function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/register');
+    })
+})
+
+router.route('/parkings')
+    .get(async (req, res) => {
+        const allParkings = await Parking.find();
+        res.render('parkings/role', { allParkings });
+    })
+    .post(isLoggedIn, (req, res) => {
+        const id = req.user._id;
+        const { isOwner } = req.body;
+        if (isOwner === 'true')
+            return res.redirect(`/parkings/owner`);
+        else
+            return res.redirect(`/parkings/user`);
+    })
+
+
+module.exports = router;

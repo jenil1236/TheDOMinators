@@ -38,9 +38,7 @@
             Rate per Hour: ₹<%= parking.rate %>
         </div>
     </div><br>
-    <% if(!isAdmin) { %>
         <a href="/parkings/owner/<%= parking._id %>/edit">Update Parking</a>
-    <% } %>
     <form action="/parkings/owner/<%= parking._id %>?_method=DELETE" method="POST">
         <button> Delete Parking </button>
     </form> <hr><br>
