@@ -2,7 +2,7 @@ import Sidebar from './Sidebar'
 import MapComponent from './MapComponent'
 import { useState, useEffect } from 'react';
 
-function App() {
+function Bus_stop_markers() {
   const url = import.meta.env.VITE_URL;
   const [busStops, setStops] = useState([]);
   useEffect(() => {
@@ -10,6 +10,7 @@ function App() {
       .then(res => res.json())
       .then(setStops);
   }, []);
+  console.log(busStops);
   const [focus, setFocus] = useState({ lat: 21.1702, lng: 72.8311 })
   return (
     <>
@@ -21,4 +22,4 @@ function App() {
   )
 }
 
-export default App
+export default Bus_stop_markers;
