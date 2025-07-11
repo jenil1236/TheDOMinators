@@ -1,8 +1,9 @@
 import Sidebar from './Sidebar'
 import MapComponent from './MapComponent'
 import { useState, useEffect } from 'react';
+import "./BusStopMarkers.css"
 
-function Bus_stop_markers() {
+function BusStopMarkers() {
   const url = import.meta.env.VITE_URL;
   const [busStops, setStops] = useState([]);
   useEffect(() => {
@@ -22,4 +23,4 @@ function Bus_stop_markers() {
   )
 }
 
-export default Bus_stop_markers;
+export default BusStopMarkers;

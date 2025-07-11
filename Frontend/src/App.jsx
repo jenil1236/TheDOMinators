@@ -1,8 +1,8 @@
-import Bus_stop_markers from "./admin/bus_stop_markers/bus_stop_markers"
+import BusStopMarkers from "./admin/BusStopMarkers/BusStopMarkers"
 function App() {
   return (
     <>
-      <Bus_stop_markers/>
+      <BusStopMarkers/>
     </>
   )
 }
