@@ -1,4 +1,4 @@
-import BusStopMarkers from "./admin/BusStopMarkers/BusStopMarkers"
+import BusStopMarkers from "./user/BusStopMarkers/BusStopMarkers"
 function App() {
   return (
     <>

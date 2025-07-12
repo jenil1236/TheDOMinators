@@ -11,7 +11,6 @@ function BusStopMarkers() {
       .then(res => res.json())
       .then(setStops);
   }, []);
-  console.log(busStops);
   const [focus, setFocus] = useState({ lat: 21.1702, lng: 72.8311 })
   return (
     <>
