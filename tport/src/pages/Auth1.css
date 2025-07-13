@@ -1,4 +1,4 @@
-.auth-container {
+.auth-container, .recovery-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -126,10 +126,42 @@
   transform: translateX(20%);
 }
 
+/* Recovery Card Styles */
+.recovery-card {
+  position: relative;
+  width: 500px;
+  max-width: 100%;
+  min-height: 400px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.recovery-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.recovery-subtext {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Common Form Styles */
 h2 {
   font-weight: 700;
-  margin: 0;
+  margin: 0 0 20px;
   font-size: 28px;
+  color: #333;
 }
 
 p {
@@ -165,6 +197,13 @@ p {
   transition: transform 80ms ease-in;
   cursor: pointer;
   margin-top: 10px;
+  width: 100%;
+}
+
+.auth-button:disabled {
+  background: #ccc;
+  border-color: #ccc;
+  cursor: not-allowed;
 }
 
 .auth-button:active {
@@ -189,14 +228,58 @@ p {
   cursor: pointer;
 }
 
-.ghost-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.forgot-button, .back-button {
+  background: transparent;
+  border: none;
+  color: #666;
+  font-size: 12px;
+  cursor: pointer;
+  margin-top: 15px;
+  text-decoration: underline;
 }
 
 .error-message {
   color: #ff3333;
   font-size: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+  width: 100%;
 }
 
+.success-message {
+  color: #4BB543;
+  font-size: 12px;
+  margin-bottom: 15px;
+  text-align: center;
+  width: 100%;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .auth-card {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .auth-form, .overlay-container {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .overlay {
+    position: relative;
+    left: 0;
+    width: 100%;
+  }
+  
+  .auth-card.right-panel-active .login-form,
+  .auth-card.right-panel-active .register-form {
+    transform: none;
+  }
+
+  .recovery-card {
+    padding: 30px 20px;
+    min-height: 300px;
+  }
+}

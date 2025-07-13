@@ -90,6 +90,84 @@
 
 // export default App;
 
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+// import {
+//   BrowserRouter as Router,
+//   Routes,
+//   Route,
+//   Navigate,
+// } from "react-router-dom";
+// import { ThemeProvider } from './context/ThemeContext';
+// import Navbar from './components/Navbar/Navbar';
+// import HomePage from './pages/HomePage';
+// import Footer from './components/Footer/Footer';
+// import ChatBot from './components/ChatBot/ChatBot';
+// import Combii from './components/Calculator/Combii';
+// import Auth from "./components/Auth/Auth";
+
+
+// function App() {
+//   const [user, setUser] = useState(null);
+//   const [error, setError] = useState("");
+//   const [isLoading, setIsLoading] = useState(true);
+  
+//   console.log(user);
+  
+//   useEffect(() => {
+//     const fetchUser = async () => {
+//       const token = localStorage.getItem("token");
+//       if (token) {
+//         try {
+//           const res = await axios.get("/api/users/me", {
+//             headers: { Authorization: `Bearer ${token}` },
+//           });
+//           setUser(res.data);
+//         } catch (err) {
+//           setError("Failed to fetch user data");
+//           localStorage.removeItem("token");
+//         }
+//       }
+//       setIsLoading(false);
+//     };
+//     fetchUser();
+//   }, []);
+
+//   if (isLoading) {
+//     return (
+//       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+//         <div className="text-xl text-white">Loading...</div>
+//       </div>
+//     );
+//   }
+  
+//   return (
+//     <ThemeProvider>
+//       <Router>
+//         <div className="app">
+//           <Navbar user={user} setUser={setUser} />
+//           <ChatBot />
+//           <Routes>
+//             <Route path="/" element={<HomePage/>} />
+//             <Route path="/route-calculator" element={<Combii />} />
+//             <Route 
+//               path="/login" 
+//               element={user ? <Navigate to="/" /> : <Auth authType="login" setUser={setUser} />} 
+//             />
+//             <Route 
+//               path="/register" 
+//               element={user ? <Navigate to="/" /> : <Auth authType="register" setUser={setUser} />} 
+//             />
+//           </Routes>
+//           <Footer />
+//         </div>
+//       </Router>
+//     </ThemeProvider>
+//   );
+// }
+
+// export default App;
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import {
@@ -104,16 +182,13 @@ import HomePage from './pages/HomePage';
 import Footer from './components/Footer/Footer';
 import ChatBot from './components/ChatBot/ChatBot';
 import Combii from './components/Calculator/Combii';
-import Auth from "./components/Auth/Auth";
-
+import AuthPage from "./pages/AuthPage";
+import PasswordRecovery from "./pages/PasswordRecovery";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  
-  console.log(user);
-  
+
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
@@ -124,7 +199,6 @@ function App() {
           });
           setUser(res.data);
         } catch (err) {
-          setError("Failed to fetch user data");
           localStorage.removeItem("token");
         }
       }
@@ -140,7 +214,7 @@ function App() {
       </div>
     );
   }
-  
+
   return (
     <ThemeProvider>
       <Router>
@@ -148,15 +222,19 @@ function App() {
           <Navbar user={user} setUser={setUser} />
           <ChatBot />
           <Routes>
-            <Route path="/" element={<HomePage/>} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/route-calculator" element={<Combii />} />
             <Route 
               path="/login" 
-              element={user ? <Navigate to="/" /> : <Auth authType="login" setUser={setUser} />} 
+              element={user ? <Navigate to="/" /> : <AuthPage authType="login" setUser={setUser} />} 
             />
             <Route 
               path="/register" 
-              element={user ? <Navigate to="/" /> : <Auth authType="register" setUser={setUser} />} 
+              element={user ? <Navigate to="/" /> : <AuthPage authType="register" setUser={setUser} />} 
+            />
+            <Route 
+              path="/forgot-password" 
+              element={user ? <Navigate to="/" /> : <PasswordRecovery setUser={setUser} />} 
             />
           </Routes>
           <Footer />

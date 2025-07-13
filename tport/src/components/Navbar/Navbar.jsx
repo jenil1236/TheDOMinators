@@ -319,7 +319,7 @@ const Navbar = ({ user, setUser }) => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                Welcome, {user.name || user.email}
+                Welcome, {user.username}
               </motion.span>
               <motion.button 
                 className="logout-btn"
