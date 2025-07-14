@@ -6,17 +6,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     name: String,
     email: String,
-    phone: String,
-    vehicle: {
-        type: String,
-        enum: ['car', 'bike', 'auto']
-    },
-    parkings: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Parking'
-        }
-    ],
+    phone: String
 });
 
 userSchema.plugin(passportLocalMongoose);
