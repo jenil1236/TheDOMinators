@@ -7,6 +7,35 @@ const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
+  const handleFirstDefaultMessage=async ()=>{
+    // Add user message
+    const newUserMessage = {
+      id: messages.length + 1,
+      text: "Introduce yourself",
+      sender: 'user'
+    };
+    // Create a new array that includes the new user message for the API call
+    const messagesToSend = [...messages, newUserMessage];
+
+    //Send api request to bot
+    const res = await fetch("http://127.0.0.1:8000/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ question: messagesToSend })
+    });
+
+    const AIresponse = await res.json();
+    const newBotMessage = {
+      id: messagesToSend.length + 1,
+      text: AIresponse.answer,
+      sender: 'bot'
+    }
+
+    setMessages(prev => [...prev, newBotMessage]);
+  }
+
   const handleSendMessage = async () => {
     if (inputValue.trim() === '') return;
 
@@ -16,23 +45,23 @@ const ChatBot = () => {
       text: inputValue,
       sender: 'user'
     };
+    // Create a new array that includes the new user message for the API call
+    const messagesToSend = [...messages, newUserMessage];
 
-    setMessages([...messages, newUserMessage]);
+    setMessages(messagesToSend);
     setInputValue('');
-
     //Send api request to bot
     const res = await fetch("http://127.0.0.1:8000/ask", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ question: newUserMessage.text })
+      body: JSON.stringify({ question: messagesToSend })
     });
 
     const AIresponse = await res.json();
-    console.log(AIresponse)
     const newBotMessage = {
-      id: messages.length + 1,
+      id: messagesToSend.length + 1,
       text: AIresponse.answer,
       sender: 'bot'
     }
@@ -59,7 +88,12 @@ const ChatBot = () => {
       {!isOpen ? (
         <motion.div
           className="chat-bot-button"
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            setIsOpen(true);
+            if(messages.length==0){
+              handleFirstDefaultMessage();
+            }
+          }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         >

@@ -3,3 +3,10 @@
 
 # Ignore .env files in any subdirectory
 **/.env
+
+# Python virtual environment
+.venv/
+
+**/__pycache__
+
+**/chroma_db
