@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Users</title>
+    <title>All Parking Users</title>
 </head>
 <body>
-    <% for (const user of users) { %>
+    <% for (const parkinguser of parkingusers) { %>
         <div>
-            Name: <%= user.name %>
+            Name: <%= parkinguser.user.name %>
         </div>
         <div>
-            Email: <%= user.email %>
+            Email: <%= parkinguser.user.email %>
         </div>
         <div>
-            Phone: <%= user.phone %>
+            Phone: <%= parkinguser.user.phone %>
         </div>
-        <form action="/admin/users/<%= user._id %>?_method=DELETE" method="POST">
+        <form action="/admin/parkingusers/<%= parkinguser._id %>?_method=DELETE" method="POST">
             <button>Remove User</button>
         </form><br>
     <% } %>

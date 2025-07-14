@@ -9,16 +9,16 @@
 
 <body>
     <h2> Owner Info </h2>
-    <p>Name: <%= owner.name %>
+    <p>Name: <%= currentUser.name %>
     </p>
-    <p>Email: <%= owner.email %>
+    <p>Email: <%= currentUser.email %>
     </p>
-    <p>Phone: <%= owner.phone %>
+    <p>Phone: <%= currentUser.phone %>
     </p>
     <hr><br>
     <h2>Your Parking Lots: </h2>
     <% for (const parking of owner.parkings) { %>
-    <% if(parking.owner.equals(owner._id)) { %>
+    <% if(parking.owner.equals(currentUser._id)) { %>
         <div>
             <div>
                 Parking Name: <%= parking.name %>

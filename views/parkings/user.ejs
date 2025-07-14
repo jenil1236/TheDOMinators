@@ -29,7 +29,7 @@
                     Location: <%= parking.location %>
                 </div>
                 <div>
-                    Rate per Hour: ₹<%= parking.rate %>
+                    Rate per Slot: ₹<%= parking.rate %>
                 </div>
                 <form action="/parkings/user/<%= parking._id %>?_method=DELETE" method="POST">
                     <button> Leave Parking </button>

@@ -48,7 +48,7 @@
                 Location: <%= parking.location %>
             </div>
             <div>
-                Rate per Hour: ₹<%= parking.rate %>
+                Rate per Slot: ₹<%= parking.rate %>
             </div>
             <% if(typeof isAdmin !== 'undefined' && isAdmin) { %>
                 <a href="/parkings/owner/<%= parking._id %>">Details</a>

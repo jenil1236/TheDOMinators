@@ -14,7 +14,8 @@ const LocalStrategy = require('passport-local')
 const parkingsUserRoutes = require('./routes/parkingsUserRoutes')
 const parkingsOwnerRoutes = require('./routes/parkingsOwnerRoutes')
 const adminRoutes = require('./routes/adminRoutes')
-const routes = require('./routes/routes');
+const parkingRoutes = require('./routes/parkingRoutes');
+const clearParking = require('./utils/clearParking');
 
 const app = express();
 const PORT = 3000;
@@ -45,15 +46,21 @@ app.use((req, res, next) => {
     next();
 })
 
+app.use('/parkings/:subroute', (req, res, next) => {
+    req.parkinguserId = req.session.parkinguserId;
+    next();
+})
+
 mongoose.connect('mongodb://127.0.0.1:27017/Transport')
-    .then(() => {
+    .then(async () => {
         console.log('Connected successfully');
+        await clearParking();
     })
     .catch(e => {
         console.log('ERROR', e);
     })
 
-app.use('/', routes);
+app.use('/', parkingRoutes);
 app.use('/admin', adminRoutes);
 app.use('/parkings/user', parkingsUserRoutes);
 app.use('/parkings/owner', parkingsOwnerRoutes);
