@@ -16,9 +16,9 @@ router.post("/send", protect, sendJoinRequest); // done test
 router.get("/received", protect, getReceivedRequests); // done test
 
 // Get all join requests sent by the logged-in user
-router.get("/sent", protect, getSentRequests); // pending
+router.get("/sent", protect, getSentRequests); // done test
 
 // Update join request status (accept or reject)
-router.put("/update/:requestId", protect, updateJoinRequestStatus); // pending
+router.put("/update/:requestId", protect, updateJoinRequestStatus); // done test
 
 export default router;

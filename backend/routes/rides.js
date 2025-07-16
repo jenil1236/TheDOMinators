@@ -5,7 +5,7 @@ import {
   getPostedRides,
   getBookedRides,
   getRideHistory,
-  cancelUpcomingRide
+  updateUpcomingRide
 } from "../controllers/rideController.js";
 import { protect } from "../middleware/auth.js";
 
@@ -21,12 +21,12 @@ router.get("/search", protect, searchRides); // done test
 router.get("/posted", protect, getPostedRides); // done test
 
 // Get rides booked by logged-in user
-router.get("/booked", protect, getBookedRides); // pending
+router.get("/booked", protect, getBookedRides); // done test
 
 // Get ride history (both posted and booked, completed/cancelled)
-router.get("/history", protect, getRideHistory); // pending
+router.get("/history", protect, getRideHistory); // donetest
 
-// Cancel an upcoming ride
-router.post("/cancel", protect, cancelUpcomingRide); // pending
+// update an upcoming ride
+router.post("/update", protect, updateUpcomingRide); // donetest
 
 export default router;

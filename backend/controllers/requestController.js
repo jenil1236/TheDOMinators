@@ -15,10 +15,10 @@ export const sendJoinRequest = async (req, res) => {
     }
 
     // Check if requested seats are available
-    const alreadyBooked = ride.bookedUsers.length;
-    if ((ride.availableSeats - alreadyBooked) < seatsRequested) {
-      return res.status(400).json({ message: "Not enough seats available" });
-    }
+    if (ride.availableSeats < seatsRequested) {
+  return res.status(400).json({ message: "Not enough seats available" });
+}
+
 
     // ✅ GET THE CARPOOL USER ID
     const fromCarpoolUser = await CarpoolUser.findOne({ user: req.user._id });
@@ -122,30 +122,64 @@ if (!carpoolUser || request.toUser.toString() !== carpoolUser._id.toString()) {
 }
 
 
-        request.status() = status;
+        request.status = status;
         await request.save();
 
         // If accepted, add user to ride's bookedUsers
         if(status === "accepted"){
             const ride = await Ride.findById(request.ride._id);
-            ride.bookedUsers.push(request.fromUser);
-            await ride.save();
+            
+           ride.bookedUsers.push(request.fromUser);
+          ride.availableSeats -= request.seatsRequested;
+
+          if (ride.availableSeats < 0) {
+            return res.status(400).json({ message: "Not enough seats left to accept this request" });
+          }
+
+await ride.save();
+
         }
         res.status(200).json({message: `Request ${status}`})
     } catch (error) {
-         res.status(500).json({ message: "Error updating request", error: err.message });
+         res.status(500).json({ message: "Error updating request", error: error.message });
     }
 };
 
 // get join requests sent by the user(for their own tracking)
-export const getSentRequests = async(req,res) => {
-    try {
-        const requests = await JoinRequest.find({fromUser: req.user._id})
-                                           .populate("ride", "pickupLocation dropLocation date")
-                                           .populate("toUser", "username email");
-
-        res.status(200).json(requests);
-    } catch (error) {
-        res.status(500).json({ message: "Error fetching sent requests" });
+export const getSentRequests = async(req, res) => {
+  try {
+    const carpoolUser = await CarpoolUser.findOne({ user: req.user._id });
+    if (!carpoolUser) {
+      return res.status(404).json({ message: "Carpool user not found" });
     }
-}
+
+    const requests = await JoinRequest.find({ fromUser: carpoolUser._id })
+      .populate("ride", "pickupLocation dropLocation date")
+      .populate({
+        path: "toUser",
+        populate: {
+          path: "user",
+          model: "User",
+          select: "username email"
+        }
+      });
+
+    // Optional: flatten toUser -> user if needed
+    const flattened = requests.map((req) => {
+      const { toUser, ...rest } = req.toObject();
+      return {
+        ...rest,
+        toUser: {
+          _id: toUser?.user?._id || null,
+          username: toUser?.user?.username || null,
+          email: toUser?.user?.email || null,
+        },
+      };
+    });
+
+    res.status(200).json(flattened);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching sent requests", error: error.message });
+  }
+};
+

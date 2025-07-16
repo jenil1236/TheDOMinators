@@ -1,7 +1,7 @@
 import Ride from "../models/Ride.js";
 import User from "../models/User.js";
 import CarpoolUser from "../models/CarpoolUser.js";
-
+import JoinRequest from "../models/JoinRequest.js";
 
 export const postRide = async (req, res) => {
   
@@ -107,72 +107,224 @@ export const searchRides = async (req, res) => {
 
 export const getPostedRides = async (req, res) => {
   try {
-   const carpoolUser = await CarpoolUser.findOne({ user: req.user._id });
-if (!carpoolUser) return res.status(404).json({ message: "Carpool user not found" });
+    const carpoolUser = await CarpoolUser.findOne({ user: req.user._id });
+    if (!carpoolUser)
+      return res.status(404).json({ message: "Carpool user not found" });
 
-const rides = await Ride.find({ driver: carpoolUser._id });
-res.status(200).json(rides);
+    const rides = await Ride.find({ driver: carpoolUser._id })
+      .populate({
+        path: "bookedUsers",
+        populate: {
+          path: "user",
+          select: "username email"
+        }
+      });
 
+    // Format rides with only username, email, and seatsBooked
+    const formattedRides = await Promise.all(
+      rides.map(async (ride) => {
+        const rideObj = ride.toObject();
+
+        const bookedUsers = await Promise.all(
+          ride.bookedUsers.map(async (bookedUser) => {
+            const joinRequest = await JoinRequest.findOne({
+              ride: ride._id,
+              fromUser: bookedUser._id,
+              status: "accepted"
+            });
+
+            return {
+              username: bookedUser.user.username,
+              email: bookedUser.user.email,
+              seatsBooked: joinRequest ? joinRequest.seatsRequested : 0
+            };
+          })
+        );
+
+        return {
+          _id: ride._id,
+          pickupLocation: ride.pickupLocation,
+          dropLocation: ride.dropLocation,
+          date: ride.date,
+          time: ride.time,
+          status: ride.status,
+          pricePerSeat: ride.pricePerSeat,
+          vehicleDetails: ride.vehicleDetails,
+          availableSeats: ride.availableSeats,
+          bookedUsers
+        };
+      })
+    );
+
+    res.status(200).json(formattedRides);
   } catch (error) {
-    res.status(500).json({ message: "Error searching your posted rides", error: error.message });
+    res.status(500).json({
+      message: "Error searching your posted rides",
+      error: error.message
+    });
   }
 };
+
 
 export const getBookedRides = async (req, res) => {
   try {
-    const rides = await Ride.find({bookedUsers: req.user._id}); // bookedUsers is an array but still this works
-    res.status(200).json(rides)
+    const carpoolUser = await CarpoolUser.findOne({ user: req.user._id });
+    if (!carpoolUser) {
+      return res.status(404).json({ message: "Carpool user not found" });
+    }
+
+    const rides = await Ride.find({ bookedUsers: carpoolUser._id })
+      .populate({
+        path: "driver",
+        populate: { path: "user", select: "username email" } // driver's name
+      })
+      .populate("pickupLocation dropLocation");
+
+    // Now also fetch join requests made by this user
+    const requests = await JoinRequest.find({
+      fromUser: carpoolUser._id,
+      status: "accepted"
+    });
+
+    // Map rideId to seatsRequested
+    const seatsMap = {};
+    requests.forEach(req => {
+      seatsMap[req.ride.toString()] = req.seatsRequested;
+    });
+
+    // Combine data
+    const formatted = rides.map(ride => ({
+      rideId: ride._id,
+      driverName: ride.driver?.user?.username || "Unknown",
+      pickup: ride.pickupLocation,
+      drop: ride.dropLocation,
+      date: ride.date,
+      time: ride.time,
+      seatsBooked: seatsMap[ride._id.toString()] || 0,
+      pricePerSeat: ride.pricePerSeat,
+      totalFare: ride.pricePerSeat * (seatsMap[ride._id.toString()] || 0)
+    }));
+
+    res.status(200).json(formatted);
   } catch (error) {
-    res.status(500).json({ message: "Error searching your booked rides", error: error.message });
+    res.status(500).json({ message: "Error fetching booked rides", error: error.message });
   }
 };
+
 
 export const getRideHistory = async (req, res) => {
   try {
+    const carpoolUser = await CarpoolUser.findOne({ user: req.user._id });
+    if (!carpoolUser) {
+      return res.status(404).json({ message: "Carpool user not found" });
+    }
+
     const rides = await Ride.find({
       $or: [
-        { driver: req.user._id },
-        { bookedUsers: req.user._id }
+        { driver: carpoolUser._id },
+        { bookedUsers: carpoolUser._id }
       ],
       status: { $in: ["completed", "cancelled"] }
-
     })
-    .populate("driver", "username email")
-    .populate("bookedUsers", "username email");
+      .populate({
+        path: "driver",
+        populate: { path: "user", select: "username email" },
+        select: "user"
+      })
+      .populate({
+        path: "bookedUsers",
+        populate: { path: "user", select: "username email" },
+        select: "user"
+      })
+      .select("pickupLocation dropLocation date time status vehicleDetails driver bookedUsers");
 
-    res.status(200).json(rides);
+    const cleanedHistory = [];
+
+    for (const ride of rides) {
+      const rideData = {
+        _id: ride._id,
+        pickupLocation: ride.pickupLocation,
+        dropLocation: ride.dropLocation,
+        date: ride.date,
+        time: ride.time,
+        status: ride.status,
+        vehicleDetails: ride.vehicleDetails,
+        driver: ride.driver?.user ?? null,
+        bookedUsers: [],
+      };
+
+      // Fetch all join requests for this ride
+const joinRequests = await JoinRequest.find({ 
+  ride: ride._id, 
+  status: "accepted" // ✅ only accepted requests
+})
+.populate({
+  path: "fromUser", // ✅ this matches your schema
+  populate: { path: "user", select: "username email" }
+})
+
+      // Add each booked user's name, email, and seatsBooked
+      for (const req of joinRequests) {
+  if (req.fromUser?.user) {
+    rideData.bookedUsers.push({
+      username: req.fromUser.user.username,
+      email: req.fromUser.user.email,
+      seatsBooked: req.seatsRequested,
+    });
+  }
+}
+
+
+      cleanedHistory.push(rideData);
+    }
+
+    res.status(200).json(cleanedHistory);
   } catch (err) {
-    res.status(500).json({ message: "Error fetching history" });
+    res.status(500).json({ message: "Error fetching ride history", error: err.message });
   }
 };
 
-export const cancelUpcomingRide = async(req,res) => {
+
+export const updateUpcomingRide = async (req, res) => {
   try {
-    const {
-      rideId
-    } = req.body;
-  
-    const ride = await Ride.findById(rideId);
-    if(!ride) return res.status(404).json({message: "This ride doesnt even exist"});
-  
-    if(ride.status === "completed" || ride.status === "cancelled"){
-      return res.status(400).json({message: "This ride exists but the request is invalid(completed or already cancelled)"});
+    const { rideId, status } = req.body;
+
+    // 1. Only allow valid status changes
+    if (!["cancelled", "completed"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status value. Use 'cancelled' or 'completed'." });
     }
 
-    if (!ride.driver.equals(req.user._id)) {
-  return res.status(403).json({ message: "You are not authorized to cancel this ride" });
-}
-  
-    ride.status = "cancelled";
+    // 2. Check if ride exists
+    const ride = await Ride.findById(rideId);
+    if (!ride) {
+      return res.status(404).json({ message: "This ride doesn't even exist" });
+    }
+
+    // 3. Prevent redundant status changes
+    if (ride.status === "completed" || ride.status === "cancelled") {
+      return res.status(400).json({ message: `Ride is already ${ride.status}. Cannot update.` });
+    }
+
+    // ✅ Get the CarpoolUser of the logged-in user
+    const carpoolUser = await CarpoolUser.findOne({ user: req.user._id });
+    if (!carpoolUser) {
+      return res.status(404).json({ message: "Carpool user not found" });
+    }
+
+    // ✅ Compare using CarpoolUser ID
+    if (ride.driver.toString() !== carpoolUser._id.toString()) {
+      return res.status(403).json({ message: "You are not authorized to update this ride" });
+    }
+
+    // 5. Update ride status
+    ride.status = status;
     await ride.save();
 
-    return res.status(200).json({message: "Ride status updated to cancelled succesfully"});
+    return res.status(200).json({ message: `Ride status updated to '${status}' successfully` });
 
   } catch (error) {
-
-    return res.status(403).json({message: "Failed to cancel the ride"});
+    console.error("Update Ride Error:", error);
+    return res.status(500).json({ message: "Failed to update the ride", error: error.message });
   }
-
-
 };
 
