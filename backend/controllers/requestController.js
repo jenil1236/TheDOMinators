@@ -2,6 +2,8 @@ import JoinRequest from "../models/JoinRequest.js";
 import Ride from "../models/Ride.js";
 import CarpoolUser from "../models/CarpoolUser.js";
 
+
+
 export const sendJoinRequest = async (req, res) => {
   try {
     const { rideId, seatsRequested } = req.body;
@@ -9,9 +11,14 @@ export const sendJoinRequest = async (req, res) => {
     const ride = await Ride.findById(rideId);
     if (!ride) return res.status(404).json({ message: "Ride not found" });
 
-    // Not allowing driver to request to their own ride
-    if (ride.driver.toString() === req.user._id.toString()) {
-      return res.status(400).json({ message: "Cannot request your own ride" });
+   const carpoolUser = await CarpoolUser.findOne({ user: req.user._id });
+    if (!carpoolUser) {
+      return res.status(404).json({ message: "Carpool user not found" });
+    }
+
+    // ✅ Compare using CarpoolUser ID
+    if (ride.driver.toString() == carpoolUser._id.toString()) {
+      return res.status(403).json({ message: "You are the driver. you cant sent request" });
     }
 
     // Check if requested seats are available

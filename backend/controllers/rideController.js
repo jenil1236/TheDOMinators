@@ -198,6 +198,7 @@ export const getBookedRides = async (req, res) => {
       driverName: ride.driver?.user?.username || "Unknown",
       pickup: ride.pickupLocation,
       drop: ride.dropLocation,
+      status: ride.status,
       date: ride.date,
       time: ride.time,
       seatsBooked: seatsMap[ride._id.toString()] || 0,

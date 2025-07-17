@@ -50,7 +50,7 @@ const Navbar = ({ user, setUser }) => {
   
   const navLinks = [
     { name: 'Smart Parking', path: '/smart-parking' },
-    { name: 'Car Pooling', path: '/post-ride' },
+    { name: 'Car Pooling', path: '/car-pooling' },
     { name: 'Route + Fare', path: '/route-calculator' },
     { name: 'Bus Booking', path: '/bus-info' },
     { name: 'Future Transport', path: '/future-transport' },

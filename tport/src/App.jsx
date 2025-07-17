@@ -17,6 +17,11 @@ import Combii from './components/Calculator/Combii';
 import AuthPage from "./pages/AuthPage";
 import PasswordRecovery from "./pages/PasswordRecovery";
 import PostRidePage from "./pages/PostRidePage";
+import CarpoolHomePage from "./pages/CP";
+import SearchRidePage from "./pages/SearchRidePage";
+import PostedRidesPage from "./pages/PostedRidesPage";
+import RideHistoryPage from "./pages/RideHistoryPage";
+import BookedRidesPage from "./pages/BookedRidesPage";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -52,7 +57,7 @@ function App() {
     <ThemeProvider>
       <Router>
         <div className="app">
-          {/* <Navbar user={user} setUser={setUser} /> */}
+          <Navbar user={user} setUser={setUser} />
           <ChatBot />
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -69,10 +74,24 @@ function App() {
               path="/forgot-password" 
               element={user ? <Navigate to="/" /> : <PasswordRecovery setUser={setUser} />} 
             />
-            <Route path="/post-ride" element={user ? <PostRidePage /> : <Navigate to="/login" />} />
 
           </Routes>
           <Footer />
+        </div>
+        <div>
+          <Routes>
+                      <Route path="/post-ride" element={user ? <PostRidePage /> : <Navigate to="/login" />} />
+                      <Route path="/car-pooling" element={user ? <CarpoolHomePage /> : <Navigate to="/login" />} />
+                      <Route
+                            path="/search-ride"
+                            element={user ? <SearchRidePage /> : <Navigate to="/login" />}
+                      />
+                      <Route path="/posted-rides" element={user ? <PostedRidesPage /> : <Navigate to="/login" />} />
+                      <Route path="/ride-history" element={user ? <RideHistoryPage /> : <Navigate to="/login" />} />
+                      <Route path="/booked-rides" element={user ? <BookedRidesPage /> : <Navigate to="/login" />} />
+
+
+          </Routes>
         </div>
       </Router>
     </ThemeProvider>

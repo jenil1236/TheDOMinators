@@ -12,10 +12,10 @@ import { protect } from "../middleware/auth.js";
 const router = express.Router();
 
 // Post a new ride
-router.post("/post", protect, postRide); // done test
+router.post("/post", protect, postRide); // done test + page
 
 // Search rides by pickup/drop/date
-router.get("/search", protect, searchRides); // done test
+router.get("/search", protect, searchRides); // done test + page
 
 // Get rides posted by logged-in user
 router.get("/posted", protect, getPostedRides); // done test

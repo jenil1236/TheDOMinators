@@ -119,7 +119,10 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: "*", credentials: true })); // Enable CORS
+app.use(cors({
+  origin: "http://localhost:5173",  // ✅ must be exact
+  credentials: true
+}));
 
 // 💡 SESSION
 app.use(session({
