@@ -34,7 +34,7 @@ export const rateUser = async(req,res) => {
             return res.status(400).json({ message: "Insufficient credentials provided." });
         }
 
-        if (ride.status !== "completed") {
+        if (ride.status == "upcoming") {
             return res.status(400).json({ message: "Invalid or incomplete ride" });
         }
 
@@ -92,7 +92,7 @@ export const getUserRatings = async (req, res) => {
           select: "username email"
         }
       })
-      .populate("ride", "pickupLocation dropLocation date");
+      .populate("ride", "pickupLocation dropLocation date _id");
 
     const formattedRatings = ratings.map(rating => ({
       score: rating.score,
@@ -104,7 +104,8 @@ export const getUserRatings = async (req, res) => {
       ride: {
         pickupLocation: rating.ride?.pickupLocation,
         dropLocation: rating.ride?.dropLocation,
-        date: rating.ride?.date
+        date: rating.ride?.date,
+        id: rating.ride?._id
       }
     }));
 

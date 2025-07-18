@@ -20,6 +20,10 @@ const CarpoolHomePage = () => {
     navigate('/ride-history');
   };
 
+  const handleViewSentRequestsClick = () => {
+    navigate('/sent-requests');
+  };
+
   return (
     <div className="max-w-5xl mx-auto mt-10 p-6 space-y-10">
       
@@ -91,6 +95,32 @@ const CarpoolHomePage = () => {
     className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition"
   >
     View Booked Rides
+  </button>
+</div>
+
+<div className="p-6 bg-orange-100 rounded-xl shadow-md">
+  <h2 className="text-2xl font-bold mb-4 text-gray-800">Your Sent Requests</h2>
+  <p className="text-gray-700 mb-6">
+    View all the requests you have sent. Check driver details, timing, and fare breakdown for your sent requests.
+  </p>
+  <button
+    onClick={() => navigate('/sent-requests')}
+    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition"
+  >
+    View Sent Requests
+  </button>
+</div>
+
+<div className="p-6 bg-pink-100 rounded-xl shadow-md">
+  <h2 className="text-2xl font-bold mb-4 text-gray-800">Your Received Requests</h2>
+  <p className="text-gray-700 mb-6">
+    View all the requests you have received. Check driver details, timing, and fare breakdown for your received requests.
+  </p>
+  <button
+    onClick={() => navigate('/received-requests')}
+    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition"
+  >
+    View Received Requests
   </button>
 </div>
 

@@ -22,6 +22,8 @@ import SearchRidePage from "./pages/SearchRidePage";
 import PostedRidesPage from "./pages/PostedRidesPage";
 import RideHistoryPage from "./pages/RideHistoryPage";
 import BookedRidesPage from "./pages/BookedRidesPage";
+import SentRequestsPage from "./pages/SentRequestsPage";
+import ReceivedRequestsPage from "./pages/ReceivedRequestsPage";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -89,6 +91,8 @@ function App() {
                       <Route path="/posted-rides" element={user ? <PostedRidesPage /> : <Navigate to="/login" />} />
                       <Route path="/ride-history" element={user ? <RideHistoryPage /> : <Navigate to="/login" />} />
                       <Route path="/booked-rides" element={user ? <BookedRidesPage /> : <Navigate to="/login" />} />
+                      <Route path="/sent-requests" element={user ? <SentRequestsPage /> : <Navigate to="/login" />} />
+                      <Route path="/received-requests" element={user ? <ReceivedRequestsPage /> : <Navigate to="/login" />} />
 
 
           </Routes>

@@ -228,10 +228,14 @@ export const getRideHistory = async (req, res) => {
       status: { $in: ["completed", "cancelled"] }
     })
       .populate({
-        path: "driver",
-        populate: { path: "user", select: "username email" },
-        select: "user"
-      })
+  path: "driver",
+  select: "_id user",
+  populate: {
+    path: "user",
+    select: "username email"
+  }
+})
+
       .populate({
         path: "bookedUsers",
         populate: { path: "user", select: "username email" },
@@ -250,7 +254,12 @@ export const getRideHistory = async (req, res) => {
         time: ride.time,
         status: ride.status,
         vehicleDetails: ride.vehicleDetails,
-        driver: ride.driver?.user ?? null,
+        driver: {
+  _id: ride.driver?._id,
+  username: ride.driver?.user?.username,
+  email: ride.driver?.user?.email
+},
+
         bookedUsers: [],
       };
 
@@ -268,6 +277,7 @@ const joinRequests = await JoinRequest.find({
       for (const req of joinRequests) {
   if (req.fromUser?.user) {
     rideData.bookedUsers.push({
+      _id: req.fromUser._id, 
       username: req.fromUser.user.username,
       email: req.fromUser.user.email,
       seatsBooked: req.seatsRequested,
