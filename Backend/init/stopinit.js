@@ -1,5 +1,5 @@
-const mongoose=require("mongoose");
-const Stop=require("../models/stop.js");
+import mongoose from "mongoose";
+import Stop from "../models/stop.js";
 
 main()
 .then(()=>{

@@ -1,5 +1,5 @@
-const mongoose=require("mongoose");
-const {Schema}=mongoose;
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
 const stopSchema= new Schema({
     name:{
@@ -35,5 +35,4 @@ const stopSchema= new Schema({
 });
 
 const Stop=mongoose.model("Stop",stopSchema);
-
-module.exports=Stop;
+export default Stop;

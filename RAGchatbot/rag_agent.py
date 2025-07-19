@@ -63,6 +63,7 @@ Your role is to assist users in navigating city transit options efficiently. Pro
 
 If users ask questions outside this domain, politely inform them that your expertise is limited to the TransitFlow platform and urban transit-related topics.
 Always aim to be clear, concise, and helpful.
+Always format your response in Markdown for better readability.
 """
 class AgentState(TypedDict):
     messages: Annotated[Sequence[BaseMessage], add_messages]
@@ -97,11 +98,6 @@ graph.add_edge("retriever_agent", "llm")
 graph.set_entry_point("llm")
 
 rag_agent = graph.compile()
-
-# def ask_question(user_input: str) -> str:
-#     messages = [HumanMessage(content=user_input)]
-#     result = rag_agent.invoke({"messages": messages})
-#     return result["messages"][-1].content
 
 def ask_question(messages: List[BaseMessage]) -> str:
     result = rag_agent.invoke({"messages": messages})

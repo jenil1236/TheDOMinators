@@ -4,17 +4,15 @@ import { useState, useEffect } from 'react';
 import "./BusStopMarkers.css"
 
 function BusStopMarkers() {
-  const url = import.meta.env.VITE_URL;
-
   const [busStops, setBusStops] = useState([]);      // ✅ reactive state
   const [busData, setData] = useState([]);            // ✅ data used in sidebar/map
 
   useEffect(() => {
-    fetch(url)
+    fetch("/api/admin/stops")
       .then(res => res.json())
       .then(data => setBusStops(data))
       .catch(err => console.error("Fetch error:", err));
-  }, [url]);
+  }, []);
 
   useEffect(() => {
     if (!busStops.length) return;

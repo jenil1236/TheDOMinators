@@ -1,6 +1,6 @@
-const Stop = require("../../models/stop.js");
+import Stop from "../../models/stop.js";
 
-module.exports.getStopsList=async (req, res) => {
+export const getStopsList=async (req, res) => {
     try {
         const stops = await Stop.find();
         res.status(200).json(stops);
@@ -10,7 +10,7 @@ module.exports.getStopsList=async (req, res) => {
     }
 };
 
-module.exports.createStop=async (req, res) => {
+export const createStop=async (req, res) => {
     try {
         const stop = new Stop(req.body);
         await stop.save();
@@ -21,7 +21,7 @@ module.exports.createStop=async (req, res) => {
     }
 };
 
-module.exports.updateStop=async (req, res) => {
+export const updateStop=async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -38,7 +38,7 @@ module.exports.updateStop=async (req, res) => {
   }
 };
 
-module.exports.deleteStop=async (req, res) => {
+export const deleteStop=async (req, res) => {
   const { id } = req.params;
 
   try {

@@ -1,6 +1,7 @@
-const express = require("express");
+import express from "express";
+import { getStopsList, createStop, updateStop, deleteStop } from "../../controllers/admin/stop.js";
+
 const router = express.Router();
-const { getStopsList, createStop, updateStop, deleteStop } = require("../../controllers/admin/stop.js")
 
 // Get all stops
 router.get('/', getStopsList);
@@ -14,4 +15,4 @@ router.put('/:id', updateStop);
 // Delete a stop
 router.delete('/:id', deleteStop);
 
-module.exports = router;
+export default router;

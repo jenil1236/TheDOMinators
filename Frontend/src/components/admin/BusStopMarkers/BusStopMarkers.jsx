@@ -4,10 +4,9 @@ import { useState, useEffect } from 'react';
 import "./BusStopMarkers.css"
 
 function BusStopMarkers() {
-  const url = import.meta.env.VITE_URL;
   const [busStops, setStops] = useState([]);
   useEffect(() => {
-    fetch(`${url}`)
+    fetch("/api/admin/stops")
       .then(res => res.json())
       .then(setStops);
   }, []);

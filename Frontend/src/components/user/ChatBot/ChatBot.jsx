@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown'
 import { motion } from 'framer-motion';
-import './Bot.css';
+import './ChatBot.css';
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -160,7 +161,7 @@ const ChatBot = () => {
                       </svg>
                     </div>
                   )}
-                  <div className="message-text">{message.text}</div>
+                  <div className="message-text"><ReactMarkdown>{message.text}</ReactMarkdown></div>
                   {message.sender === 'user' && (
                     <div className="message-avatar user-avatar">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

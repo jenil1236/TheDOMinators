@@ -4,14 +4,13 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 function Sidebar({ busStops, setStops, focus, setFocus }) {
-    const url = import.meta.env.VITE_URL;
     const [showModal, setShowModal] = useState(false);
     const [Stop, setStop] = useState({});
     const [mode, setMode] = useState("update");
 
     // Delete a stop
     const handleDelete = async (id) => {
-        await fetch(`${url}/${id}`, { method: 'DELETE' });
+        await fetch(`/api/admin/stops/${id}`, { method: 'DELETE' });
         setStops(prev => prev.filter(t => t._id !== id));
     };
 

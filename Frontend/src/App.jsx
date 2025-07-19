@@ -1,11 +1,11 @@
-// import BusStopMarkers from "./user/BusStopMarkers/BusStopMarkers"
-// import BusStopMarkers from "./admin/BusStopMarkers/BusStopMarkers"
-import ChatBot from "./user/ChatBot/Bot"
-// import Notification from "./user/Announcements/Notification"
+// import BusStopMarkers from "./components/user/BusStopMarkers/BusStopMarkers"
+import BusStopMarkers from "./components/admin/BusStopMarkers/BusStopMarkers"
+// import ChatBot from "./components/user/ChatBot/ChatBot"
 function App() {
   return (
     <>
-      <ChatBot/>
+      {/* <ChatBot/> */}
+      <BusStopMarkers/>
     </>
   )
 }

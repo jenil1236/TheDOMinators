@@ -4,7 +4,6 @@ import './Form.css';
 
 
 function Form({ Stop, setStops, mode }) {
-    const url = import.meta.env.VITE_URL;
     const [stop, updateStop] = useState(Stop);
     const [showLocate, setShowLocate] = useState(false);
     const handleToggleLocate = () => {
@@ -62,7 +61,7 @@ function Form({ Stop, setStops, mode }) {
 
     const handleUpdateSubmit = async (e) => {
         e.preventDefault(); // prevent page reload
-        const res = await fetch(`${url}/${stop._id}`, {
+        const res = await fetch(`/api/admin/stops/${stop._id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(stop)
@@ -73,7 +72,7 @@ function Form({ Stop, setStops, mode }) {
     };
     const handleAddSubmit = async (e) => {
         e.preventDefault(); // prevent page reload
-        const res = await fetch(`${url}`, {
+        const res = await fetch("/api/admin/stops", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(stop)
