@@ -3,6 +3,10 @@
     height: 100vh;
     width: 100vw;
     overflow: hidden;
+    background-color: #170D27;
 }
 
+body{
+    margin: 0px;
+}
 

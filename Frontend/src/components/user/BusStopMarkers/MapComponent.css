@@ -1,6 +1,10 @@
 #map {
-    height: 90vh;
-    width: 68vw;
+    height: 95vh;
+    width: 65vw;
+    margin-block: 15px;
+    margin-inline: 30px;
+    border:10px solid #271E37;
+    border-radius: 10px;
 }
 
 /* Optional: Styling the InfoWindow */
