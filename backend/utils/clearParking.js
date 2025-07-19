@@ -13,7 +13,16 @@ async function clearParking() {
         await Parking.updateMany({}, [
             { $set: { users: [], availableSlot: "$totalSlot" } }
         ]);
-        await ParkingUser.updateMany({}, { $set: { parkings: [] } });
+
+        const users = await ParkingUser.find();
+        for (const user of users) {
+            const ownedParkings = await Parking.find({ owner: user._id });
+            const ownedParkingIds = ownedParkings.map(p => p._id);
+            await ParkingUser.updateOne(
+                { _id: user._id },
+                { $set: { parkings: ownedParkingIds } }
+            );
+        }
 
         if (lastCleared) {
             lastCleared.value = today;

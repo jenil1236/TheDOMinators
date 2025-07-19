@@ -1,7 +1,7 @@
 const express = require("express");
-const Parking = require("../models/parking");
-const ParkingUser = require("../models/parkinguser");
-const { isLoggedIn } = require("../middleware/auth");
+const Parking = require("../../models/parking");
+const ParkingUser = require("../../models/parkinguser");
+const { isLoggedIn } = require("../../middleware/auth");
 
 const router = express.Router();
 

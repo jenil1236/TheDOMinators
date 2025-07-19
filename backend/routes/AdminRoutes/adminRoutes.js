@@ -1,13 +1,14 @@
 const express = require('express');
-const Parking = require('../models/parking');
-const { isAdmin } = require('../middleware/auth');
-const ParkingUser = require('../models/parkinguser');
+const Parking = require('../../models/parking');
+const { isAdmin } = require('../../middleware/auth');
+const ParkingUser = require('../../models/parkinguser');
 
 const router = express.Router();
 
 // 🔑 Admin login endpoint (validates master key)
-router.post('/login', (req, res) => {
-  const { key } = req.body;
+router.get('/login', (req, res) => {
+  const { key } = req.query;
+  // console.log(key);
   const masterKeys = process.env.ADMIN_KEYS?.split(',') || [];
 
   if (masterKeys.includes(key)) {
@@ -47,7 +48,7 @@ router.get('/dashboard', (req, res) => {
 // 👥 List all parking users
 router.get('/parkingusers', async (req, res, next) => {
   try {
-    console.log("/parkingusers",req.isAdmin)
+    // console.log("/parkingusers",req.isAdmin)
     if (!req.isAdmin) {
       return res.status(403).json({ message: 'Unauthorized admin access' });
     }

@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
             const data = await res.json();
             setCurrentUser(data.user);
             setIsAdmin(data.isAdmin);
-            console.log(data.isAdmin)
+            // console.log(data.isAdmin)
         } catch {
             setCurrentUser(null);
             setIsAdmin(false);

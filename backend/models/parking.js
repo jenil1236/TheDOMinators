@@ -39,9 +39,9 @@ const parkingSchema = new Schema({
         }
     ],
 }, opts)
-parkingSchema.virtual('properties.popUpMarkup').get(function() {
-    const safeId = this.location.toLowerCase().replace(/,/g, '').replace(/\s+/g, '-');
-    return `<strong><a href="#${safeId}">${this.name}</a></strong>
-    <p>${this.location}</p>`
-})
+// parkingSchema.virtual('properties.popUpMarkup').get(function() {
+//     const safeId = this.location.toLowerCase().replace(/,/g, '').replace(/\s+/g, '-');
+//     return `<strong><a href="#${safeId}">${this.name}</a></strong>
+//     <p>${this.location}</p>`
+// })
 module.exports = mongoose.model('Parking', parkingSchema);

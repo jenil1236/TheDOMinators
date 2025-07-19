@@ -2,7 +2,6 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 
-
 const express = require('express');
 const mongoose = require('mongoose');
 const maptilerClient = require("@maptiler/client");
@@ -10,17 +9,16 @@ const cors = require('cors');
 
 maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
-
 const User = require('./models/user');
 
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local')
 
-const parkingsUserRoutes = require('./routes/parkingsUserRoutes')
-const parkingsOwnerRoutes = require('./routes/parkingsOwnerRoutes')
-const adminRoutes = require('./routes/adminRoutes')
-const parkingRoutes = require('./routes/parkingRoutes');
+const parkingsUserRoutes = require('./routes/ParkingRoutes/parkingsUserRoutes')
+const parkingsOwnerRoutes = require('./routes/ParkingRoutes/parkingsOwnerRoutes')
+const adminRoutes = require('./routes/AdminRoutes/adminRoutes')
+const parkingRoutes = require('./routes/ParkingRoutes/parkingRoutes');
 
 const clearParking = require('./utils/clearParking');
 

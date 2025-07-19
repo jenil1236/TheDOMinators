@@ -1,16 +1,88 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import {
+  Box,
+  Typography,
+  Paper,
+  Divider,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Button,
+  Chip,
+  useTheme
+} from "@mui/material";
+import {
+  DirectionsCar,
+  TwoWheeler,
+  LocalTaxi,
+  LocationOn,
+  LocalParking,
+  Schedule,
+  AttachMoney,
+  Person,
+  Phone,
+  Email
+} from "@mui/icons-material";
+import { styled } from "@mui/material/styles";
+
+// Dark theme colors
+const darkTheme = {
+  background: '#0d1117',
+  surface: '#161a20',
+  primary: '#569cd6',
+  secondary: '#9cdcfe',
+  textPrimary: '#9ba3b4',
+  textSecondary: '#858585',
+  accent: '#4ec9b0',
+  error: '#f48771',
+  warning: '#dcdcaa',
+  success: '#608b4e'
+};
+
+// Styled components
+const MapContainer = styled(Box)({
+  height: '400px',
+  borderRadius: '8px',
+  overflow: 'hidden',
+  marginBottom: '24px',
+  border: `1px solid ${darkTheme.background}`,
+  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
+});
+
+const InfoBlock = styled(Paper)({
+  background: darkTheme.surface,
+  padding: '20px',
+  marginBottom: '24px',
+  borderRadius: '8px',
+  border: `1px solid ${darkTheme.background}`,
+});
+
+const FormSelect = styled(Select)({
+  background: darkTheme.surface,
+  color: darkTheme.textPrimary,
+  '& .MuiOutlinedInput-notchedOutline': {
+    borderColor: darkTheme.background,
+  },
+  '&:hover .MuiOutlinedInput-notchedOutline': {
+    borderColor: darkTheme.primary,
+  },
+  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+    borderColor: darkTheme.primary,
+  },
+});
 
 function BookParking() {
   const { parkingId } = useParams();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const [parking, setParking] = useState(null);
   const [vehicle, setVehicle] = useState("");
   const [price, setPrice] = useState(0);
 
   useEffect(() => {
-    // Fetch parking details
     fetch(`http://localhost:3000/parkings/user/${parkingId}`, {
       credentials: "include",
     })
@@ -31,9 +103,19 @@ function BookParking() {
       zoom: 14,
     });
 
-    new window.maptilersdk.Marker()
+    new window.maptilersdk.Marker({
+      color: parking.availableSlots > 0 ? "#4CAF50" : "#F44336"
+    })
       .setLngLat(parking.geometry.coordinates)
-      .setPopup(new window.maptilersdk.Popup().setText(parking.name))
+      .setPopup(new window.maptilersdk.Popup().setHTML(`
+        <div style="padding: 8px; background: ${darkTheme.surface}; color: ${darkTheme.textPrimary}">
+          <h3 style="margin: 0 0 4px; color: ${darkTheme.primary};">${parking.name}</h3>
+          <p style="margin: 0; font-size: 14px;">
+            <span>${parking.location}</span><br>
+            <strong>Available:</strong> ${parking.availableSlots}/${parking.totalSlots}
+          </p>
+        </div>
+      `))
       .addTo(map);
   }, [parking]);
 
@@ -42,7 +124,7 @@ function BookParking() {
     setVehicle(v);
 
     const rate = parking.rate;
-    const multiplier = v === "car" ? 4 : v === "auto" ? 3 : 2;
+    const multiplier = v === "car" ? 4 : v === "auto" ? 2 : 1;
     setPrice(rate * multiplier);
   };
 
@@ -65,113 +147,245 @@ function BookParking() {
     }
   };
 
-  if (!parking) return <div>Loading parking details...</div>;
+  if (!parking) return (
+    <Box sx={{
+      padding: 3,
+      color: darkTheme.textPrimary,
+      height: '100vh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
+      Loading parking details...
+    </Box>
+  );
 
   return (
-    <div className="book-page">
-      <style>{`
-        .book-page {
-          max-width: 800px;
-          margin: auto;
-          padding: 2rem;
-          font-family: Arial, sans-serif;
+    <Box sx={{
+      padding: 3,
+      maxWidth: '800px',
+      margin: '0 auto',
+      color: darkTheme.textPrimary
+    }}>
+      <Typography variant="h4" sx={{
+        marginBottom: 3,
+        position: 'relative',
+        color: darkTheme.primary,
+        '&:after': {
+          content: '""',
+          position: 'absolute',
+          bottom: '-10px',
+          left: 0,
+          width: '80px',
+          height: '4px',
+          background: darkTheme.primary,
+          borderRadius: '2px',
         }
+      }}>
+        Parking Lot Details
+      </Typography>
 
-        h2 {
-          color: #333;
-          margin-bottom: 1rem;
+      <InfoBlock elevation={3}>
+        <MapContainer id="map" />
+
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <DirectionsCar color="primary" />
+            <Typography variant="body1">
+              <strong>Name:</strong> {parking.name}
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <LocationOn color="primary" />
+            <Typography variant="body1">
+              <strong>Location:</strong> {parking.location}
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <LocalParking color="primary" />
+            <Typography variant="body1">
+              <strong>Total Slots:</strong> {parking.totalSlots}
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <LocalParking color={parking.availableSlots > 0 ? "success" : "error"} />
+            <Typography variant="body1">
+              <strong>Available:</strong> {parking.availableSlots}
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Schedule color="primary" />
+            <Typography variant="body1">
+              <strong>Open:</strong> {parking.openTime}
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Schedule color="primary" />
+            <Typography variant="body1">
+              <strong>Close:</strong> {parking.closeTime}
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <AttachMoney color="primary" />
+            <Typography variant="body1">
+              <strong>Rate:</strong> ₹{price !== 0 ? price : parking.rate}/hr
+            </Typography>
+          </Box>
+        </Box>
+      </InfoBlock>
+
+      <Typography variant="h4" sx={{
+        marginBottom: 3,
+        position: 'relative',
+        color: darkTheme.primary,
+        '&:after': {
+          content: '""',
+          position: 'absolute',
+          bottom: '-10px',
+          left: 0,
+          width: '80px',
+          height: '4px',
+          background: darkTheme.primary,
+          borderRadius: '2px',
         }
+      }}>
+        Contact Owner
+      </Typography>
 
-        #map {
-          width: 100%;
-          height: 400px;
-          margin-bottom: 2rem;
-          border: 1px solid #ccc;
-          border-radius: 6px;
+      <InfoBlock elevation={3}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Person color="primary" />
+            <Typography variant="body1">
+              <strong>Name:</strong> {parking.owner.name}
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Phone color="primary" />
+            <Typography variant="body1">
+              <strong>Phone:</strong> {parking.owner.phone}
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Email color="primary" />
+            <Typography variant="body1">
+              <strong>Email:</strong> {parking.owner.email}
+            </Typography>
+          </Box>
+        </Box>
+      </InfoBlock>
+
+      <Typography variant="h4" sx={{
+        marginBottom: 3,
+        position: 'relative',
+        color: darkTheme.primary,
+        '&:after': {
+          content: '""',
+          position: 'absolute',
+          bottom: '-10px',
+          left: 0,
+          width: '80px',
+          height: '4px',
+          background: darkTheme.primary,
+          borderRadius: '2px',
         }
+      }}>
+        Booking
+      </Typography>
 
-        .section {
-          margin-bottom: 2rem;
-        }
+      <InfoBlock elevation={3}>
+        <form onSubmit={handleSubmit}>
+          <FormControl fullWidth sx={{ marginBottom: 3 }}>
+            <InputLabel id="vehicle-label" sx={{ color: darkTheme.textPrimary }}>
+              Vehicle Type
+            </InputLabel>
+            <FormSelect
+              labelId="vehicle-label"
+              id="vehicle"
+              value={vehicle}
+              label="Vehicle Type"
+              onChange={handleVehicleChange}
+              required
+            >
+              <MenuItem value="" disabled>
+                <em>Select One</em>
+              </MenuItem>
+              <MenuItem value="bike">
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <TwoWheeler /> Bike
+                </Box>
+              </MenuItem>
+              <MenuItem value="auto">
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <LocalTaxi /> Auto
+                </Box>
+              </MenuItem>
+              <MenuItem value="car">
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <DirectionsCar /> Car
+                </Box>
+              </MenuItem>
+            </FormSelect>
+          </FormControl>
 
-        .label {
-          font-weight: bold;
-        }
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            marginBottom: 3
+          }}>
+            <Typography variant="h6" sx={{ color: darkTheme.textPrimary }}>
+              Amount to Pay:
+            </Typography>
+            <Chip
+              label={`₹${price.toFixed(2)}`}
+              color="primary"
+              variant="outlined"
+              sx={{
+                fontSize: '1.1rem',
+                padding: '5px 10px',
+                borderColor: darkTheme.primary,
+                color: darkTheme.primary
+              }}
+            />
+          </Box>
 
-        .info-block {
-          background: #f9f9f9;
-          padding: 1rem;
-          border: 1px solid #ddd;
-          border-radius: 6px;
-        }
-
-        form {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-          margin-top: 1rem;
-        }
-
-        select {
-          padding: 0.5rem;
-          border-radius: 4px;
-        }
-
-        button {
-          padding: 0.6rem;
-          background-color: #007bff;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          font-weight: bold;
-          cursor: pointer;
-        }
-
-        button:hover {
-          background-color: #0056b3;
-        }
-
-        .money {
-          font-weight: bold;
-        }
-      `}</style>
-
-      <h2>Parking Lot Details</h2>
-      <div className="section info-block">
-        <div id="map"></div>
-        <div><span className="label">Parking Name:</span> {parking.name}</div>
-        <div><span className="label">Location:</span> {parking.location}</div>
-        <div><span className="label">Total Slots:</span> {parking.totalSlots}</div>
-        <div><span className="label">Available Slots:</span> {parking.availableSlots}</div>
-        <div><span className="label">Open Time:</span> {parking.openTime}</div>
-        <div><span className="label">Closing Time:</span> {parking.closeTime}</div>
-        <div><span className="label">Rate per Hour:</span> ₹{parking.rate}</div>
-      </div>
-
-      <h2>Contact Owner</h2>
-      <div className="section info-block">
-        <div><span className="label">Name:</span> {parking.owner.name}</div>
-        <div><span className="label">Phone:</span> {parking.owner.phone}</div>
-        <div><span className="label">Email:</span> {parking.owner.email}</div>
-      </div>
-
-      <h2>Booking</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="vehicle" className="label">Vehicle Type</label>
-        <select id="vehicle" name="vehicle" required onChange={handleVehicleChange} value={vehicle}>
-          <option value="" disabled>Select One</option>
-          <option value="bike">Bike</option>
-          <option value="auto">Auto</option>
-          <option value="car">Car</option>
-        </select>
-
-        <div>
-          Money to be paid: ₹<span className="money">{price.toFixed(2)}</span>
-        </div>
-
-        <button type="submit">Confirm</button>
-      </form>
-    </div>
+          <Button
+            type="submit"
+            variant="contained"
+            size="large"
+            fullWidth
+            sx={{
+              color: '#fff',
+              borderRadius: '4px',
+              padding: '10px',
+              fontWeight: 600,
+              background: `linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)`, // More vibrant green
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+              '&:hover': {
+                background: `linear-gradient(135deg, #27ae60 0%, #219653 100%)`, // Darker on hover
+                boxShadow: '0 6px 8px rgba(0, 0, 0, 0.2)',
+                transform: 'translateY(-1px)'
+              },
+              '&:active': {
+                transform: 'scale(0.98)'
+              },
+              transition: 'all 0.2s ease'
+            }}
+          >
+            Confirm Booking
+          </Button>
+        </form>
+      </InfoBlock>
+    </Box>
   );
 }
 

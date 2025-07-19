@@ -40,7 +40,7 @@ function Register() {
       const data = await res.json();
       console.log("Registered:", data);
       await refreshAuth(); // ✅ fetch current user from session
-      navigate("/"); // Redirect after registration
+      navigate("/parkings"); // Redirect after registration
     } catch (err) {
       setError(err.message);
     }

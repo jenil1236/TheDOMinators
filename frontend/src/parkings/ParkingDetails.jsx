@@ -1,12 +1,81 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; // adjust path as needed
+import { useAuth } from "../context/AuthContext";
+import {
+  Box,
+  Typography,
+  Paper,
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  useTheme
+} from "@mui/material";
+import {
+  LocalParking,
+  LocationOn,
+  Schedule,
+  AttachMoney,
+  Person,
+  Phone,
+  Email,
+  Edit,
+  Delete,
+  PersonRemove
+} from "@mui/icons-material";
+import { styled } from "@mui/material/styles";
+
+// Dark theme colors
+const darkTheme = {
+  background: '#0d1117',
+  surface: '#161a20',
+  cardBackground: '#1e222a',
+  primary: '#569cd6',
+  secondary: '#9cdcfe',
+  textPrimary: '#9ba3b4',
+  textSecondary: '#858585',
+  accent: '#4ec9b0',
+  error: '#f48771',
+  warning: '#dcdcaa',
+  success: '#2ecc71'
+};
+
+// Styled components
+const MapContainer = styled(Box)({
+  height: '400px',
+  borderRadius: '8px',
+  overflow: 'hidden',
+  marginBottom: '24px',
+  border: `1px solid ${darkTheme.background}`,
+  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
+});
+
+const InfoBlock = styled(Paper)({
+  background: darkTheme.surface,
+  padding: '24px',
+  borderRadius: '8px',
+  border: `1px solid ${darkTheme.background}`,
+  marginBottom: '24px',
+});
+
+const UserCard = styled(Card)({
+  background: darkTheme.cardBackground,
+  marginBottom: '16px',
+  border: `1px solid ${darkTheme.background}`,
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    transform: 'translateY(-2px)',
+    boxShadow: `0 6px 12px rgba(0, 0, 0, 0.3)`,
+    borderColor: darkTheme.primary
+  }
+});
 
 function ParkingDetails() {
   const { parkingId } = useParams();
   const navigate = useNavigate();
   const [parking, setParking] = useState(null);
-  const {isAdmin}=useAuth();
+  const { isAdmin } = useAuth();
+  const theme = useTheme();
 
   useEffect(() => {
     fetch(`http://localhost:3000/parkings/owner/${parkingId}`, {
@@ -29,9 +98,19 @@ function ParkingDetails() {
       zoom: 14,
     });
 
-    new window.maptilersdk.Marker()
+    new window.maptilersdk.Marker({
+      color: parking.availableSlots > 0 ? "#4CAF50" : "#F44336"
+    })
       .setLngLat(parking.geometry.coordinates)
-      .setPopup(new window.maptilersdk.Popup().setText(parking.name))
+      .setPopup(new window.maptilersdk.Popup().setHTML(`
+        <div style="padding: 8px; background: ${darkTheme.surface}; color: ${darkTheme.textPrimary}">
+          <h3 style="margin: 0 0 4px; color: ${darkTheme.primary};">${parking.name}</h3>
+          <p style="margin: 0; font-size: 14px;">
+            <span>${parking.location}</span><br>
+            <strong>Available:</strong> ${parking.availableSlots}/${parking.totalSlots}
+          </p>
+        </div>
+      `))
       .addTo(map);
   }, [parking]);
 
@@ -43,8 +122,7 @@ function ParkingDetails() {
         method: "DELETE",
         credentials: "include",
       });
-      console.log(isAdmin);
-      if(isAdmin)navigate("/parkings")
+      if (isAdmin) navigate("/parkings");
       else navigate("/parkings/owner");
     } catch (err) {
       console.error("Delete error:", err);
@@ -66,128 +144,217 @@ function ParkingDetails() {
       alert("Failed to remove user.");
     }
   };
-  console.log(parking)
-  if (!parking) return <div>Loading...</div>;
+
+  if (!parking) return (
+    <Box sx={{ 
+      padding: 3,
+      color: darkTheme.textPrimary,
+      height: '100vh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
+      Loading parking details...
+    </Box>
+  );
 
   return (
-    <div className="parking-details-page">
-      <style>{`
-        .parking-details-page {
-          max-width: 900px;
-          margin: auto;
-          padding: 2rem;
-          font-family: 'Segoe UI', sans-serif;
-          color: #333;
+    <Box sx={{ padding: 3, maxWidth: '900px', margin: '0 auto' }}>
+      <Typography variant="h4" sx={{ 
+        marginBottom: 3,
+        color: darkTheme.primary,
+        position: 'relative',
+        '&:after': {
+          content: '""',
+          position: 'absolute',
+          bottom: '-10px',
+          left: 0,
+          width: '80px',
+          height: '4px',
+          background: darkTheme.primary,
+          borderRadius: '2px',
         }
+      }}>
+        Parking Lot Details
+      </Typography>
 
-        h2 {
-          color: #2c3e50;
-          margin-bottom: 1rem;
-        }
+      <InfoBlock elevation={3}>
+        <MapContainer id="map" />
+        
+        <Box sx={{ 
+          display: 'grid', 
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, 
+          gap: 2 
+        }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <LocalParking color="primary" />
+            <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
+              <strong>Name:</strong> {parking.name}
+            </Typography>
+          </Box>
+          
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Person color="primary" />
+            <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
+              <strong>Owner:</strong> {parking.owner.name}
+            </Typography>
+          </Box>
+          
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <LocationOn color="primary" />
+            <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
+              <strong>Location:</strong> {parking.location}
+            </Typography>
+          </Box>
+          
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <LocalParking color="primary" />
+            <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
+              <strong>Total Slots:</strong> {parking.totalSlots}
+            </Typography>
+          </Box>
+          
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <LocalParking color={parking.availableSlots > 0 ? "success" : "error"} />
+            <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
+              <strong>Available:</strong> {parking.availableSlots}
+            </Typography>
+          </Box>
+          
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Schedule color="primary" />
+            <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
+              <strong>Open Time:</strong> {parking.openTime}
+            </Typography>
+          </Box>
+          
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Schedule color="primary" />
+            <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
+              <strong>Close Time:</strong> {parking.closeTime}
+            </Typography>
+          </Box>
+          
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <AttachMoney color="primary" />
+            <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
+              <strong>Rate:</strong> ₹{parking.rate}/hr
+            </Typography>
+          </Box>
+        </Box>
+      </InfoBlock>
 
-        #map {
-          width: 100%;
-          height: 400px;
-          border-radius: 8px;
-          margin-bottom: 1.5rem;
-          border: 1px solid #ccc;
-        }
-
-        .info-block {
-          background: #f7f7f7;
-          padding: 1.5rem;
-          border-radius: 8px;
-          box-shadow: 0 0 4px rgba(0,0,0,0.1);
-          margin-bottom: 2rem;
-        }
-
-        .info-block div {
-          margin-bottom: 0.5rem;
-        }
-
-        .actions {
-          display: flex;
-          gap: 1rem;
-          margin-bottom: 2rem;
-        }
-
-        .button {
-          padding: 0.6rem 1.2rem;
-          background-color: #007bff;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          font-weight: 500;
-          transition: background 0.2s ease;
-        }
-
-        .button:hover {
-          background-color: #0056b3;
-        }
-
-        .danger {
-          background-color: #e74c3c;
-        }
-
-        .danger:hover {
-          background-color: #c0392b;
-        }
-
-        .user-card {
-          background: #fff;
-          padding: 1rem;
-          border: 1px solid #ddd;
-          border-radius: 6px;
-          margin-bottom: 1rem;
-        }
-
-        .user-card div {
-          margin-bottom: 0.3rem;
-        }
-      `}</style>
-
-      <h2>Parking Lot Details</h2>
-      <div className="info-block">
-        <div id="map"></div>
-        <div><strong>Parking Name:</strong> {parking.name}</div>
-        <div><strong>Owner:</strong> {parking.owner.name}</div>
-        <div><strong>Location:</strong> {parking.location}</div>
-        <div><strong>Total Slots:</strong> {parking.totalSlots}</div>
-        <div><strong>Available Slots:</strong> {parking.availableSlots}</div>
-        <div><strong>Open Time:</strong> {parking.openTime}</div>
-        <div><strong>Closing Time:</strong> {parking.closeTime}</div>
-        <div><strong>Rate per Hour:</strong> ₹{parking.rate}</div>
-      </div>
-
-      <div className="actions">
-        <button className="button" onClick={() => navigate(`/parkings/owner/${parking._id}/edit`)}>
-          Update Parking
-        </button>
-        <button className="button danger" onClick={handleDeleteParking}>
+      <Box sx={{ display: 'flex', gap: 2, marginBottom: 3 }}>
+        {!isAdmin && (
+          <Button
+            variant="contained"
+            startIcon={<Edit />}
+            onClick={() => navigate(`/parkings/owner/${parking._id}/edit`)}
+            sx={{
+              color: '#fff',
+              background: `linear-gradient(135deg, ${darkTheme.primary} 0%, #2a7fd9 100%)`,
+              '&:hover': {
+                background: `linear-gradient(135deg, #4a8fd6 0%, #2a7fd9 100%)`
+              }
+            }}
+          >
+            Update Parking
+          </Button>
+        )}
+        <Button
+          variant="contained"
+          startIcon={<Delete />}
+          onClick={handleDeleteParking}
+          sx={{
+            color: '#fff',
+            background: `linear-gradient(135deg, ${darkTheme.error} 0%, #d32f2f 100%)`,
+            '&:hover': {
+              background: `linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%)`
+            }
+          }}
+        >
           Delete Parking
-        </button>
-      </div>
+        </Button>
+      </Box>
 
-      <h2>Users of this Parking Lot</h2>
+      <Typography variant="h4" sx={{ 
+        marginBottom: 2,
+        color: darkTheme.primary,
+        position: 'relative',
+        '&:after': {
+          content: '""',
+          position: 'absolute',
+          bottom: '-10px',
+          left: 0,
+          width: '80px',
+          height: '4px',
+          background: darkTheme.primary,
+          borderRadius: '2px',
+        }
+      }}>
+        Current Users
+      </Typography>
+
       {parking.users.length > 0 ? (
         parking.users.map((userEntry) => (
-          <div key={userEntry.user._id} className="user-card">
-            <div><strong>Name:</strong> {userEntry.user.name}</div>
-            <div><strong>Email:</strong> {userEntry.user.email}</div>
-            <div><strong>Phone:</strong> {userEntry.user.phone}</div>
-            <button
-              className="button danger"
-              onClick={() => handleRemoveUser(userEntry.user._id)}
-            >
-              Remove User
-            </button>
-          </div>
+          <UserCard key={userEntry.user._id}>
+            <CardContent>
+              <Box sx={{ 
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+                gap: 2
+              }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Person color="primary" />
+                  <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
+                    <strong>Name:</strong> {userEntry.user.name}
+                  </Typography>
+                </Box>
+                
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Email color="primary" />
+                  <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
+                    <strong>Email:</strong> {userEntry.user.email}
+                  </Typography>
+                </Box>
+                
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Phone color="primary" />
+                  <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
+                    <strong>Phone:</strong> {userEntry.user.phone}
+                  </Typography>
+                </Box>
+              </Box>
+              
+              <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginTop: 2 }}>
+                <Button
+                  variant="contained"
+                  startIcon={<PersonRemove />}
+                  onClick={() => handleRemoveUser(userEntry.user._id)}
+                  sx={{
+                    color: '#fff',
+                    background: `linear-gradient(135deg, ${darkTheme.error} 0%, #d32f2f 100%)`,
+                    '&:hover': {
+                      background: `linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%)`
+                    }
+                  }}
+                >
+                  Remove User
+                </Button>
+              </Box>
+            </CardContent>
+          </UserCard>
         ))
       ) : (
-        <p>No users currently using this parking lot.</p>
+        <Typography variant="body1" sx={{ 
+          color: darkTheme.textSecondary,
+          textAlign: 'center',
+          padding: 2
+        }}>
+          No users currently using this parking lot.
+        </Typography>
       )}
-    </div>
+    </Box>
   );
 }
 

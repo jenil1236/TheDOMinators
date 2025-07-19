@@ -1,9 +1,9 @@
 const express = require('express');
-const User = require('../models/user');
-const Parking = require('../models/parking');
-const { isLoggedIn } = require('../middleware/auth');
+const User = require('../../models/user');
+const Parking = require('../../models/parking');
+const { isLoggedIn } = require('../../middleware/auth');
 const passport = require('passport');
-const ParkingUser = require('../models/parkinguser');
+const ParkingUser = require('../../models/parkinguser');
 
 const router = express.Router();
 
@@ -71,7 +71,7 @@ router.post('/parkings', isLoggedIn, async (req, res, next) => {
 
 router.get("/parkings", async (req, res, next) => {
     try {
-        console.log(req.isAdmin)
+        // console.log(req.isAdmin)
         const allParkings = await Parking.find();
         res.status(200).json({ allParkings }); // ✅ JSON response for React
     } catch (e) {

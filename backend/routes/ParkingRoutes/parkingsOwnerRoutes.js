@@ -2,9 +2,9 @@ const express = require("express");
 const maptilerClient = require("@maptiler/client");
 maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
-const Parking = require("../models/parking");
-const { isLoggedIn } = require("../middleware/auth");
-const ParkingUser = require("../models/parkinguser");
+const Parking = require("../../models/parking");
+const { isLoggedIn } = require("../../middleware/auth");
+const ParkingUser = require("../../models/parkinguser");
 
 const router = express.Router();
 
