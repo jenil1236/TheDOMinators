@@ -16,6 +16,7 @@ import chatRoutes from "./routes/chat.js";
 import ratingRoutes from "./routes/ratings.js";
 import configurePassport from "./config/passport.js";
 import carpoolRoutes from "./routes/carpool.js";
+import adminRoutes from "./routes/admin.js"
 
 
 dotenv.config();
@@ -51,6 +52,7 @@ app.use("/api/rides", rideRoutes);
 app.use("/api/chats", chatRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/carpool", carpoolRoutes);
+app.use("/api/admin", adminRoutes);
 
 
 // 🧠 SOCKET.IO

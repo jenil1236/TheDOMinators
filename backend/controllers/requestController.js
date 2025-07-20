@@ -190,3 +190,59 @@ export const getSentRequests = async(req, res) => {
   }
 };
 
+export const getAllJoinRequestsAdmin = async (req, res) => {
+  try {
+    const requests = await JoinRequest.find()
+      .populate({
+        path: "ride",
+        select: "pickupLocation dropLocation date availableSeats status"
+      })
+      .populate({
+        path: "fromUser",
+        populate: {
+          path: "user",
+          select: "username email"
+        }
+      })
+      .populate({
+        path: "toUser",
+        populate: {
+          path: "user",
+          select: "username email"
+        }
+      })
+      .sort({ createdAt: -1 });
+
+    const formatted = requests.map(req => ({
+      _id: req._id,
+      status: req.status,
+      seatsRequested: req.seatsRequested,
+      ride: {
+        id: req.ride?._id,
+        pickupLocation: req.ride?.pickupLocation,
+        dropLocation: req.ride?.dropLocation,
+        date: req.ride?.date,
+        availableSeats: req.ride?.availableSeats,
+        status: req.ride?.status
+      },
+      fromUser: {
+        id: req.fromUser?._id,
+        username: req.fromUser?.user?.username,
+        email: req.fromUser?.user?.email
+      },
+      toUser: {
+        id: req.toUser?._id,
+        username: req.toUser?.user?.username,
+        email: req.toUser?.user?.email
+      },
+      createdAt: req.createdAt,
+      updatedAt: req.updatedAt
+    }));
+
+    res.status(200).json(formatted);
+  } catch (error) {
+    console.error("❌ Error in getAllJoinRequestsAdmin:", error);
+    res.status(500).json({ message: "Failed to fetch all join requests." });
+  }
+};
+
