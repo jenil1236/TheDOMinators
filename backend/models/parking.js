@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const opts = { toJSON: { virtuals: true } };
 const Schema = mongoose.Schema;
 
 const parkingSchema = new Schema({
@@ -7,10 +6,21 @@ const parkingSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    name: String,
-    location: String,
+    name: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: String,
+        required: true
+    },
     images: String,
-    totalSlots: Number,
+    totalSlots: {
+        type: Number,
+        required: true
+    },
+    EVCharging: Boolean,
+    BikeWash: Boolean,
     geometry: {
         type: {
             type: String,
@@ -22,10 +32,22 @@ const parkingSchema = new Schema({
             required: true
         }
     }, 
-    availableSlots: Number,
-    openTime: String,
-    closeTime: String,
-    rate: Number,
+    availableSlots: {
+        type: Number,
+        required: true
+    },
+    openTime: {
+        type: String,
+        required: true
+    },
+    closeTime: {
+        type: String,
+        required: true
+    },
+    rate: {
+        type: Number,
+        required: true
+    },
     users: [
         {
             user: {
@@ -38,10 +60,5 @@ const parkingSchema = new Schema({
             }
         }
     ],
-}, opts)
-// parkingSchema.virtual('properties.popUpMarkup').get(function() {
-//     const safeId = this.location.toLowerCase().replace(/,/g, '').replace(/\s+/g, '-');
-//     return `<strong><a href="#${safeId}">${this.name}</a></strong>
-//     <p>${this.location}</p>`
-// })
+})
 module.exports = mongoose.model('Parking', parkingSchema);

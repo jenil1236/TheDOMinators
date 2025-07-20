@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import {
   Box,
   Typography,
@@ -21,7 +21,9 @@ import {
   Email,
   Edit,
   Delete,
-  PersonRemove
+  PersonRemove,
+  ElectricCar,
+  TwoWheeler
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 
@@ -146,7 +148,7 @@ function ParkingDetails() {
   };
 
   if (!parking) return (
-    <Box sx={{ 
+    <Box sx={{
       padding: 3,
       color: darkTheme.textPrimary,
       height: '100vh',
@@ -160,7 +162,7 @@ function ParkingDetails() {
 
   return (
     <Box sx={{ padding: 3, maxWidth: '900px', margin: '0 auto' }}>
-      <Typography variant="h4" sx={{ 
+      <Typography variant="h4" sx={{
         marginBottom: 3,
         color: darkTheme.primary,
         position: 'relative',
@@ -180,11 +182,11 @@ function ParkingDetails() {
 
       <InfoBlock elevation={3}>
         <MapContainer id="map" />
-        
-        <Box sx={{ 
-          display: 'grid', 
-          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, 
-          gap: 2 
+
+        <Box sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+          gap: 2
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <LocalParking color="primary" />
@@ -192,53 +194,66 @@ function ParkingDetails() {
               <strong>Name:</strong> {parking.name}
             </Typography>
           </Box>
-          
+
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Person color="primary" />
             <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
               <strong>Owner:</strong> {parking.owner.name}
             </Typography>
           </Box>
-          
+
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <LocationOn color="primary" />
             <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
               <strong>Location:</strong> {parking.location}
             </Typography>
           </Box>
-          
+
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <LocalParking color="primary" />
             <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
               <strong>Total Slots:</strong> {parking.totalSlots}
             </Typography>
           </Box>
-          
+
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <LocalParking color={parking.availableSlots > 0 ? "success" : "error"} />
             <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
               <strong>Available:</strong> {parking.availableSlots}
             </Typography>
           </Box>
-          
+
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Schedule color="primary" />
             <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
               <strong>Open Time:</strong> {parking.openTime}
             </Typography>
           </Box>
-          
+
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Schedule color="primary" />
             <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
               <strong>Close Time:</strong> {parking.closeTime}
             </Typography>
           </Box>
-          
+
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <AttachMoney color="primary" />
             <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
               <strong>Rate:</strong> ₹{parking.rate}/hr
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <ElectricCar color="primary" />
+            <Typography variant="body1">
+              <strong>EV Charging:</strong> {parking.EVCharging ? 'Yes' : 'No'}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <TwoWheeler color="primary" />
+            <Typography variant="body1">
+              <strong>Bike Wash:</strong> {parking.BikeWash ? 'Ywa' : 'No'}
             </Typography>
           </Box>
         </Box>
@@ -277,7 +292,7 @@ function ParkingDetails() {
         </Button>
       </Box>
 
-      <Typography variant="h4" sx={{ 
+      <Typography variant="h4" sx={{
         marginBottom: 2,
         color: darkTheme.primary,
         position: 'relative',
@@ -299,7 +314,7 @@ function ParkingDetails() {
         parking.users.map((userEntry) => (
           <UserCard key={userEntry.user._id}>
             <CardContent>
-              <Box sx={{ 
+              <Box sx={{
                 display: 'grid',
                 gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
                 gap: 2
@@ -310,14 +325,14 @@ function ParkingDetails() {
                     <strong>Name:</strong> {userEntry.user.name}
                   </Typography>
                 </Box>
-                
+
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Email color="primary" />
                   <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
                     <strong>Email:</strong> {userEntry.user.email}
                   </Typography>
                 </Box>
-                
+
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Phone color="primary" />
                   <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
@@ -325,7 +340,7 @@ function ParkingDetails() {
                   </Typography>
                 </Box>
               </Box>
-              
+
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginTop: 2 }}>
                 <Button
                   variant="contained"
@@ -346,7 +361,7 @@ function ParkingDetails() {
           </UserCard>
         ))
       ) : (
-        <Typography variant="body1" sx={{ 
+        <Typography variant="body1" sx={{
           color: darkTheme.textSecondary,
           textAlign: 'center',
           padding: 2

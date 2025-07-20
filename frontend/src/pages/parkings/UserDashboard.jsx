@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Search from "../Search";
+import Search from "../../components/Search";
 import { motion, AnimatePresence } from "framer-motion";
 import Skeleton from '@mui/material/Skeleton';
 import {
@@ -158,7 +158,7 @@ function UserDashboard() {
     allParkings.forEach((parking) => {
       if (parking.geometry?.coordinates) {
         const marker = new window.maptilersdk.Marker({
-          color: parking.available ? "#4CAF50" : "#F44336",
+          color: parking.availableSlots ? "#4CAF50" : "#F44336",
           scale: 1.2
         })
           .setLngLat(parking.geometry.coordinates)
@@ -411,7 +411,7 @@ function UserDashboard() {
                     </Box>
 
                     <Box display="flex" flexWrap="wrap" sx={{ gap: 1, mb: 2 }}>
-                      {Math.random() > 0.3 && <Chip
+                      {parking.EVCharging && <Chip
                         icon={<ElectricCar />}
                         label="EV Charging"
                         size="small"
@@ -420,7 +420,7 @@ function UserDashboard() {
                           color: darkTheme.accent
                         }}
                       />}
-                      {Math.random() > 0.1 && <Chip
+                      {parking.BikeWash && <Chip
                         icon={<FontAwesomeIcon icon={faMotorcycle} />}
                         label="Bike Wash"
                         size="small"
@@ -561,7 +561,7 @@ function UserDashboard() {
                     </Box>
 
                     <Box display="flex" flexWrap="wrap" sx={{ gap: 1, mb: 2 }}>
-                      {Math.random() > 0.3 && <Chip
+                      {parking.EVCharging && <Chip
                         icon={<ElectricCar />}
                         label="EV Charging"
                         size="small"
@@ -570,7 +570,7 @@ function UserDashboard() {
                           color: darkTheme.accent
                         }}
                       />}
-                      {Math.random() > 0.1 && <Chip
+                      {parking.BikeWash && <Chip
                         icon={<FontAwesomeIcon icon={faMotorcycle} />}
                         label="Bike Wash"
                         size="small"

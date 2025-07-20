@@ -7,31 +7,31 @@ import { Box, CircularProgress, CssBaseline, ThemeProvider } from "@mui/material
 import Navbar from "./Navbar";
 
 // Auth Pages
-import Login from "./users/Login";
-import Register from "./users/Register";
-import AdminLogin from "./users/AdminLogin";
+import Login from "./pages/users/Login";
+import Register from "./pages/users/Register";
+import AdminLogin from "./pages/users/AdminLogin";
 
 // User Pages
-import UserDashboard from "./parkings/UserDashboard";
-import BookParking from "./parkings/BookParking";
+import UserDashboard from "./pages/parkings/UserDashboard";
+import BookParking from "./pages/parkings/BookParking";
 
 // Owner Pages
-import OwnerDashboard from "./parkings/OwnerDashboard";
-import NewParkingForm from "./parkings/NewParkingForm";
-import EditParkingForm from "./parkings/EditParkingForm";
-import ParkingDetails from "./parkings/ParkingDetails";
+import OwnerDashboard from "./pages/parkings/OwnerDashboard";
+import NewParkingForm from "./pages/parkings/NewParkingForm";
+import EditParkingForm from "./pages/parkings/EditParkingForm";
+import ParkingDetails from "./pages/parkings/ParkingDetails";
 
 // Role Selection
-import LandingPage from "./parkings/LandingPage";
+import LandingPage from "./pages/parkings/LandingPage";
 
 // Admin
-import AdminDashboard from "./users/AdminDashboard";
-import AdminParkingUserDashboard from "./users/AdminParkingUserDashboard";
+import AdminDashboard from "./pages/users/AdminDashboard";
+import AdminParkingUserDashboard from "./pages/users/AdminParkingUserDashboard";
 
 // 404 Page
 import NotFound from "./NotFound";
 
-import darkTheme from './utils/theme'; // Your custom theme
+import darkTheme from './utils/theme'; 
 
 // Fonts
 import '@fontsource/roboto/300.css';

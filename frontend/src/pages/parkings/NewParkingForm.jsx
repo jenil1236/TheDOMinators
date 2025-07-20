@@ -8,6 +8,8 @@ import {
   Paper,
   Container,
   Link,
+  FormControlLabel,
+  Switch,
   useTheme
 } from "@mui/material";
 import {
@@ -15,6 +17,8 @@ import {
   LocationOn,
   Schedule,
   AttachMoney,
+  ElectricCar,
+  TwoWheeler,
   Add,
   Close
 } from "@mui/icons-material";
@@ -72,6 +76,18 @@ const FormTextField = styled(TextField)({
   marginBottom: '1.5rem'
 });
 
+const FeatureSwitch = styled(Switch)(({ theme }) => ({
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    color: darkTheme.success,
+    '&:hover': {
+      backgroundColor: 'rgba(46, 204, 113, 0.08)',
+    },
+  },
+  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+    backgroundColor: darkTheme.success,
+  },
+}));
+
 function NewParkingForm() {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -84,29 +100,46 @@ function NewParkingForm() {
     rate: 0,
     openTime: "",
     closeTime: "",
+    EVCharging: false,  // Changed from EVCharging to EVCharging
+    BikeWash: false     // Changed from BikeWash to BikeWash
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    let newForm = { ...form, [name]: value };
+    const { name, value, type, checked } = e.target;
+    
+    setForm(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
 
     // Sync availableSlots to totalSlots if totalSlots is changed
     if (name === "totalSlots") {
-      newForm.availableSlots = value;
+      setForm(prev => ({
+        ...prev,
+        availableSlots: value
+      }));
     }
-
-    setForm(newForm);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      // Ensure all boolean values are properly sent
+      const formData = {
+        ...form,
+        totalSlots: parseInt(form.totalSlots),
+        availableSlots: parseInt(form.availableSlots),
+        rate: parseFloat(form.rate),
+        EVCharging: Boolean(form.EVCharging),
+        BikeWash: Boolean(form.BikeWash)
+      };
+
       const res = await fetch("http://localhost:3000/parkings/owner/new", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(form),
+        body: JSON.stringify(formData),
       });
 
       if (!res.ok) throw new Error("Failed to create parking.");
@@ -253,6 +286,53 @@ function NewParkingForm() {
                   <Schedule sx={{ color: darkTheme.primary, mr: 1 }} />
                 ),
               }}
+            />
+          </Box>
+
+          <Box sx={{ 
+            display: 'flex', 
+            gap: 2,
+            mb: 2,
+            padding: '16px',
+            borderRadius: '4px',
+            backgroundColor: darkTheme.cardBackground
+          }}>
+            <FormControlLabel
+              control={
+                <FeatureSwitch
+                  checked={form.EVCharging}
+                  onChange={handleChange}
+                  name="EVCharging"
+                  color="success"
+                />
+              }
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <ElectricCar color={form.EVCharging ? "success" : "inherit"} />
+                  <Typography color={form.EVCharging ? "success" : darkTheme.textPrimary}>
+                    EV Charging
+                  </Typography>
+                </Box>
+              }
+            />
+
+            <FormControlLabel
+              control={
+                <FeatureSwitch
+                  checked={form.BikeWash}
+                  onChange={handleChange}
+                  name="BikeWash"
+                  color="success"
+                />
+              }
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <TwoWheeler color={form.BikeWash ? "success" : "inherit"} />
+                  <Typography color={form.BikeWash ? "success" : darkTheme.textPrimary}>
+                    Bike Wash
+                  </Typography>
+                </Box>
+              }
             />
           </Box>
 

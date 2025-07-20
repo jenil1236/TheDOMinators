@@ -25,7 +25,7 @@ const clearParking = require('./utils/clearParking');
 const app = express();
 const PORT = 3000;
 
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({
     origin: "http://localhost:5173", // your Vite frontend
@@ -45,9 +45,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
-    // res.locals.currentUser = req.user;
     req.isAdmin = req.session.isAdmin || false;
-    // res.locals.isAdmin = req.isAdmin;
     next();
 })
 // Auth status route

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import Search from "../Search";
+import { useAuth } from "../../context/AuthContext";
+import Search from "../../components/Search";
 import { motion, AnimatePresence } from "framer-motion";
 import Skeleton from '@mui/material/Skeleton';
 import {
@@ -484,7 +484,7 @@ function LandingPage() {
                       </Box>
 
                       <Box display="flex" flexWrap="wrap" sx={{ gap: 1, mb: 2 }}>
-                        {Math.random() > 0.3 && <Chip
+                        {parking.EVCharging && <Chip
                           icon={<ElectricCar />}
                           label="EV Charging"
                           size="small"
@@ -493,7 +493,7 @@ function LandingPage() {
                             color: darkTheme.accent
                           }}
                         />}
-                        {Math.random() > 0.1 && <Chip
+                        {parking.BikeWash && <Chip
                           icon={<FontAwesomeIcon icon={faMotorcycle} />}
                           label="Bike Wash"
                           size="small"

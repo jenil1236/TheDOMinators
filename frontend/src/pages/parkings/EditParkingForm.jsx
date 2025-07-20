@@ -4,6 +4,8 @@ import {
   Box,
   Typography,
   TextField,
+  FormControlLabel,
+  Switch,
   Button,
   Paper,
   Container,
@@ -14,6 +16,8 @@ import {
   LocationOn,
   Schedule,
   AttachMoney,
+  ElectricCar,
+  TwoWheeler,
   Update
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
@@ -22,7 +26,7 @@ import { styled } from "@mui/material/styles";
 const darkTheme = {
   background: '#0d1117',
   surface: '#161a20',
-  cardBackground: '#1e222a', // New color for cards/inputs
+  cardBackground: '#1e222a',
   primary: '#569cd6',
   secondary: '#9cdcfe',
   textPrimary: '#9ba3b4',
@@ -50,7 +54,7 @@ const FormPaper = styled(Paper)({
 const FormTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
     color: darkTheme.textPrimary,
-    backgroundColor: darkTheme.cardBackground, // Card-like background
+    backgroundColor: darkTheme.cardBackground,
     '& fieldset': {
       borderColor: darkTheme.background,
     },
@@ -70,6 +74,18 @@ const FormTextField = styled(TextField)({
   marginBottom: '1rem'
 });
 
+const FeatureSwitch = styled(Switch)(({ theme }) => ({
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    color: darkTheme.success,
+    '&:hover': {
+      backgroundColor: 'rgba(46, 204, 113, 0.08)',
+    },
+  },
+  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+    backgroundColor: darkTheme.success,
+  },
+}));
+
 function EditParkingForm() {
   const { parkingId } = useParams();
   const navigate = useNavigate();
@@ -83,16 +99,24 @@ function EditParkingForm() {
     openTime: "",
     closeTime: "",
     rate: 0,
+    EVCharging: false,
+    BikeWash: false
   });
 
   const [diff, setDiff] = useState(0);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/parkings/owner/${parkingId}`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchParkingData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/parkings/owner/${parkingId}`, {
+          credentials: "include",
+        });
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.message || "Failed to fetch parking data");
+        }
+
         const p = data.parking;
         setForm({
           name: p.name,
@@ -102,41 +126,67 @@ function EditParkingForm() {
           openTime: p.openTime,
           closeTime: p.closeTime,
           rate: p.rate,
+          EVCharging: p.EVCharging || false,
+          BikeWash: p.BikeWash || false
         });
         setDiff(p.totalSlots - p.availableSlots);
-      })
-      .catch((err) => console.error("Error loading parking:", err));
+      } catch (err) {
+        console.error("Error loading parking:", err);
+        alert(err.message);
+      }
+    };
+
+    fetchParkingData();
   }, [parkingId]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    let updated = { ...form, [name]: value };
+    const { name, value, type, checked } = e.target;
+    
+    setForm(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
 
     if (name === "totalSlots") {
       const newTotal = parseInt(value);
-      updated.availableSlots = Math.max(0, newTotal - diff);
+      setForm(prev => ({
+        ...prev,
+        availableSlots: Math.max(0, newTotal - diff)
+      }));
     }
-
-    setForm(updated);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      // Ensure all boolean values are properly sent
+      const formData = {
+        ...form,
+        totalSlots: parseInt(form.totalSlots),
+        availableSlots: parseInt(form.availableSlots),
+        rate: parseFloat(form.rate),
+        EVCharging: Boolean(form.EVCharging),
+        BikeWash: Boolean(form.BikeWash)
+      };
+
       const res = await fetch(`http://localhost:3000/parkings/owner/${parkingId}`, {
         method: "PUT",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify(formData),
       });
 
-      if (!res.ok) throw new Error("Failed to update parking");
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to update parking");
+      }
 
       navigate(`/parkings/owner/${parkingId}`);
     } catch (err) {
+      console.error("Update error:", err);
       alert(err.message);
     }
   };
@@ -164,7 +214,7 @@ function EditParkingForm() {
           Edit Parking Lot
         </Typography>
 
-        <form onSubmit={handleSubmit}>
+        <Box component="form" onSubmit={handleSubmit}>
           <FormTextField
             fullWidth
             label="Parking Name"
@@ -273,6 +323,53 @@ function EditParkingForm() {
             }}
           />
 
+          <Box sx={{ 
+            display: 'flex', 
+            gap: 2,
+            mb: 2,
+            padding: '16px',
+            borderRadius: '4px',
+            backgroundColor: darkTheme.cardBackground
+          }}>
+            <FormControlLabel
+              control={
+                <FeatureSwitch
+                  checked={form.EVCharging}
+                  onChange={handleChange}
+                  name="EVCharging"
+                  color="success"
+                />
+              }
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <ElectricCar color={form.EVCharging ? "success" : "inherit"} />
+                  <Typography color={form.EVCharging ? "success" : darkTheme.textPrimary}>
+                    EV Charging
+                  </Typography>
+                </Box>
+              }
+            />
+
+            <FormControlLabel
+              control={
+                <FeatureSwitch
+                  checked={form.BikeWash}
+                  onChange={handleChange}
+                  name="BikeWash"
+                  color="success"
+                />
+              }
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <TwoWheeler color={form.BikeWash ? "success" : "inherit"} />
+                  <Typography color={form.BikeWash ? "success" : darkTheme.textPrimary}>
+                    Bike Wash
+                  </Typography>
+                </Box>
+              }
+            />
+          </Box>
+
           <Button
             type="submit"
             variant="contained"
@@ -300,7 +397,7 @@ function EditParkingForm() {
           >
             Update Parking
           </Button>
-        </form>
+        </Box>
       </FormPaper>
     </FormContainer>
   );

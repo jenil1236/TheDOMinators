@@ -21,6 +21,7 @@ import {
   LocalParking,
   Schedule,
   AttachMoney,
+  ElectricCar,
   Person,
   Phone,
   Email
@@ -235,6 +236,18 @@ function BookParking() {
             <AttachMoney color="primary" />
             <Typography variant="body1">
               <strong>Rate:</strong> ₹{price !== 0 ? price : parking.rate}/hr
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <ElectricCar color="primary"/>
+            <Typography variant="body1">
+              <strong>EV Charging:</strong> {parking.EVCharging ? 'Yes' : 'No'}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <TwoWheeler color="primary"/>
+            <Typography variant="body1">
+              <strong>Bike Wash:</strong> {parking.BikeWash ? 'Ywa' : 'No'}
             </Typography>
           </Box>
         </Box>

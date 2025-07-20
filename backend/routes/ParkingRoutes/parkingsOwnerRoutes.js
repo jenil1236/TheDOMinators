@@ -30,6 +30,8 @@ router.post("/new", isLoggedIn, async (req, res, next) => {
       totalSlots,
       availableSlots,
       rate,
+      EVCharging,
+      BikeWash,
       openTime,
       closeTime,
     } = req.body;
@@ -40,6 +42,8 @@ router.post("/new", isLoggedIn, async (req, res, next) => {
       totalSlots,
       availableSlots,
       rate,
+      EVCharging,
+      BikeWash,
       openTime,
       closeTime,
       owner: id,
