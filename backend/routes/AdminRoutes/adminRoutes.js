@@ -1,7 +1,6 @@
-const express = require('express');
-const Parking = require('../../models/parking');
-const { isAdmin } = require('../../middleware/auth');
-const ParkingUser = require('../../models/parkinguser');
+import express from 'express';
+import Parking from '../../models/parking.js';
+import ParkingUser from '../../models/parkinguser.js';
 
 const router = express.Router();
 
@@ -98,4 +97,4 @@ router.delete('/parkingusers/:id', async (req, res, next) => {
   }
 });
 
-module.exports = router;
+export default router;

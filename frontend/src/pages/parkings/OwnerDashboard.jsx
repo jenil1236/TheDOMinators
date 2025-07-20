@@ -107,7 +107,7 @@ function OwnerDashboard() {
   const theme = useTheme();
 
   useEffect(() => {
-    fetch("http://localhost:3000/parkings/owner", {
+    fetch("/api/parkings/owner", {
       credentials: "include",
       headers: {
         "Content-Type": "application/json"

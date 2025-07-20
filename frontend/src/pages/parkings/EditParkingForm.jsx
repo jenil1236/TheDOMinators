@@ -108,7 +108,7 @@ function EditParkingForm() {
   useEffect(() => {
     const fetchParkingData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/parkings/owner/${parkingId}`, {
+        const response = await fetch(`/api/parkings/owner/${parkingId}`, {
           credentials: "include",
         });
         const data = await response.json();
@@ -170,7 +170,7 @@ function EditParkingForm() {
         BikeWash: Boolean(form.BikeWash)
       };
 
-      const res = await fetch(`http://localhost:3000/parkings/owner/${parkingId}`, {
+      const res = await fetch(`/api/parkings/owner/${parkingId}`, {
         method: "PUT",
         credentials: "include",
         headers: {

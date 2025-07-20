@@ -1,10 +1,10 @@
-const express = require("express");
-const maptilerClient = require("@maptiler/client");
+import express from "express";
+import * as maptilerClient from "@maptiler/client";
 maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
-const Parking = require("../../models/parking");
-const { isLoggedIn } = require("../../middleware/auth");
-const ParkingUser = require("../../models/parkinguser");
+import Parking from "../../models/parking.js";
+import { isLoggedIn } from "../../middleware/auth.js";
+import ParkingUser from "../../models/parkinguser.js";
 
 const router = express.Router();
 
@@ -164,4 +164,4 @@ router.delete("/:parkingId/user/:userId", isLoggedIn, async (req, res, next) => 
   }
 });
 
-module.exports = router;
+export default router;

@@ -12,7 +12,7 @@ function AdminLogin() {
 
   useEffect(() => {
     if (key) {
-      fetch(`http://localhost:3000/admin/login?key=${key}`, {
+      fetch(`/api/admin/login?key=${key}`, {
         method: 'GET',
         credentials: 'include'  // important if using sessions/cookies
       })

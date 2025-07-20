@@ -1,45 +1,48 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}
+import 'dotenv/config'; 
 
-const express = require('express');
-const mongoose = require('mongoose');
-const maptilerClient = require("@maptiler/client");
-const cors = require('cors');
+import express from 'express';
+import mongoose from 'mongoose';
+import * as maptilerClient from '@maptiler/client';
+import cors from 'cors';
+
+import User from './models/user.js';
+
+import session from 'express-session';
+import passport from 'passport';
+import LocalStrategy from 'passport-local';
+
+import parkingsUserRoutes from './routes/ParkingRoutes/parkingsUserRoutes.js';
+import parkingsOwnerRoutes from './routes/ParkingRoutes/parkingsOwnerRoutes.js';
+import adminRoutes from './routes/AdminRoutes/adminRoutes.js';
+import parkingRoutes from './routes/ParkingRoutes/parkingRoutes.js';
+
+import clearParking from './utils/clearParking.js';
+
+const app = express();
+const PORT = 5000;
 
 maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
-const User = require('./models/user');
-
-const session = require('express-session');
-const passport = require('passport');
-const LocalStrategy = require('passport-local')
-
-const parkingsUserRoutes = require('./routes/ParkingRoutes/parkingsUserRoutes')
-const parkingsOwnerRoutes = require('./routes/ParkingRoutes/parkingsOwnerRoutes')
-const adminRoutes = require('./routes/AdminRoutes/adminRoutes')
-const parkingRoutes = require('./routes/ParkingRoutes/parkingRoutes');
-
-const clearParking = require('./utils/clearParking');
-
-const app = express();
-const PORT = 3000;
-
-// app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:5173", // your Vite frontend
-    credentials: true//allow use of cookies
-}));//Make sure both Express and React allow credentials (cookies) for session authentication to work across origins.
+    origin: "http://localhost:5173",
+    credentials: true
+}));
 
 app.use(session({
     secret: process.env.SECRET_KEY,
     resave: false,
-    saveUninitialized: true
-}))
+    saveUninitialized: false,
+    cookie: {
+    httpOnly: true,
+    secure: false,  // true if using HTTPS in production
+    maxAge: 1000 * 60 * 60 * 24, // 1 day for example
+  },
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -47,11 +50,11 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
     req.isAdmin = req.session.isAdmin || false;
     next();
-})
-// Auth status route
+});
+
 app.get('/api/auth/me', (req, res) => {
     if(req.isAdmin)
-        return res.json({ isAdmin: req.isAdmin })
+        return res.json({ isAdmin: req.isAdmin });
     else if (!req.isAuthenticated()) {
         return res.status(401).json({ user: null, isAdmin: false });
     }
@@ -67,10 +70,10 @@ app.get('/api/auth/me', (req, res) => {
     });
 });
 
-app.use('/parkings/:subroute', (req, res, next) => {
+app.use('/api/parkings/:subroute', (req, res, next) => {
     req.parkinguserId = req.session.parkinguserId;
     next();
-})
+});
 
 mongoose.connect('mongodb://127.0.0.1:27017/Transport')
     .then(async () => {
@@ -79,22 +82,13 @@ mongoose.connect('mongodb://127.0.0.1:27017/Transport')
     })
     .catch(e => {
         console.log('ERROR', e);
-    })
+    });
 
-app.use('/', parkingRoutes);
-app.use('/admin', adminRoutes);
-app.use('/parkings/user', parkingsUserRoutes);
-app.use('/parkings/owner', parkingsOwnerRoutes);
-
-// app.use((err, req, res, next) => {
-//     if (err == 'unAuthenticated')
-//         return res.redirect('/login');
-//     const { message = 'Page Not Found', status = 404 } = err;
-//     res.status(status).send(message);
-// })
-// page not found error handles in frontend
-// <Route path="*" element={<div>404 - Page Not Found</div>} />
+app.use('/api', parkingRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/parkings/user', parkingsUserRoutes);
+app.use('/api/parkings/owner', parkingsOwnerRoutes);
 
 app.listen(PORT, () => {
-    console.log(`Listening on sever ${PORT}`);
-})
+    console.log(`Listening on server ${PORT}`);
+});

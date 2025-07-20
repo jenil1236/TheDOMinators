@@ -84,7 +84,7 @@ function BookParking() {
   const [price, setPrice] = useState(0);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/parkings/user/${parkingId}`, {
+    fetch(`/api/parkings/user/${parkingId}`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -133,7 +133,7 @@ function BookParking() {
     e.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:3000/parkings/user/${parkingId}`, {
+      const res = await fetch(`/api/parkings/user/${parkingId}`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

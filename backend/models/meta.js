@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const metaSchema = new mongoose.Schema({
   key: String,
   value: String,
 });
 
-module.exports = mongoose.model('Meta', metaSchema);
+export default mongoose.model('Meta', metaSchema);

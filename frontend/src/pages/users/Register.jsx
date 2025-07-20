@@ -26,7 +26,7 @@ function Register() {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:3000/register", {
+      const res = await fetch("/api/register", {
         method: "POST",
         credentials: "include",
         headers: {

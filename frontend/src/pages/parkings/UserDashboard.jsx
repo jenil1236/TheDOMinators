@@ -124,7 +124,7 @@ function UserDashboard() {
   const theme = useTheme();
 
   useEffect(() => {
-    fetch("http://localhost:3000/parkings/user", { 
+    fetch("/api/parkings/user", { 
       credentials: "include",
       headers: {
         "Content-Type": "application/json"
@@ -200,7 +200,7 @@ function UserDashboard() {
     if (!window.confirm("Are you sure you want to leave this parking?")) return;
 
     try {
-      await fetch(`http://localhost:3000/parkings/user/${parkingId}`, {
+      await fetch(`/api/parkings/user/${parkingId}`, {
         method: "DELETE",
         credentials: "include",
       });

@@ -1,7 +1,7 @@
-const express = require("express");
-const Parking = require("../../models/parking");
-const ParkingUser = require("../../models/parkinguser");
-const { isLoggedIn } = require("../../middleware/auth");
+import express from "express";
+import Parking from "../../models/parking.js";
+import ParkingUser from "../../models/parkinguser.js";
+import { isLoggedIn } from "../../middleware/auth.js";
 
 const router = express.Router();
 
@@ -103,4 +103,4 @@ router.delete("/:parkingId", isLoggedIn, async (req, res, next) => {
   }
 });
 
-module.exports = router;
+export default router;

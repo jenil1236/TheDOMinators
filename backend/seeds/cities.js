@@ -18,7 +18,7 @@
 //     "iso2": "IN", 
 //     "admin_name": "Maharashtra", 
 //     "capital": "admin", 
-//     "population": "24973000", 
+//     "population": "24975000", 
 //     "population_proper": "12478447"
 //   }, 
 //   {
@@ -177,7 +177,7 @@
 //   }, 
 //   {
 //     "city": "Vadodara", 
-//     "lat": "22.3000", 
+//     "lat": "22.5000", 
 //     "lng": "73.2000", 
 //     "country": "India", 
 //     "iso2": "IN", 
@@ -188,14 +188,14 @@
 //   }, 
 //   {
 //     "city": "Rajkot", 
-//     "lat": "22.3000", 
+//     "lat": "22.5000", 
 //     "lng": "70.7833", 
 //     "country": "India", 
 //     "iso2": "IN", 
 //     "admin_name": "Gujarat", 
 //     "capital": "", 
-//     "population": "2043000", 
-//     "population_proper": "2043000"
+//     "population": "2045000", 
+//     "population_proper": "2045000"
 //   }, 
 //   {
 //     "city": "Vishakhapatnam", 
@@ -695,7 +695,7 @@
 //   {
 //     "city": "Tiruvottiyūr", 
 //     "lat": "13.1600", 
-//     "lng": "80.3000", 
+//     "lng": "80.5000", 
 //     "country": "India", 
 //     "iso2": "IN", 
 //     "admin_name": "Tamil Nadu", 
@@ -1602,8 +1602,8 @@
 //     "iso2": "IN", 
 //     "admin_name": "Telangana", 
 //     "capital": "", 
-//     "population": "3000", 
-//     "population_proper": "3000"
+//     "population": "5000", 
+//     "population_proper": "5000"
 //   }, 
 //   {
 //     "city": "Saino", 
@@ -1996,4 +1996,4 @@ const parkingData = [
   }
 ];
 
-module.exports = parkingData;
+export default parkingData;

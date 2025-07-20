@@ -141,7 +141,7 @@ function LandingPage() {
   const theme = useTheme();
 
   useEffect(() => {
-    fetch("http://localhost:3000/parkings", {
+    fetch("/api/parkings", {
       method: "GET",
       credentials: "include",
       headers: {
@@ -212,7 +212,7 @@ function LandingPage() {
   const handleRoleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3000/parkings", {
+      const res = await fetch("/api/parkings", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

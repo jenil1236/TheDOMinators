@@ -62,7 +62,7 @@ const AdminParkingUserDashboard = () => {
   useEffect(() => {
     const fetchParkingUsers = async () => {
       try {
-        const response = await fetch("http://localhost:3000/admin/parkingusers", {
+        const response = await fetch("/api/admin/parkingusers", {
           credentials: "include",
         });
         const data = await response.json();
@@ -80,11 +80,11 @@ const AdminParkingUserDashboard = () => {
 
   const onRemove = async (id) => {
     try {
-      await fetch(`http://localhost:3000/admin/parkingusers/${id}`, {
+      await fetch(`/api/admin/parkingusers/${id}`, {
         method: "DELETE",
         credentials: 'include'
       });
-      const response = await fetch("http://localhost:3000/admin/parkingusers", {
+      const response = await fetch("/api/admin/parkingusers", {
         credentials: "include",
       });
       const data = await response.json();

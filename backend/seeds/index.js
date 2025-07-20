@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const Parking = require('../models/parking');
-const User = require('../models/user');
-const ParkingUser = require('../models/parkinguser');
-const parkingData = require('./cities');
+import mongoose from 'mongoose';
+import Parking from '../models/parking.js';
+import User from '../models/user.js';
+import ParkingUser from '../models/parkinguser.js';
+import parkingData from './cities.js';
 const dbUrl = 'mongodb://127.0.0.1:27017/Transport';
 
 mongoose.connect(dbUrl);

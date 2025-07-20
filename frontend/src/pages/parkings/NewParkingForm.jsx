@@ -135,7 +135,7 @@ function NewParkingForm() {
         BikeWash: Boolean(form.BikeWash)
       };
 
-      const res = await fetch("http://localhost:3000/parkings/owner/new", {
+      const res = await fetch("/api/parkings/owner/new", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

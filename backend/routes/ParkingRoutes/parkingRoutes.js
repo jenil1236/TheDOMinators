@@ -1,9 +1,9 @@
-const express = require('express');
-const User = require('../../models/user');
-const Parking = require('../../models/parking');
-const { isLoggedIn } = require('../../middleware/auth');
-const passport = require('passport');
-const ParkingUser = require('../../models/parkinguser');
+import express from 'express';
+import User from '../../models/user.js';
+import Parking from '../../models/parking.js';
+import { isLoggedIn } from '../../middleware/auth.js';
+import passport from 'passport';
+import ParkingUser from '../../models/parkinguser.js';
 
 const router = express.Router();
 
@@ -79,4 +79,4 @@ router.get("/parkings", async (req, res, next) => {
     }
 });
 
-module.exports = router;
+export default router;

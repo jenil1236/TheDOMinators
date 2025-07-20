@@ -80,7 +80,7 @@ function ParkingDetails() {
   const theme = useTheme();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/parkings/owner/${parkingId}`, {
+    fetch(`/api/parkings/owner/${parkingId}`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -120,7 +120,7 @@ function ParkingDetails() {
     if (!window.confirm("Are you sure you want to delete this parking?")) return;
 
     try {
-      await fetch(`http://localhost:3000/parkings/owner/${parkingId}`, {
+      await fetch(`/api/parkings/owner/${parkingId}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -136,7 +136,7 @@ function ParkingDetails() {
     if (!window.confirm("Remove this user from the parking?")) return;
 
     try {
-      await fetch(`http://localhost:3000/parkings/owner/${parkingId}/user/${userId}`, {
+      await fetch(`/api/parkings/owner/${parkingId}/user/${userId}`, {
         method: "DELETE",
         credentials: "include",
       });

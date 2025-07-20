@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/auth/me", {
+        fetch("/api/auth/me", {
             credentials: "include",
         })
             .then((res) => {
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await fetch("http://localhost:3000/logout", {
+            await fetch("/api/logout", {
                 method: "POST",
                 credentials: "include",
             });
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     const refreshAuth = async () => {
         setIsLoading(true);
         try {
-            const res = await fetch("http://localhost:3000/api/auth/me", {
+            const res = await fetch("/api/auth/me", {
                 credentials: "include",
             });
             if (!res.ok) throw new Error("Not authenticated");

@@ -1,6 +1,6 @@
-const Meta = require('../models/meta');
-const Parking = require('../models/parking');
-const ParkingUser = require('../models/parkinguser');
+import Meta from '../models/meta.js';
+import Parking from '../models/parking.js';
+import ParkingUser from '../models/parkinguser.js';
 
 async function clearParking() {
     const today = new Date().toDateString();
@@ -37,4 +37,4 @@ async function clearParking() {
     }
 }
 
-module.exports = clearParking;
+export default clearParking;
