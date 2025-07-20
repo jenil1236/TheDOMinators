@@ -1,4 +1,4 @@
-#map {
+/* #map {
     height: 95vh;
     width: 65vw;
     margin-block: 15px;
@@ -14,7 +14,7 @@
 }
 
 /* Hide the default close button */
-.gm-ui-hover-effect {
+ .gm-ui-hover-effect {
     display: none !important;
 }
 
@@ -46,11 +46,6 @@ body {
 .bus-icon {
     margin-right: 8px;
     color: #5f6368;
-
-    img {
-        height: 20px;
-        width: 20px
-    }
 }
 
 .bus-badge {
@@ -113,4 +108,13 @@ body {
 .location{
     height: 15px;
     width : 15px;
+} 
+
+#map {
+    height: 80%;
+    width: 90%;
+    margin:auto;
+    margin-block: 20px;
+    border-radius: 20px;
 }
+

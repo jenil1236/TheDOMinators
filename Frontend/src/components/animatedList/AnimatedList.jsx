@@ -1,6 +1,8 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import './AnimatedList.css';
+import { Box, Collapse, List, ListItem, ListItemText, Typography, Divider, ListItemIcon } from '@mui/material';
+
 
 const AnimatedItem = ({ children, delay = 0, index, onMouseEnter, onClick }) => {
     const ref = useRef(null);
@@ -22,11 +24,7 @@ const AnimatedItem = ({ children, delay = 0, index, onMouseEnter, onClick }) => 
 };
 
 const AnimatedList = ({
-    items = [
-        'Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5',
-        'Item 6', 'Item 7', 'Item 8', 'Item 9', 'Item 10',
-        'Item 11', 'Item 12', 'Item 13', 'Item 14', 'Item 15'
-    ],
+    items = [],
     onItemSelect,
     showGradients = true,
     enableArrowNavigation = true,
@@ -45,13 +43,12 @@ const AnimatedList = ({
         const { scrollTop, scrollHeight, clientHeight } = e.target;
         setTopGradientOpacity(Math.min(scrollTop / 50, 1));
         const bottomDistance = scrollHeight - (scrollTop + clientHeight);
-        setBottomGradientOpacity(
-            scrollHeight <= clientHeight ? 0 : Math.min(bottomDistance / 50, 1)
-        );
+        setBottomGradientOpacity(scrollHeight <= clientHeight ? 0 : Math.min(bottomDistance / 50, 1));
     };
 
     useEffect(() => {
         if (!enableArrowNavigation) return;
+
         const handleKeyDown = (e) => {
             if (e.key === 'ArrowDown' || (e.key === 'Tab' && !e.shiftKey)) {
                 e.preventDefault();
@@ -62,11 +59,9 @@ const AnimatedList = ({
                 setKeyboardNav(true);
                 setSelectedIndex((prev) => Math.max(prev - 1, 0));
             } else if (e.key === 'Enter') {
-                if (selectedIndex >= 0 && selectedIndex < items.length) {
+                if (selectedIndex >= 0 && selectedIndex < items.length && onItemSelect) {
                     e.preventDefault();
-                    if (onItemSelect) {
-                        onItemSelect(items[selectedIndex], selectedIndex);
-                    }
+                    onItemSelect(items[selectedIndex], selectedIndex);
                 }
             }
         };
@@ -88,10 +83,7 @@ const AnimatedList = ({
             if (itemTop < containerScrollTop + extraMargin) {
                 container.scrollTo({ top: itemTop - extraMargin, behavior: 'smooth' });
             } else if (itemBottom > containerScrollTop + containerHeight - extraMargin) {
-                container.scrollTo({
-                    top: itemBottom - containerHeight + extraMargin,
-                    behavior: 'smooth',
-                });
+                container.scrollTo({ top: itemBottom - containerHeight + extraMargin, behavior: 'smooth' });
             }
         }
         setKeyboardNav(false);
@@ -105,7 +97,16 @@ const AnimatedList = ({
                 onScroll={handleScroll}
             >
                 {items.length === 0 ? (
-                    <div className="no-bus-message">No bus found</div>
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            textAlign: 'center',
+                            padding: 2,
+                            color: 'text.secondary',
+                        }}
+                    >
+                        No buses found
+                    </Typography>
                 ) : (
                     items.map((item, index) => (
                         <AnimatedItem
@@ -120,31 +121,128 @@ const AnimatedList = ({
                                 }
                             }}
                         >
-                            <div className={`item ${selectedIndex === index ? 'selected' : ''} ${itemClassName}`}>
-                                <div className="item-text stop">
-                                    <h3>{item.bus_number}</h3>
-                                    <div className="bus-route">
-                                        <img className="bus-symbol" src="/bus.svg" alt="Bus" />
-                                        <p>
-                                            {item.coordinates[0]?.name} &#8596; {item.coordinates.at(-1)?.name}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                            <Box
+                                className={`item ${selectedIndex === index ? 'selected' : ''} ${itemClassName}`}
+                                sx={{
+                                    padding: 2,
+                                    borderRadius: 2,
+                                    border: '1px solid',
+                                    borderColor: 'divider',
+                                    backgroundColor: selectedIndex === index ? 'action.selected' : 'background.paper',
+                                    transition: 'all 0.2s ease',
+                                    '&:hover': {
+                                        borderColor: 'primary.main',
+                                    },
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        color: '#006bd6',
+                                        fontWeight: 700,
+                                        fontSize: '1.1rem',
+                                        mb: 0.5,
+                                    }}
+                                >
+                                    # {item.bus_number}
+                                </Typography>
+
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <img
+                                        className="bus-symbol"
+                                        src="/bus.svg"
+                                        alt="Bus"
+                                        style={{ width: 16, height: 16, marginRight: 6 }}
+                                    />
+                                    <Typography
+                                        variant="body2"
+                                        color="text.secondary"
+                                        sx={{
+                                            fontSize: '0.9rem',
+                                        }}
+                                    >
+                                        {item.coordinates[0]?.name} ↔ {item.coordinates.at(-1)?.name}
+                                    </Typography>
+                                </Box>
+                                <Collapse in={selectedIndex === index} timeout="auto" unmountOnExit>
+                                    <List
+                                        dense
+                                        sx={{
+                                            mt: 1,
+                                            py: 0,
+                                            position: 'relative',
+                                            borderRadius:'10px',
+                                            '&::before': { // Full height connecting line
+                                                content: '""',
+                                                position: 'absolute',
+                                                left: '23px',
+                                                top: '12px',
+                                                bottom: '12px',
+                                                width: '3px',
+                                                backgroundColor: 'primary.main',
+                                                zIndex: 1
+                                            }
+                                        }}
+                                    >
+                                        {item.coordinates.map((stop, stopIndex) => (
+                                            <ListItem
+                                                key={stopIndex}
+                                                sx={{
+                                                    py: 0.5,
+                                                    pl: '34px', // Proper alignment with circle
+                                                    pr: 2,
+                                                    position: 'relative',
+                                                    minHeight: '32px',
+                                                    '&:last-child': {
+                                                        minHeight: 'auto'
+                                                    },
+                                                    backgroundColor:'background.default'
+                                                }}
+                                            >
+                                                {/* Hollow Circle */}
+                                                <Box
+                                                    sx={{
+                                                        position: 'absolute',
+                                                        left: '18px',
+                                                        width: '12px',
+                                                        height: '12px',
+                                                        borderRadius: '50%',
+                                                        border: '2px solid',
+                                                        borderColor: 'primary.main',
+                                                        backgroundColor: 'background.default',
+                                                        zIndex: 2
+                                                    }}
+                                                />
+
+                                                {/* Stop Name */}
+                                                <ListItemText sx={{ my: 0 }}>
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="text.secondary"
+                                                        sx={{
+                                                            fontSize: '0.875rem',
+                                                            lineHeight: '1.5'
+                                                        }}
+                                                    >
+                                                        {stop.name}
+                                                    </Typography>
+                                                </ListItemText>
+                                            </ListItem>
+                                        ))}
+                                    </List>
+                                </Collapse>
+                            </Box>
                         </AnimatedItem>
                     ))
                 )}
             </div>
             {showGradients && (
                 <>
-                    <div
-                        className="top-gradient"
-                        style={{ opacity: topGradientOpacity }}
-                    ></div>
-                    <div
-                        className="bottom-gradient"
-                        style={{ opacity: bottomGradientOpacity }}
-                    ></div>
+                    <div className="top-gradient" style={{ opacity: topGradientOpacity }}></div>
+                    <div className="bottom-gradient" style={{ opacity: bottomGradientOpacity }}></div>
                 </>
             )}
         </div>
