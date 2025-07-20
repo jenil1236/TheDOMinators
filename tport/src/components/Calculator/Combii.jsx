@@ -3,6 +3,7 @@ import { GoogleMap, useJsApiLoader, Marker, Polyline, TrafficLayer } from '@reac
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import './Combii.css'; // Import your CSS styles
+// import NavbarFeat from '../NavbarFeat/NavbarFeat';
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);

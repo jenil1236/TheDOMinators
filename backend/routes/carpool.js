@@ -18,6 +18,7 @@ router.get("/me", protect, async (req, res) => {
       username: carpoolUser.username,
       email: carpoolUser.email,
       averageRating: carpoolUser.averageRating || null,
+      chats: carpoolUser.chats || []
     });
   } catch (err) {
     console.error("Error in /api/carpool/me:", err);

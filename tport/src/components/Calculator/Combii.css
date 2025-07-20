@@ -28,9 +28,9 @@ body {
 }
 
 .app-container {
-  max-width: 1200px;
+  padding: 100px;
   margin: 0 auto;
-  padding: 20px;
+  background-color: #0d1117;
 }
 
 header {
@@ -54,7 +54,7 @@ header p {
 }
 
 .controls-container {
-  background: white;
+  background-color: #D4DDFC;
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 4px 15px var(--shadow);
@@ -166,7 +166,7 @@ input:focus {
 }
 
 .routes-container {
-  background: white;
+  background-color: #e7f3ffd6;
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 4px 15px var(--shadow);

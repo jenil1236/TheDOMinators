@@ -339,3 +339,84 @@ export const updateUpcomingRide = async (req, res) => {
   }
 };
 
+export const getRidesforChat = async (req, res) => {
+  try {
+    const carpoolUser = await CarpoolUser.findOne({ user: req.user._id });
+    if (!carpoolUser) {
+      return res.status(404).json({ message: "Carpool user not found" });
+    }
+
+    const rides = await Ride.find({
+      $or: [
+        { driver: carpoolUser._id },
+        { bookedUsers: carpoolUser._id }
+      ],
+      status: { $in: ["completed", "upcoming"] }
+    })
+      .populate({
+  path: "driver",
+  select: "_id user",
+  populate: {
+    path: "user",
+    select: "username email"
+  }
+})
+
+      .populate({
+        path: "bookedUsers",
+        populate: { path: "user", select: "username email" },
+        select: "user"
+      })
+      .select("pickupLocation dropLocation date time status vehicleDetails driver bookedUsers");
+
+    const cleanedHistory = [];
+
+    for (const ride of rides) {
+      const rideData = {
+        _id: ride._id,
+        pickupLocation: ride.pickupLocation,
+        dropLocation: ride.dropLocation,
+        date: ride.date,
+        time: ride.time,
+        status: ride.status,
+        vehicleDetails: ride.vehicleDetails,
+        driver: {
+  _id: ride.driver?._id,
+  username: ride.driver?.user?.username,
+  email: ride.driver?.user?.email
+},
+
+        bookedUsers: [],
+      };
+
+      // Fetch all join requests for this ride
+const joinRequests = await JoinRequest.find({ 
+  ride: ride._id, 
+  status: "accepted" // ✅ only accepted requests
+})
+.populate({
+  path: "fromUser", // ✅ this matches your schema
+  populate: { path: "user", select: "username email" }
+})
+
+      // Add each booked user's name, email, and seatsBooked
+      for (const req of joinRequests) {
+  if (req.fromUser?.user) {
+    rideData.bookedUsers.push({
+      _id: req.fromUser._id, 
+      username: req.fromUser.user.username,
+      email: req.fromUser.user.email,
+      seatsBooked: req.seatsRequested,
+    });
+  }
+}
+
+
+      cleanedHistory.push(rideData);
+    }
+
+    res.status(200).json(cleanedHistory);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching ride history", error: err.message });
+  }
+}

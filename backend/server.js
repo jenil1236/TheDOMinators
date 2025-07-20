@@ -57,7 +57,7 @@ app.use("/api/carpool", carpoolRoutes);
 const server = http.createServer(app);
 const io = new SocketIO(server, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -72,7 +72,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", ({ chatId, message }) => {
-    socket.to(chatId).emit("newMessage", message);
+    io.to(chatId).emit("newMessage", message); // ✅ broadcast to ALL clients in room
   });
 
   socket.on("disconnect", () => {
@@ -80,7 +80,8 @@ io.on("connection", (socket) => {
   });
 });
 
-app.set("io", io); // attach io to express app for controller access
+app.set("io", io);
+
 
 // 💡 DB connect and start server
 connectDB()

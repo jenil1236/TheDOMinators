@@ -5,7 +5,8 @@ import {
   getPostedRides,
   getBookedRides,
   getRideHistory,
-  updateUpcomingRide
+  updateUpcomingRide,
+  getRidesforChat
 } from "../controllers/rideController.js";
 import { protect } from "../middleware/auth.js";
 
@@ -28,5 +29,8 @@ router.get("/history", protect, getRideHistory); // donetest
 
 // update an upcoming ride
 router.post("/update", protect, updateUpcomingRide); // donetest
+
+router.get("/chatrides", protect, getRidesforChat); // donetest
+
 
 export default router;
