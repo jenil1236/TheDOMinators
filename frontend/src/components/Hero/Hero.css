@@ -98,7 +98,7 @@
 }
 
 .blurred-box {
-  backdrop-filter: blur(10px);    /* Glassmorphism effect */
+  backdrop-filter: blur(25px);    /* Glassmorphism effect */
   -webkit-backdrop-filter: blur(10px); /* For Safari */
   border-radius: 20px;
   padding: 30px 40px;

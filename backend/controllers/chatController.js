@@ -374,4 +374,44 @@ export const getChatMessages = async (req, res) => {
   }
 };
 
+export const getAllMessages = async (req, res) => {
+  try {
+    const messages = await Message.find()
+      .populate({
+        path: "sender",
+        populate: {
+          path: "user",
+          select: "username",
+        },
+      })
+      .populate({
+        path: "chat",
+        select: "_id participants",
+        populate: {
+          path: "participants",
+          populate: {
+            path: "user",
+            select: "username"
+          }
+        }
+      })
+      .sort({ createdAt: -1 });
+
+    const formatted = messages.map(msg => ({
+      _id: msg._id,
+      text: msg.text,
+      chatId: msg.chat?._id,
+      participants: msg.chat?.participants?.map(p => p.user?.username || "Unknown"),
+      sender: msg.sender?.user?.username || "Unknown",
+      timestamp: moment(msg.createdAt).format("YYYY-MM-DD HH:mm:ss")
+    }));
+
+    return res.status(200).json(formatted);
+  } catch (error) {
+    console.error("❌ Error in getAllMessages:", error);
+    return res.status(500).json({ message: "Something went wrong while fetching all messages." });
+  }
+};
+
+
 

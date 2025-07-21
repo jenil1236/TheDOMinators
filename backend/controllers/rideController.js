@@ -228,10 +228,14 @@ export const getRideHistory = async (req, res) => {
       status: { $in: ["completed", "cancelled"] }
     })
       .populate({
-        path: "driver",
-        populate: { path: "user", select: "username email" },
-        select: "user"
-      })
+  path: "driver",
+  select: "_id user",
+  populate: {
+    path: "user",
+    select: "username email"
+  }
+})
+
       .populate({
         path: "bookedUsers",
         populate: { path: "user", select: "username email" },
@@ -250,7 +254,12 @@ export const getRideHistory = async (req, res) => {
         time: ride.time,
         status: ride.status,
         vehicleDetails: ride.vehicleDetails,
-        driver: ride.driver?.user ?? null,
+        driver: {
+  _id: ride.driver?._id,
+  username: ride.driver?.user?.username,
+  email: ride.driver?.user?.email
+},
+
         bookedUsers: [],
       };
 
@@ -268,6 +277,7 @@ const joinRequests = await JoinRequest.find({
       for (const req of joinRequests) {
   if (req.fromUser?.user) {
     rideData.bookedUsers.push({
+      _id: req.fromUser._id, 
       username: req.fromUser.user.username,
       email: req.fromUser.user.email,
       seatsBooked: req.seatsRequested,
@@ -329,3 +339,176 @@ export const updateUpcomingRide = async (req, res) => {
   }
 };
 
+export const getRidesforChat = async (req, res) => {
+  try {
+    const carpoolUser = await CarpoolUser.findOne({ user: req.user._id });
+    if (!carpoolUser) {
+      return res.status(404).json({ message: "Carpool user not found" });
+    }
+
+    const rides = await Ride.find({
+      $or: [
+        { driver: carpoolUser._id },
+        { bookedUsers: carpoolUser._id }
+      ],
+      status: { $in: ["completed", "upcoming"] }
+    })
+      .populate({
+  path: "driver",
+  select: "_id user",
+  populate: {
+    path: "user",
+    select: "username email"
+  }
+})
+
+      .populate({
+        path: "bookedUsers",
+        populate: { path: "user", select: "username email" },
+        select: "user"
+      })
+      .select("pickupLocation dropLocation date time status vehicleDetails driver bookedUsers");
+
+    const cleanedHistory = [];
+
+    for (const ride of rides) {
+      const rideData = {
+        _id: ride._id,
+        pickupLocation: ride.pickupLocation,
+        dropLocation: ride.dropLocation,
+        date: ride.date,
+        time: ride.time,
+        status: ride.status,
+        vehicleDetails: ride.vehicleDetails,
+        driver: {
+  _id: ride.driver?._id,
+  username: ride.driver?.user?.username,
+  email: ride.driver?.user?.email
+},
+
+        bookedUsers: [],
+      };
+
+      // Fetch all join requests for this ride
+const joinRequests = await JoinRequest.find({ 
+  ride: ride._id, 
+  status: "accepted" // ✅ only accepted requests
+})
+.populate({
+  path: "fromUser", // ✅ this matches your schema
+  populate: { path: "user", select: "username email" }
+})
+
+      // Add each booked user's name, email, and seatsBooked
+      for (const req of joinRequests) {
+  if (req.fromUser?.user) {
+    rideData.bookedUsers.push({
+      _id: req.fromUser._id, 
+      username: req.fromUser.user.username,
+      email: req.fromUser.user.email,
+      seatsBooked: req.seatsRequested,
+    });
+  }
+}
+
+
+      cleanedHistory.push(rideData);
+    }
+
+    res.status(200).json(cleanedHistory);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching ride history", error: err.message });
+  }
+}
+
+export const getAllRidesAdminGrouped = async (req, res) => {
+  try {
+    const rides = await Ride.find()
+      .populate({
+        path: "driver",
+        select: "user",
+        populate: {
+          path: "user",
+          select: "username email"
+        }
+      })
+      .populate({
+        path: "bookedUsers",
+        populate: {
+          path: "user",
+          select: "username email"
+        }
+      })
+      .sort({ date: -1, time: -1 }); // Latest rides first
+
+    // Fetch all accepted join requests to calculate booked seats
+    const allAcceptedRequests = await JoinRequest.find({ status: "accepted" });
+
+    // Map: rideId => [{ fromUser, seatsRequested }]
+    const seatMap = {};
+    allAcceptedRequests.forEach(req => {
+      const rideId = req.ride.toString();
+      if (!seatMap[rideId]) seatMap[rideId] = [];
+      seatMap[rideId].push({
+        user: req.fromUser,
+        seatsRequested: req.seatsRequested
+      });
+    });
+
+    // Format rides and split into 3 arrays
+    const upcoming = [], cancelled = [], completed = [];
+
+    for (const ride of rides) {
+      const rideObj = {
+        _id: ride._id,
+        pickupLocation: ride.pickupLocation,
+        dropLocation: ride.dropLocation,
+        date: ride.date,
+        time: ride.time,
+        status: ride.status,
+        vehicleDetails: ride.vehicleDetails,
+        availableSeats: ride.availableSeats,
+        pricePerSeat: ride.pricePerSeat,
+        driver: {
+          _id: ride.driver?._id,
+          username: ride.driver?.user?.username,
+          email: ride.driver?.user?.email
+        },
+        bookedUsers: []
+      };
+
+      const requests = seatMap[ride._id.toString()] || [];
+
+      for (const req of requests) {
+        const bookedUser = ride.bookedUsers.find(
+          bu => bu._id.toString() === req.user.toString()
+        );
+        if (bookedUser?.user) {
+          rideObj.bookedUsers.push({
+            _id: bookedUser._id,
+            username: bookedUser.user.username,
+            email: bookedUser.user.email,
+            seatsBooked: req.seatsRequested
+          });
+        }
+      }
+
+      if (ride.status === "upcoming") upcoming.push(rideObj);
+      else if (ride.status === "cancelled") cancelled.push(rideObj);
+      else if (ride.status === "completed") completed.push(rideObj);
+    }
+
+    res.status(200).json({
+      upcoming,
+      cancelled,
+      completed
+    });
+
+  } catch (err) {
+    console.error("❌ Admin Ride Fetch Error:", err);
+    res.status(500).json({
+      message: "Error fetching ride data for admin",
+      error: err.message
+    });
+  }
+};

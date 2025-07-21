@@ -34,7 +34,7 @@ export const rateUser = async(req,res) => {
             return res.status(400).json({ message: "Insufficient credentials provided." });
         }
 
-        if (ride.status !== "completed") {
+        if (ride.status == "upcoming") {
             return res.status(400).json({ message: "Invalid or incomplete ride" });
         }
 
@@ -92,7 +92,7 @@ export const getUserRatings = async (req, res) => {
           select: "username email"
         }
       })
-      .populate("ride", "pickupLocation dropLocation date");
+      .populate("ride", "pickupLocation dropLocation date _id");
 
     const formattedRatings = ratings.map(rating => ({
       score: rating.score,
@@ -104,7 +104,8 @@ export const getUserRatings = async (req, res) => {
       ride: {
         pickupLocation: rating.ride?.pickupLocation,
         dropLocation: rating.ride?.dropLocation,
-        date: rating.ride?.date
+        date: rating.ride?.date,
+        id: rating.ride?._id
       }
     }));
 
@@ -120,6 +121,49 @@ export const getUserRatings = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch user ratings" });
   }
 };
+
+// ✅ Admin: Get all ratings in the system
+export const getAllRatingsAdmin = async (req, res) => {
+  try {
+    const ratings = await Rating.find()
+      .populate({
+        path: "fromUser",
+        populate: { path: "user", select: "username email" }
+      })
+      .populate({
+        path: "toUser",
+        populate: { path: "user", select: "username email" }
+      })
+      .populate("ride", "pickupLocation dropLocation date");
+
+    const formatted = ratings.map(rating => ({
+      _id: rating._id,
+      score: rating.score,
+      comment: rating.comment,
+      ride: {
+        id: rating.ride?._id,
+        pickupLocation: rating.ride?.pickupLocation,
+        dropLocation: rating.ride?.dropLocation,
+        date: rating.ride?.date
+      },
+      fromUser: {
+        username: rating.fromUser?.user?.username,
+        email: rating.fromUser?.user?.email
+      },
+      toUser: {
+        username: rating.toUser?.user?.username,
+        email: rating.toUser?.user?.email
+      },
+      timestamp: rating.createdAt
+    }));
+
+    return res.status(200).json(formatted);
+  } catch (error) {
+    console.error("❌ Error in getAllRatingsAdmin:", error);
+    res.status(500).json({ message: "Failed to fetch all ratings." });
+  }
+};
+
 
 
 
