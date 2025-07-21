@@ -260,17 +260,20 @@ function UserDashboard() {
         </Typography>
         
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-          <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
+          {/* <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
             <strong>Name:</strong> {currentUser.name}
+          </Typography> */}
+          <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
+            <strong>Username:</strong> {currentUser.username}
           </Typography>
           <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
             <strong>Email:</strong> {currentUser.email}
           </Typography>
-          {currentUser.phone && (
+          {/* {currentUser.phone && (
             <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
               <strong>Phone:</strong> {currentUser.phone}
             </Typography>
-          )}
+          )} */}
         </Box>
       </Paper>
 

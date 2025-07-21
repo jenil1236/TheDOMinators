@@ -238,7 +238,7 @@ function LandingPage() {
         >
           <RoleForm elevation={3}>
             <Typography variant="h5" gutterBottom sx={{ color: darkTheme.primary }}>
-              Welcome, {currentUser.name || currentUser.email}!
+              Welcome, {currentUser.username || currentUser.email}!
             </Typography>
             <Typography variant="body1" sx={{ color: darkTheme.textSecondary }} paragraph>
               Please select your role to continue

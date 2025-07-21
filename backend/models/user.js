@@ -4,9 +4,9 @@ import passportLocalMongoose from 'passport-local-mongoose';
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    name: String,
+    // name: String,
     email: String,
-    phone: String
+    // phone: String
 });
 
 userSchema.plugin(passportLocalMongoose);

@@ -61,8 +61,8 @@ app.get('/api/auth/me', (req, res) => {
     res.json({
         user: {
             id: req.user._id,
-            name: req.user.name,
-            phone: req.user.phone,
+            // name: req.user.name,
+            // phone: req.user.phone,
             username: req.user.username,
             email: req.user.email,
         },

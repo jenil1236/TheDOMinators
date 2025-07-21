@@ -276,16 +276,17 @@ function BookParking() {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Person color="primary" />
             <Typography variant="body1">
-              <strong>Name:</strong> {parking.owner.name}
+              {/* <strong>Name:</strong> {parking.owner.name} */}
+              <strong>Name:</strong> {parking.owner.username}
             </Typography>
           </Box>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Phone color="primary" />
             <Typography variant="body1">
               <strong>Phone:</strong> {parking.owner.phone}
             </Typography>
-          </Box>
+          </Box> */}
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Email color="primary" />

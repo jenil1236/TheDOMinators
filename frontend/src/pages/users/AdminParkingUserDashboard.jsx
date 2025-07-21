@@ -126,7 +126,8 @@ const AdminParkingUserDashboard = () => {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Person color="primary" />
                   <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
-                    <strong>Name:</strong> {parkinguser.user.name}
+                    <strong>Name:</strong> {parkinguser.user.username}
+                    {/* <strong>Name:</strong> {parkinguser.user.name} */}
                   </Typography>
                 </Box>
                 
@@ -137,12 +138,12 @@ const AdminParkingUserDashboard = () => {
                   </Typography>
                 </Box>
                 
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Phone color="primary" />
                   <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
                     <strong>Phone:</strong> {parkinguser.user.phone}
                   </Typography>
-                </Box>
+                </Box> */}
               </Box>
               
               <Box sx={{ display: 'flex', justifyContent: 'flex-start'}}>

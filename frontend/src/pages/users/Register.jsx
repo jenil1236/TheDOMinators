@@ -7,8 +7,8 @@ function Register() {
     username: "",
     email: "",
     password: "",
-    name: "",
-    phone: "",
+    // name: "",
+    // phone: "",
   });
   const [error, setError] = useState("");
   const { refreshAuth } = useAuth();
@@ -160,7 +160,7 @@ function Register() {
             />
           </div>
 
-          <div className="form-group">
+          {/* <div className="form-group">
             <label htmlFor="name">Full Name:</label>
             <input
               type="text"
@@ -170,9 +170,9 @@ function Register() {
               onChange={handleChange}
               required
             />
-          </div>
+          </div> */}
 
-          <div className="form-group">
+          {/* <div className="form-group">
             <label htmlFor="phone">Phone Number:</label>
             <input
               type="number"
@@ -183,7 +183,7 @@ function Register() {
               placeholder="10-digit number"
               required
             />
-          </div>
+          </div> */}
 
           <button type="submit" className="btn">Register</button>
         </form>

@@ -198,7 +198,8 @@ function ParkingDetails() {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Person color="primary" />
             <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
-              <strong>Owner:</strong> {parking.owner.name}
+              {/* <strong>Owner:</strong> {parking.owner.name} */}
+              <strong>Owner:</strong> {parking.owner.username}
             </Typography>
           </Box>
 
@@ -322,7 +323,8 @@ function ParkingDetails() {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Person color="primary" />
                   <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
-                    <strong>Name:</strong> {userEntry.user.name}
+                    <strong>Name:</strong> {userEntry.user.username}
+                    {/* <strong>Name:</strong> {userEntry.user.name} */}
                   </Typography>
                 </Box>
 
@@ -333,12 +335,12 @@ function ParkingDetails() {
                   </Typography>
                 </Box>
 
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Phone color="primary" />
                   <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
                     <strong>Phone:</strong> {userEntry.user.phone}
                   </Typography>
-                </Box>
+                </Box> */}
               </Box>
 
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginTop: 2 }}>
