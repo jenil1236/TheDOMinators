@@ -174,3 +174,7 @@ button, .btn {
     transform: rotateY(180deg);
   }
 }
+
+#root{
+  text-align: left !important;
+}

@@ -1,3 +1,17 @@
+// // import BusStopMarkers from "./components/user/BusStopMarkers/BusStopMarkers"
+// // import BusStopMarkers from "./components/admin/BusStopMarkers/BusStopMarkers"
+// import ChatBot from "./components/user/ChatBot/ChatBot"
+// function App() {
+//   return (
+//     <>
+//       <ChatBot/>
+//       {/* <BusStopMarkers/> */}
+//     </>
+//   )
+// }
+
+// export default App;
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
@@ -11,8 +25,9 @@ import { ThemeProvider } from "./context/ThemeContext";
 import Navbar from "./components/Navbar/Navbar";
 import HomePage from "./pages/HomePage";
 import Footer from "./components/Footer/Footer";
-import ChatBot from "./components/ChatBot/ChatBot";
+import ChatBot from "./components/user/ChatBot/ChatBot";
 import Combii from "./components/Calculator/Combii";
+import BusStopMarkers from "./components/user/BusStopMarkers/BusStopMarkers";
 import AuthPage from "./pages/AuthPage";
 import PasswordRecovery from "./pages/PasswordRecovery";
 import PostRidePage from "./pages/PostRidePage";
@@ -71,6 +86,7 @@ function AppWrapper() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/route-calculator" element={<Combii />} />
+        <Route path="/bus-info" element={<BusStopMarkers />} />
         <Route
           path="/login"
           element={

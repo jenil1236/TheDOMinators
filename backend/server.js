@@ -1,5 +1,3 @@
-
-
 import express from "express";
 import dotenv from "dotenv";
 import session from "express-session";
@@ -17,7 +15,7 @@ import ratingRoutes from "./routes/ratings.js";
 import configurePassport from "./config/passport.js";
 import carpoolRoutes from "./routes/carpool.js";
 import adminRoutes from "./routes/admin.js"
-
+import stopRouter from "./routes/admin/stop.js";
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -53,7 +51,7 @@ app.use("/api/chats", chatRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/carpool", carpoolRoutes);
 app.use("/api/admin", adminRoutes);
-
+app.use("/api/admin/stops", stopRouter);
 
 // 🧠 SOCKET.IO
 const server = http.createServer(app);
@@ -96,3 +94,4 @@ connectDB()
   .catch((error) => {
     console.error("Database connection failed:", error);
   });
+
