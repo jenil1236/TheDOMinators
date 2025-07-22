@@ -3,9 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useAuth } from "./context/AuthContext";
 import { Box, CircularProgress, CssBaseline, ThemeProvider } from "@mui/material";
 
-// Layout
-import Navbar from "./Navbar";
-
 // Auth Pages
 import Login from "./pages/users/Login";
 import Register from "./pages/users/Register";
@@ -65,7 +62,6 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Router>
-        <Navbar />
         <Box
           component="main"
           sx={{

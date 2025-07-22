@@ -50,7 +50,7 @@ const NavLink = styled(Link)({
   }
 });
 
-function Navbar() {
+function ParkingNavbar() {
   const { currentUser, isAdmin, logout } = useAuth();
   const theme = useTheme();
 
@@ -58,7 +58,8 @@ function Navbar() {
     <AppBar position="static" sx={{ 
       background: darkTheme.surface,
       borderBottom: `1px solid ${darkTheme.background}`,
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+      marginBottom: '5px'
     }}>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -125,4 +126,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default ParkingNavbar;

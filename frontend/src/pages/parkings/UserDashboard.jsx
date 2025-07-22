@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Search from "../../components/Search";
 import { motion, AnimatePresence } from "framer-motion";
 import Skeleton from '@mui/material/Skeleton';
+import ParkingNavbar from "../../ParkingNavbar";
 import {
   Box,
   Typography,
@@ -29,7 +30,7 @@ import {
   AttachMoney,
   ElectricCar,
   Star,
-  StarHalf,
+  StarBorder,
   ExitToApp
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
@@ -124,7 +125,7 @@ function UserDashboard() {
   const theme = useTheme();
 
   useEffect(() => {
-    fetch("/api/parkings/user", { 
+    fetch("/api/parkings/user", {
       credentials: "include",
       headers: {
         "Content-Type": "application/json"
@@ -143,41 +144,41 @@ function UserDashboard() {
   }, []);
 
   useEffect(() => {
-  const timeout = setTimeout(() => {
-    if (!window.maptilersdk) return;
+    const timeout = setTimeout(() => {
+      if (!window.maptilersdk) return;
 
-    window.maptilersdk.config.apiKey = import.meta.env.VITE_MAPTILER_API_KEY;
+      window.maptilersdk.config.apiKey = import.meta.env.VITE_MAPTILER_API_KEY;
 
-    const map = new window.maptilersdk.Map({
-      container: "cluster-map",
-      style: window.maptilersdk.MapStyle.STREETS,
-      center: [72.8311, 21.1702],
-      zoom: 10,
-    });
+      const map = new window.maptilersdk.Map({
+        container: "cluster-map",
+        style: window.maptilersdk.MapStyle.STREETS,
+        center: [72.8311, 21.1702],
+        zoom: 10,
+      });
 
-    allParkings.forEach((parking) => {
-      if (parking.geometry?.coordinates) {
-        const marker = new window.maptilersdk.Marker({
-          color: parking.availableSlots ? "#4CAF50" : "#F44336",
-          scale: 1.2
-        })
-          .setLngLat(parking.geometry.coordinates)
-          .setPopup(new window.maptilersdk.Popup().setHTML(`
+      allParkings.forEach((parking) => {
+        if (parking.geometry?.coordinates) {
+          const marker = new window.maptilersdk.Marker({
+            color: parking.availableSlots ? "#4CAF50" : "#F44336",
+            scale: 1.2
+          })
+            .setLngLat(parking.geometry.coordinates)
+            .setPopup(new window.maptilersdk.Popup().setHTML(`
             <div style="padding: 8px;">
-              <h3 style="margin: 0 0 4px; color: #1976d2;">${parking.name}</h3>
+              <h3 style="margin: 0 0 4px; color: #1976d2;"><a href="/parkings/user/${parking._id}">${parking.name}</a></h3>
               <p style="margin: 0; font-size: 14px;">
-                <span style="color: #666;">${parking.location}</span><br>
-                <strong>Rate:</strong> ₹${parking.rate}/hr
+                <strong style="color: #666;">${parking.location}</strong><br>
+                <strong style="color: #666;">Rate:</strong> <span style="color: #666;">₹${parking.rate}/hr</span>
               </p>
             </div>
           `))
-          .addTo(map);
-      }
-    });
-  }, 100); 
-  // Cleanup the timeout on component unmount
-  return () => clearTimeout(timeout);
-}, [allParkings]);
+            .addTo(map);
+        }
+      });
+    }, 100);
+    // Cleanup the timeout on component unmount
+    return () => clearTimeout(timeout);
+  }, [allParkings]);
 
 
   useEffect(() => {
@@ -186,7 +187,7 @@ function UserDashboard() {
       return;
     }
     const filtered = allParkings.filter(parking =>
-      parking.name.toLowerCase().includes(search.toLowerCase()) || 
+      parking.name.toLowerCase().includes(search.toLowerCase()) ||
       parking.location.toLowerCase().includes(search.toLowerCase())
     );
     setRecommendations(filtered);
@@ -218,8 +219,8 @@ function UserDashboard() {
     return (
       <Box sx={{ padding: 3 }}>
         <Grid container spacing={3}>
-          {[...Array(4)].map((_, index) => (
-            <Grid size={{xs: 12, sm: 6, md: 4, lg: 3}} key={`skeleton-${index}`}>
+          {[...Array(8)].map((_, index) => (
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={`skeleton-${index}`}>
               <CardSkeleton />
             </Grid>
           ))}
@@ -233,6 +234,7 @@ function UserDashboard() {
 
   return (
     <Box sx={{ padding: 3 }}>
+      <ParkingNavbar />
       {/* User Info Section */}
       <Paper elevation={0} sx={{
         background: darkTheme.surface,
@@ -241,7 +243,7 @@ function UserDashboard() {
         borderRadius: '8px',
         border: `1px solid ${darkTheme.background}`,
       }}>
-        <Typography variant="h4" sx={{ 
+        <Typography variant="h4" sx={{
           color: darkTheme.primary,
           marginBottom: 2,
           position: 'relative',
@@ -258,7 +260,7 @@ function UserDashboard() {
         }}>
           User Profile
         </Typography>
-        
+
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
           {/* <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
             <strong>Name:</strong> {currentUser.name}
@@ -355,7 +357,7 @@ function UserDashboard() {
       {bookedParkings.length > 0 ? (
         <Grid container spacing={3}>
           {bookedParkings.map((parking) => (
-            <Grid size={{xs: 12, sm: 6, md: 4, lg: 3}} key={parking._id}>
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={parking._id}>
               <motion.div
                 variants={parkingVariants}
                 initial="hidden"
@@ -363,7 +365,7 @@ function UserDashboard() {
                 whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                <ParkingCard sx={{minHeight: '365px'}}>
+                <ParkingCard sx={{ minHeight: '365px' }}>
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Box display="flex" alignItems="center" mb={2}>
                       <FontAwesomeIcon
@@ -402,14 +404,15 @@ function UserDashboard() {
 
                     <Box display="flex" alignItems="center" mb={2} sx={{ gap: 1 }}>
                       <Box sx={{ display: 'flex' }}>
-                        <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                        <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                        <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                        <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                        <StarHalf sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
+                        {Array.from({ length: parking.rating }).map((_, index) => (
+                          <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index} />
+                        ))}
+                        {Array.from({ length: 5 - parking.rating }).map((_, index) => (
+                          <StarBorder sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index} />
+                        ))}
                       </Box>
                       <Typography variant="body2" sx={{ color: darkTheme.textSecondary }}>
-                        (4.3/5)
+                        ({parking.rating}/5)
                       </Typography>
                     </Box>
 
@@ -434,7 +437,7 @@ function UserDashboard() {
                       />}
                     </Box>
 
-                    <Box display="flex" sx={{ gap: 1 }}>
+                    <Box display="flex" sx={{ gap: 1, mb: 2 }}>
                       <Chip
                         label="Booked"
                         color="success"
@@ -505,7 +508,7 @@ function UserDashboard() {
       {availableParkings.length > 0 ? (
         <Grid container spacing={3}>
           {availableParkings.map((parking) => (
-            <Grid size={{xs: 12, sm: 6, md: 4, lg: 3}} key={parking._id}>
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={parking._id}>
               <motion.div
                 variants={parkingVariants}
                 initial="hidden"
@@ -552,14 +555,15 @@ function UserDashboard() {
 
                     <Box display="flex" alignItems="center" mb={2} sx={{ gap: 1 }}>
                       <Box sx={{ display: 'flex' }}>
-                        <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                        <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                        <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                        <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                        <StarHalf sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
+                        {Array.from({ length: parking.rating }).map((_, index) => (
+                          <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index} />
+                        ))}
+                        {Array.from({ length: 5 - parking.rating }).map((_, index) => (
+                          <StarBorder sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index} />
+                        ))}
                       </Box>
                       <Typography variant="body2" sx={{ color: darkTheme.textSecondary }}>
-                        (4.3/5)
+                        ({parking.rating}/5)
                       </Typography>
                     </Box>
 
@@ -604,6 +608,7 @@ function UserDashboard() {
                   </CardContent>
                   <CardActions sx={{ padding: '16px', justifyContent: 'flex-start' }}>
                     <Button
+                      disabled={parking.availableSlots == 0}
                       size="small"
                       variant="contained"
                       endIcon={<LocalParking />}

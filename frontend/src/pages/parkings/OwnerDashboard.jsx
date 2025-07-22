@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import Skeleton from '@mui/material/Skeleton';
+import ParkingNavbar from "../../ParkingNavbar";
 import {
   Box,
   Typography,
@@ -25,7 +26,7 @@ import {
   Edit,
   Add,
   Star,
-  StarHalf,
+  StarBorder,
   ElectricCar
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
@@ -128,7 +129,7 @@ function OwnerDashboard() {
     return (
       <Box sx={{ padding: 3 }}>
         <Grid container spacing={3}>
-          {[...Array(4)].map((_, index) => (
+          {[...Array(8)].map((_, index) => (
             <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={`skeleton-${index}`}>
               <CardSkeleton />
             </Grid>
@@ -142,6 +143,7 @@ function OwnerDashboard() {
 
   return (
     <Box sx={{ padding: 3 }}>
+      <ParkingNavbar />
       {/* Owner Info Section */}
       <Paper elevation={0} sx={{
         background: darkTheme.surface,
@@ -255,14 +257,15 @@ function OwnerDashboard() {
 
                     <Box display="flex" alignItems="center" mb={2} sx={{ gap: 1 }}>
                       <Box sx={{ display: 'flex' }}>
-                        <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                        <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                        <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                        <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                        <StarHalf sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
+                        {Array.from({ length: parking.rating }).map((_, index) => (
+                          <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index} />
+                        ))}
+                        {Array.from({ length: 5 - parking.rating }).map((_, index) => (
+                          <StarBorder sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index} />
+                        ))}
                       </Box>
                       <Typography variant="body2" sx={{ color: darkTheme.textSecondary }}>
-                        (4.3/5)
+                        ({parking.rating}/5)
                       </Typography>
                     </Box>
 

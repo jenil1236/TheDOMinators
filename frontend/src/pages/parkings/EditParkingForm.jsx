@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import ParkingNavbar from "../../ParkingNavbar";
 import {
   Box,
   Typography,
@@ -193,6 +194,7 @@ function EditParkingForm() {
 
   return (
     <FormContainer>
+      <ParkingNavbar/>
       <FormPaper elevation={3}>
         <Typography variant="h4" sx={{ 
           marginBottom: 3,

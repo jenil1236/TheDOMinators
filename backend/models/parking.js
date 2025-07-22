@@ -14,10 +14,12 @@ const parkingSchema = new Schema({
         type: String,
         required: true
     },
-    images: String,
     totalSlots: {
         type: Number,
         required: true
+    },
+    rating: {
+        type: Number,
     },
     EVCharging: Boolean,
     BikeWash: Boolean,

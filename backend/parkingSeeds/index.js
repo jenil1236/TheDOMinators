@@ -15,7 +15,7 @@ db.once('open', () => {
 
 const seedDB = async () => {
     await Parking.deleteMany({});
-    const owner = await User.findById('68792d30a28a85634db05dfe');
+    const owner = await User.findById('687e883ed306de134073387e');
     const parkingowner = await ParkingUser.findOne({ user: owner._id });
     if (!owner) {
         console.log('owner not found')

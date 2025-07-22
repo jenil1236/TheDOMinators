@@ -41,7 +41,7 @@ router.post("/:parkingId", isLoggedIn, async (req, res, next) => {
     const { vehicle } = req.body;
 
     const requiredSlots =
-      vehicle === "car" ? 4 : vehicle === "auto" ? 3 : 2;
+      vehicle === "car" ? 4 : vehicle === "auto" ? 2 : 1;
 
     const parking = await Parking.findById(parkingId);
     if (!parking) return res.status(404).json({ message: "Parking not found" });
@@ -84,8 +84,8 @@ router.delete("/:parkingId", isLoggedIn, async (req, res, next) => {
 
     // Adjust slot count based on vehicle
     if (booking.vehicle === "car") parking.availableSlots += 4;
-    else if (booking.vehicle === "auto") parking.availableSlots += 3;
-    else parking.availableSlots += 2;
+    else if (booking.vehicle === "auto") parking.availableSlots += 2;
+    else parking.availableSlots += 1;
 
     // Remove user from parking
     parking.users = parking.users.filter(entry => !entry.user.equals(userId));

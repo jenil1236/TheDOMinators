@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import ParkingNavbar from "../../ParkingNavbar";
 import {
   Box,
   Typography,
@@ -162,6 +163,7 @@ function ParkingDetails() {
 
   return (
     <Box sx={{ padding: 3, maxWidth: '900px', margin: '0 auto' }}>
+      <ParkingNavbar/>
       <Typography variant="h4" sx={{
         marginBottom: 3,
         color: darkTheme.primary,
@@ -254,7 +256,7 @@ function ParkingDetails() {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <TwoWheeler color="primary" />
             <Typography variant="body1">
-              <strong>Bike Wash:</strong> {parking.BikeWash ? 'Ywa' : 'No'}
+              <strong>Bike Wash:</strong> {parking.BikeWash ? 'Yes' : 'No'}
             </Typography>
           </Box>
         </Box>

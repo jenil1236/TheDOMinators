@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import ParkingNavbar from "../../ParkingNavbar";
 import {
   Box,
   Typography,
@@ -168,6 +169,7 @@ function BookParking() {
       margin: '0 auto',
       color: darkTheme.textPrimary
     }}>
+      <ParkingNavbar/>
       <Typography variant="h4" sx={{
         marginBottom: 3,
         position: 'relative',
@@ -247,7 +249,7 @@ function BookParking() {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <TwoWheeler color="primary"/>
             <Typography variant="body1">
-              <strong>Bike Wash:</strong> {parking.BikeWash ? 'Ywa' : 'No'}
+              <strong>Bike Wash:</strong> {parking.BikeWash ? 'Yes' : 'No'}
             </Typography>
           </Box>
         </Box>
@@ -316,6 +318,7 @@ function BookParking() {
       </Typography>
 
       <InfoBlock elevation={3}>
+        {parking.availableSlots === 0 && <p style={{color: darkTheme.textPrimary}}>Sorry! The parking is filled now, please come later</p>}
         <form onSubmit={handleSubmit}>
           <FormControl fullWidth sx={{ marginBottom: 3 }}>
             <InputLabel id="vehicle-label" sx={{ color: darkTheme.textPrimary }}>
@@ -332,21 +335,15 @@ function BookParking() {
               <MenuItem value="" disabled>
                 <em>Select One</em>
               </MenuItem>
-              <MenuItem value="bike">
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              {parking.availableSlots >= 1 && <MenuItem value="bike"><Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <TwoWheeler /> Bike
-                </Box>
-              </MenuItem>
-              <MenuItem value="auto">
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                </Box></MenuItem>}
+              {parking.availableSlots >= 2 && <MenuItem value="auto"><Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <LocalTaxi /> Auto
-                </Box>
-              </MenuItem>
-              <MenuItem value="car">
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                </Box></MenuItem>}
+              {parking.availableSlots >= 4 && <MenuItem value="car"><Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <DirectionsCar /> Car
-                </Box>
-              </MenuItem>
+                </Box></MenuItem>}
             </FormSelect>
           </FormControl>
 
@@ -371,8 +368,8 @@ function BookParking() {
               }}
             />
           </Box>
-
           <Button
+            disabled={parking.availableSlots == 0}
             type="submit"
             variant="contained"
             size="large"

@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import Search from "../../components/Search";
 import { motion, AnimatePresence } from "framer-motion";
 import Skeleton from '@mui/material/Skeleton';
+import ParkingNavbar from "../../ParkingNavbar";
 import {
   Box,
   Typography,
@@ -35,7 +36,7 @@ import {
   Person,
   Business,
   Star,
-  StarHalf,
+  StarBorder,
   ElectricCar,
   TwoWheeler,
   Directions
@@ -183,8 +184,8 @@ function LandingPage() {
             <div style="padding: 8px;">
               <h3 style="margin: 0 0 4px; color: #1976d2;">${parking.name}</h3>
               <p style="margin: 0; font-size: 14px;">
-                <span style="color: #666;">${parking.location}</span><br>
-                <strong>Rate:</strong> ₹${parking.rate}/hr
+                <strong style="color: #666;">${parking.location}</strong><br>
+                <strong style="color: #666;">Rate:</strong> <span style="color: #666;">₹${parking.rate}/hr</span>
               </p>
             </div>
           `))
@@ -230,6 +231,7 @@ function LandingPage() {
 
   return (
     <Box>
+      <ParkingNavbar />
       {currentUser ? (
         <motion.div
           initial={{ opacity: 0 }}
@@ -472,14 +474,15 @@ function LandingPage() {
 
                       <Box display="flex" alignItems="center" mb={2} sx={{ gap: 1 }}>
                         <Box sx={{ display: 'flex' }}>
-                          <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                          <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                          <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                          <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
-                          <StarHalf sx={{ color: '#ffc107', fontSize: '1.2rem' }} />
+                          {Array.from({ length: parking.rating }).map((_, index) => (
+                            <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index}/>
+                          ))}
+                          {Array.from({ length: 5 - parking.rating }).map((_, index) => (
+                            <StarBorder sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index}/>
+                          ))}
                         </Box>
                         <Typography variant="body2" sx={{ color: darkTheme.textSecondary }}>
-                          (4.3/5)
+                          ({parking.rating}/5)
                         </Typography>
                       </Box>
 

@@ -35,13 +35,14 @@ router.post("/new", isLoggedIn, async (req, res, next) => {
       openTime,
       closeTime,
     } = req.body;
-
+    const rating = Math.floor(Math.random() * 5) + 1;
     const parking = new Parking({
       name,
       location,
       totalSlots,
       availableSlots,
       rate,
+      rating,
       EVCharging,
       BikeWash,
       openTime,
@@ -144,8 +145,8 @@ router.delete("/:parkingId/user/:userId", isLoggedIn, async (req, res, next) => 
 
     if (userEntry) {
       if (userEntry.vehicle === "car") parking.availableSlots += 4;
-      else if (userEntry.vehicle === "auto") parking.availableSlots += 3;
-      else parking.availableSlots += 2;
+      else if (userEntry.vehicle === "auto") parking.availableSlots += 2;
+      else parking.availableSlots += 1;
 
       parking.users = parking.users.filter((entry) => !entry.user.equals(userId));
       await parking.save();

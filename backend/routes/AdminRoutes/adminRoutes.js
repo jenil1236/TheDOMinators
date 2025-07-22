@@ -80,8 +80,8 @@ router.delete('/parkingusers/:id', async (req, res, next) => {
       const userEntry = parking.users.find(entry => entry.user.equals(user));
       if (userEntry) {
         if (userEntry.vehicle === 'car') parking.availableSlots += 4;
-        else if (userEntry.vehicle === 'auto') parking.availableSlots += 3;
-        else parking.availableSlots += 2;
+        else if (userEntry.vehicle === 'auto') parking.availableSlots += 2;
+        else parking.availableSlots += 1;
 
         parking.users = parking.users.filter(entry => !entry.user.equals(user));
         await parking.save();
