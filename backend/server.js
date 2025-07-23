@@ -4,6 +4,7 @@ import session from "express-session";
 import passport from "passport";
 import cors from "cors";
 import http from "http";
+import * as maptilerClient from '@maptiler/client';
 import { Server as SocketIO } from "socket.io";
 
 import { connectDB } from "./config/db.js";
@@ -14,18 +15,26 @@ import chatRoutes from "./routes/chat.js";
 import ratingRoutes from "./routes/ratings.js";
 import configurePassport from "./config/passport.js";
 import carpoolRoutes from "./routes/carpool.js";
-import adminRoutes from "./routes/admin.js"
-import stopRouter from "./routes/admin/stop.js";
-
-dotenv.config();
+import registerAdmin from "./routes/AdminRoutes/RegisterAdmin.js"
+import parkingAdmin from './routes/AdminRoutes/ParkingAdmin.js';
+import stopAdmin from "./routes/AdminRoutes/StopAdmin.js";
+import carpoolAdmin from "./routes/AdminRoutes/CarPoolAdmin.js";
+import parkingRoutes from './routes/ParkingRoutes/parkingRoutes.js';
+import parkingsUserRoutes from './routes/ParkingRoutes/parkingsUserRoutes.js';
+import parkingsOwnerRoutes from './routes/ParkingRoutes/parkingsOwnerRoutes.js';
+import clearParking from './utils/clearParking.js';
+ 
+dotenv.config(); 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
-app.use(express.json());
+app.use(express.json()); 
 app.use(cors({
   origin: "http://localhost:5173",  // ✅ must be exact
   credentials: true
 }));
+
+maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
 // 💡 SESSION
 app.use(session({
@@ -35,6 +44,7 @@ app.use(session({
   cookie: {
     httpOnly: true,
     maxAge: 30 * 24 * 60 * 60 * 1000,
+    secure: false
   }
 }));
 
@@ -43,6 +53,31 @@ configurePassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+  req.isAdmin = req.session.isAdmin || false;
+  next();
+}); 
+
+// app.get('/api/auth/me', (req, res) => {
+//   console.log("User from session:", req.user);
+//   if (req.isAdmin)
+//     return res.json({ isAdmin: req.isAdmin });  
+//   else if (!req.isAuthenticated()) {
+//     return res.status(401).json({ user: null, isAdmin: false });
+//   }
+//   res.json({
+//     _id: req.user._id,
+//     username: req.user.username, 
+//     email: req.user.email,
+//     isAdmin: req.isAdmin
+//   });
+// });
+
+app.use('/api/parkings/:subroute', (req, res, next) => {
+  req.parkinguserId = req.session.parkinguserId;
+  next();
+});
+
 // 💡 ROUTES
 app.use("/api/users", authRoutes);
 app.use("/api/requests", requestRoutes);
@@ -50,8 +85,13 @@ app.use("/api/rides", rideRoutes);
 app.use("/api/chats", chatRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/carpool", carpoolRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/admin/stops", stopRouter);
+app.use('/api/parkings', parkingRoutes);
+app.use('/api/admin', registerAdmin);
+app.use('/api/admin/parkingusers', parkingAdmin);
+app.use('/api/admin', carpoolAdmin);
+app.use("/api/admin/stops", stopAdmin);
+app.use('/api/parkings/user', parkingsUserRoutes);
+app.use('/api/parkings/owner', parkingsOwnerRoutes);
 
 // 🧠 SOCKET.IO
 const server = http.createServer(app);
@@ -94,4 +134,5 @@ connectDB()
   .catch((error) => {
     console.error("Database connection failed:", error);
   });
+
 

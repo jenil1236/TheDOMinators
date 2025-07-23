@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./Auth.css";
 
-const Auth = ({ authType, setUser }) => {
+const Auth = ({ authType, setUser, setToken, setIsAdmin }) => {
   const [isRotating, setIsRotating] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -38,7 +38,9 @@ const Auth = ({ authType, setUser }) => {
       
       const res = await axios.post(endpoint, payload);
       localStorage.setItem("token", res.data.token);
-      setUser(res.data);
+        setToken(res.data.token);;
+      setUser(res.data.user);
+      setIsAdmin(res.data.isAdmin);
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || 

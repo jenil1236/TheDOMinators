@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+// import { useAuth } from "../context/AuthContext";
 import "./Auth1.css";
 
-const AuthPage = ({ authType, setUser }) => {
+const AuthPage = ({ authType, setUser, setToken, setIsAdmin }) => {
   const [isRotating, setIsRotating] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -20,20 +21,34 @@ const AuthPage = ({ authType, setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    
+
     try {
       const endpoint = authType === "login" ? "/api/users/login" : "/api/users/register";
-      const payload = authType === "login" 
+      const payload = authType === "login"
         ? { email: formData.email, password: formData.password }
         : formData;
-      
+
       const res = await axios.post(endpoint, payload);
-      localStorage.setItem("token", res.data.token);
-      setUser(res.data);
-      navigate("/");
+
+      // Optional: only if your backend sends a token (JWT-based)
+        if(res.data.token) {
+
+          localStorage.setItem("token", res.data.token);
+          setToken(res.data.token);
+          console.log("Token state updated:", token);
+          
+          // ✅ Fetch user from session and update AuthContext
+          
+          setUser(res.data.user); // optional, only if needed in this component
+          setIsAdmin(res.data.isAdmin);
+        }
+          navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || 
-        (authType === "login" ? "Login failed" : "Registration failed"));
+      console.log(err);
+      setError(
+        err.response?.data?.message ||
+        (authType === "login" ? "Login failed" : "Registration failed")
+      );
     }
   };
 
@@ -51,9 +66,8 @@ const AuthPage = ({ authType, setUser }) => {
 
   return (
     <div className="auth-container">
-      <div className={`auth-card ${isRotating ? "rotate" : ""} ${
-        authType === "register" ? "right-panel-active" : ""
-      }`}>
+      <div className={`auth-card ${isRotating ? "rotate" : ""} ${authType === "register" ? "right-panel-active" : ""
+        }`}>
         {/* Login Form */}
         <div className="auth-form login-form">
           <h2>Sign in</h2>
@@ -83,7 +97,7 @@ const AuthPage = ({ authType, setUser }) => {
               {authType === "login" ? "SIGN IN" : "SIGN UP"}
             </button>
             {authType === "login" && (
-              <button 
+              <button
                 type="button"
                 className="forgot-button"
                 onClick={showForgotPassword}
@@ -139,8 +153,8 @@ const AuthPage = ({ authType, setUser }) => {
             <div className="overlay-panel overlay-left">
               <h2>Welcome Back!</h2>
               <p>To keep connected with us please login with your personal info</p>
-              <button 
-                className="ghost-button" 
+              <button
+                className="ghost-button"
                 onClick={toggleAuthType}
                 disabled={isRotating}
               >
@@ -150,8 +164,8 @@ const AuthPage = ({ authType, setUser }) => {
             <div className="overlay-panel overlay-right">
               <h2>Hello, Friend!</h2>
               <p>Register with your personal details to use all of site features</p>
-              <button 
-                className="ghost-button" 
+              <button
+                className="ghost-button"
                 onClick={toggleAuthType}
                 disabled={isRotating}
               >

@@ -1,14 +1,15 @@
-
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
 import ThemeToggle from '../ThemeToggle/ThemeToggle';
 import logo from '../../assets/logoo.png';
+// import { useAuth } from '../../context/AuthContext'
 import './Navbar.css';
 
-const Navbar = ({ user, setUser }) => {
+// const { logout } = useAuth();
+
+const Navbar = ({ user, setUser, setToken }) => {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,6 +20,8 @@ const Navbar = ({ user, setUser }) => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUser(null);
+    setToken(null);
+    // useAuth.logout();
     navigate("/");
   };
 
@@ -49,7 +52,7 @@ const Navbar = ({ user, setUser }) => {
   }, [mobileMenuOpen]);
   
   const navLinks = [
-    { name: 'Smart Parking', path: '/smart-parking' },
+    { name: 'Smart Parking', path: '/parkings' },
     { name: 'Car Pooling', path: '/car-pooling' },
     { name: 'Route + Fare', path: '/route-calculator' },
     { name: 'Bus Booking', path: '/bus-info' },

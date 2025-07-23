@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,18 +5,23 @@ import { useTheme } from '../../context/ThemeContext';
 import ThemeToggle from '../ThemeToggle/ThemeToggle';
 import logo from '../../assets/logoo.png';
 import './NavbarFeat.css';
+// import { useAuth } from '../../context/AuthContext';
 
-const NavbarFeat = ({ user, setUser }) => {
+// const { logout } = useAuth();
+
+const NavbarFeat = ({ user, setUser, setToken }) => {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { darkMode } = useTheme();
   const location = useLocation();
   const navRef = useRef(null);
-  
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUser(null);
+    setToken(null);
+    // useAuth.logout();
     navigate("/");
   };
 
@@ -30,12 +33,12 @@ const NavbarFeat = ({ user, setUser }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
+
   // Close mobile menu when route changes
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location]);
-  
+
   // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -43,20 +46,20 @@ const NavbarFeat = ({ user, setUser }) => {
         setMobileMenuOpen(false);
       }
     };
-    
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [mobileMenuOpen]);
-  
+
   const navLinks = [
-    { name: 'Smart Parking', path: '/smart-parking' },
+    { name: 'Smart Parking', path: '/parkings' },
     { name: 'Car Pooling', path: '/car-pooling' },
     { name: 'Route + Fare', path: '/route-calculator' },
     { name: 'Bus Booking', path: '/bus-info' },
     { name: 'Future Transport', path: '/future-transport' },
     { name: 'FAQ', path: '/#faq' }
   ];
-  
+
   const scrollToFAQ = () => {
     if (location.pathname === '/') {
       const faqSection = document.getElementById('faq');
@@ -67,8 +70,8 @@ const NavbarFeat = ({ user, setUser }) => {
   };
 
   return (
-    <motion.nav 
-    className={`navbar-feat scrolled ${darkMode ? 'dark' : 'light'}`}
+    <motion.nav
+      className={`navbar-feat scrolled ${darkMode ? 'dark' : 'light'}`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, type: 'spring', stiffness: 100 }}
@@ -76,7 +79,7 @@ const NavbarFeat = ({ user, setUser }) => {
     >
       <div className="navbar-feat-container">
         <div className="navbar-feat-logo-container">
-          <motion.div 
+          <motion.div
             className="navbar-feat-logo"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -84,14 +87,14 @@ const NavbarFeat = ({ user, setUser }) => {
             <img src={logo} alt="TransitFlow Logo" className="navbar-feat-logo-img" />
             <Link to="/">
               <div className="navbar-feat-logo-text">
-                
+
                 <span className="navbar-feat-logo-name">Transit</span>
                 <span className="navbar-feat-logo-highlight">Flow</span>
               </div>
             </Link>
           </motion.div>
         </div>
-        
+
         <div className="navbar-feat-nav-links">
           {navLinks.map((link) => (
             <motion.div
@@ -101,8 +104,8 @@ const NavbarFeat = ({ user, setUser }) => {
               whileTap={{ scale: 0.95 }}
             >
               {link.path.includes('#faq') ? (
-                <a 
-                  href="/#faq" 
+                <a
+                  href="/#faq"
                   onClick={(e) => {
                     e.preventDefault();
                     scrollToFAQ();
@@ -116,11 +119,11 @@ const NavbarFeat = ({ user, setUser }) => {
             </motion.div>
           ))}
         </div>
-        
+
         <div className="navbar-feat-auth-buttons">
           {user ? (
             <>
-              <motion.span 
+              <motion.span
                 className="navbar-feat-welcome-user"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -128,7 +131,7 @@ const NavbarFeat = ({ user, setUser }) => {
               >
                 Welcome, {user.username}
               </motion.span>
-              <motion.button 
+              <motion.button
                 className="navbar-feat-logout-btn"
                 onClick={handleLogout}
                 whileHover={{ scale: 1.05 }}
@@ -139,7 +142,7 @@ const NavbarFeat = ({ user, setUser }) => {
             </>
           ) : (
             <>
-              <motion.button 
+              <motion.button
                 className="navbar-feat-login-btn"
                 onClick={() => navigate('/Login')}
                 whileHover={{ scale: 1.05 }}
@@ -147,7 +150,7 @@ const NavbarFeat = ({ user, setUser }) => {
               >
                 Login
               </motion.button>
-              <motion.button 
+              <motion.button
                 className="navbar-feat-signup-btn"
                 onClick={() => navigate('/Register')}
                 whileHover={{ scale: 1.05 }}
@@ -159,8 +162,8 @@ const NavbarFeat = ({ user, setUser }) => {
           )}
           <ThemeToggle />
         </div>
-        
-        <button 
+
+        <button
           className="navbar-feat-mobile-menu-btn"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
@@ -171,11 +174,11 @@ const NavbarFeat = ({ user, setUser }) => {
           </div>
         </button>
       </div>
-      
+
       {/* Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div 
+          <motion.div
             className="navbar-feat-mobile-menu"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
@@ -186,8 +189,8 @@ const NavbarFeat = ({ user, setUser }) => {
               {navLinks.map((link) => (
                 <div className="navbar-feat-mobile-nav-item" key={link.name}>
                   {link.path.includes('#faq') ? (
-                    <a 
-                      href="/#faq" 
+                    <a
+                      href="/#faq"
                       onClick={(e) => {
                         e.preventDefault();
                         scrollToFAQ();
@@ -208,9 +211,9 @@ const NavbarFeat = ({ user, setUser }) => {
               {user ? (
                 <>
                   <div >
-                  <button className="navbar-feat-mobile-welcome-user">Welcome, {user.name || user.email}</button>  
+                    <button className="navbar-feat-mobile-welcome-user">Welcome, {user.name || user.email}</button>
                   </div>
-                  <button 
+                  <button
                     className="navbar-feat-logout-btn"
                     onClick={() => {
                       handleLogout();
@@ -222,7 +225,7 @@ const NavbarFeat = ({ user, setUser }) => {
                 </>
               ) : (
                 <>
-                  <button 
+                  <button
                     className="navbar-feat-login-btn"
                     onClick={() => {
                       navigate('/login');
@@ -231,7 +234,7 @@ const NavbarFeat = ({ user, setUser }) => {
                   >
                     Login
                   </button>
-                  <button 
+                  <button
                     className="navbar-feat-signup-btn"
                     onClick={() => {
                       navigate('/register');
@@ -240,7 +243,7 @@ const NavbarFeat = ({ user, setUser }) => {
                   >
                     Sign Up
                   </button>
-                  
+
                 </>
               )}
             </div>

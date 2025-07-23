@@ -13,7 +13,7 @@ const Footer = () => {
   ];
   
   const navLinks = [
-    { title: 'Smart Parking', path: '/smart-parking' },
+    { title: 'Smart Parking', path: '/parkings' },
     { title: 'Car Pooling', path: '/car-pooling' },
     { title: 'Route + Fare', path: '/route-calculator' },
     { title: 'Bus Booking', path: '/bus-info' },

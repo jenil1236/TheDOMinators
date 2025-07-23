@@ -422,6 +422,9 @@ const joinRequests = await JoinRequest.find({
 }
 
 export const getAllRidesAdminGrouped = async (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).json({ message: 'Unauthorized admin access' });
+  }
   try {
     const rides = await Ride.find()
       .populate({

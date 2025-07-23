@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Auth1.css";
 
-const PasswordRecovery = ({ setUser }) => {
+const PasswordRecovery = ({ setUser, setIsAdmin, setToken }) => {
   const [step, setStep] = useState(1); // 1: forgot, 2: verify, 3: reset
   const [formData, setFormData] = useState({
     email: "",
@@ -82,7 +82,9 @@ const PasswordRecovery = ({ setUser }) => {
       });
       
       localStorage.setItem("token", res.data.token);
-      setUser(res.data);
+        setToken(res.data.token);
+      setUser(res.data.user);
+      setIsAdmin(res.data.isAdmin);
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Password reset failed");
