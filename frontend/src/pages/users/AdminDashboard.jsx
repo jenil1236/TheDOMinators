@@ -10,7 +10,6 @@ import {
 import {
   LocalParking,
   People,
-  Logout
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 
@@ -41,7 +40,9 @@ const DashboardButton = styled(Button)(({ theme }) => ({
   }
 }));
 
-function AdminDashboard() {
+
+
+function AdminDashboard({setIsAdmin}) {
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -102,20 +103,18 @@ function AdminDashboard() {
         >
           View Parking Users
         </DashboardButton>
-
         <DashboardButton
           variant="contained"
-          startIcon={<Logout />}
-          onClick={() => navigate("/logout")}
+          startIcon={<People />}
+          onClick={() => navigate("/admin/stops")}
           sx={{
-            mt: 4,
-            background: `linear-gradient(135deg, ${darkTheme.error} 0%, #d32f2f 100%)`,
+            background: `linear-gradient(135deg, ${darkTheme.accent} 0%, #3ab795 100%)`,
             '&:hover': {
-              background: `linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%)`
+              background: `linear-gradient(135deg, #3ab795 0%, #2a9d7f 100%)`
             }
           }}
         >
-          Logout
+          View BRTS Stops
         </DashboardButton>
       </Stack>
     </Box>

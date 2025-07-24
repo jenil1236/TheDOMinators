@@ -4,22 +4,30 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
 import ThemeToggle from '../ThemeToggle/ThemeToggle';
 import logo from '../../assets/logoo.png';
+import axios from 'axios';
 // import { useAuth } from '../../context/AuthContext'
 import './Navbar.css';
 
 // const { logout } = useAuth();
 
-const Navbar = ({ user, setUser, setToken }) => {
+const Navbar = ({ user, setUser, setToken, setisAdmin, isAdmin }) => {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { darkMode } = useTheme();
   const location = useLocation();
   const navRef = useRef(null);
-  
-  const handleLogout = () => {
+
+  const handleLogout = async () => {
+    try {
+      await axios.get('/api/users/logout', { withCredentials: true });
+    } catch (error) {
+      console.error('Logout API call failed:', error);
+      // Optionally, show a message or handle failure
+    }
     localStorage.removeItem("token");
     setUser(null);
+    setisAdmin(false);
     setToken(null);
     // useAuth.logout();
     navigate("/");
@@ -33,12 +41,12 @@ const Navbar = ({ user, setUser, setToken }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
+
   // Close mobile menu when route changes
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location]);
-  
+
   // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -46,11 +54,11 @@ const Navbar = ({ user, setUser, setToken }) => {
         setMobileMenuOpen(false);
       }
     };
-    
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [mobileMenuOpen]);
-  
+
   const navLinks = [
     { name: 'Smart Parking', path: '/parkings' },
     { name: 'Car Pooling', path: '/car-pooling' },
@@ -59,7 +67,7 @@ const Navbar = ({ user, setUser, setToken }) => {
     { name: 'Future Transport', path: '/future-transport' },
     { name: 'FAQ', path: '/#faq' }
   ];
-  
+
   const scrollToFAQ = () => {
     if (location.pathname === '/') {
       const faqSection = document.getElementById('faq');
@@ -70,7 +78,7 @@ const Navbar = ({ user, setUser, setToken }) => {
   };
 
   return (
-    <motion.nav 
+    <motion.nav
       className={`navbar ${scrolled ? 'scrolled' : ''} ${darkMode ? 'dark' : 'light'}`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -79,7 +87,7 @@ const Navbar = ({ user, setUser, setToken }) => {
     >
       <div className="navbar-container">
         <div className="logo-container">
-          <motion.div 
+          <motion.div
             className="logo"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -87,14 +95,14 @@ const Navbar = ({ user, setUser, setToken }) => {
             <img src={logo} alt="TransitFlow Logo" className="logo-img" />
             <Link to="/">
               <div className="logo-text">
-                
+
                 <span className="logo-name">Transit</span>
                 <span className="logo-highlight">Flow</span>
               </div>
             </Link>
           </motion.div>
         </div>
-        
+
         <div className="nav-links">
           {navLinks.map((link) => (
             <motion.div
@@ -104,8 +112,8 @@ const Navbar = ({ user, setUser, setToken }) => {
               whileTap={{ scale: 0.95 }}
             >
               {link.path.includes('#faq') ? (
-                <a 
-                  href="/#faq" 
+                <a
+                  href="/#faq"
                   onClick={(e) => {
                     e.preventDefault();
                     scrollToFAQ();
@@ -119,19 +127,19 @@ const Navbar = ({ user, setUser, setToken }) => {
             </motion.div>
           ))}
         </div>
-        
+
         <div className="auth-buttons">
-          {user ? (
+          {(user || isAdmin) ? (
             <>
-              <motion.span 
+              <motion.span
                 className="welcome-user"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                Welcome, {user.username}
+                Welcome, {user ? user.username : 'Admin'}
               </motion.span>
-              <motion.button 
+              <motion.button
                 className="logout-btn"
                 onClick={handleLogout}
                 whileHover={{ scale: 1.05 }}
@@ -142,7 +150,7 @@ const Navbar = ({ user, setUser, setToken }) => {
             </>
           ) : (
             <>
-              <motion.button 
+              <motion.button
                 className="login-btn"
                 onClick={() => navigate('/Login')}
                 whileHover={{ scale: 1.05 }}
@@ -150,7 +158,7 @@ const Navbar = ({ user, setUser, setToken }) => {
               >
                 Login
               </motion.button>
-              <motion.button 
+              <motion.button
                 className="signup-btn"
                 onClick={() => navigate('/Register')}
                 whileHover={{ scale: 1.05 }}
@@ -162,8 +170,8 @@ const Navbar = ({ user, setUser, setToken }) => {
           )}
           <ThemeToggle />
         </div>
-        
-        <button 
+
+        <button
           className="mobile-menu-btn"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
@@ -174,11 +182,11 @@ const Navbar = ({ user, setUser, setToken }) => {
           </div>
         </button>
       </div>
-      
+
       {/* Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div 
+          <motion.div
             className="mobile-menu"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
@@ -189,8 +197,8 @@ const Navbar = ({ user, setUser, setToken }) => {
               {navLinks.map((link) => (
                 <div className="mobile-nav-item" key={link.name}>
                   {link.path.includes('#faq') ? (
-                    <a 
-                      href="/#faq" 
+                    <a
+                      href="/#faq"
                       onClick={(e) => {
                         e.preventDefault();
                         scrollToFAQ();
@@ -208,10 +216,10 @@ const Navbar = ({ user, setUser, setToken }) => {
               ))}
             </div>
             <div className="mobile-auth-buttons">
-              {user ? (
+              {user || isAdmin ? (
                 <>
-                  <div className="mobile-welcome-user">Welcome, {user.name || user.email}</div>
-                  <button 
+                  <div className="mobile-welcome-user">Welcome, {user ? user.name || user.email : 'Admin'}</div>
+                  <button
                     className="logout-btn"
                     onClick={() => {
                       handleLogout();
@@ -223,7 +231,7 @@ const Navbar = ({ user, setUser, setToken }) => {
                 </>
               ) : (
                 <>
-                  <button 
+                  <button
                     className="login-btn"
                     onClick={() => {
                       navigate('/login');
@@ -232,7 +240,7 @@ const Navbar = ({ user, setUser, setToken }) => {
                   >
                     Login
                   </button>
-                  <button 
+                  <button
                     className="signup-btn"
                     onClick={() => {
                       navigate('/register');
@@ -241,7 +249,7 @@ const Navbar = ({ user, setUser, setToken }) => {
                   >
                     Sign Up
                   </button>
-                  
+
                 </>
               )}
             </div>

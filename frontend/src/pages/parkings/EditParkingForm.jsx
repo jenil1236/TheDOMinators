@@ -87,7 +87,7 @@ const FeatureSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-function EditParkingForm() {
+function EditParkingForm({ currentUser }) {
   const { parkingId } = useParams();
   const navigate = useNavigate();
   const theme = useTheme();

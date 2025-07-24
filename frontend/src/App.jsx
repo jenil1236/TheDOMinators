@@ -16,7 +16,8 @@ import HomePage from "./pages/HomePage";
 import Footer from "./components/Footer/Footer";
 import ChatBot from "./components/user/ChatBot/ChatBot";
 import Combii from "./components/Calculator/Combii";
-import BusStopMarkers from "./components/user/BusStopMarkers/BusStopMarkers";
+import UserBusStopMarkers from "./components/user/BusStopMarkers/UserBusStopMarkers";
+// import AdminBusStopMarkers from "./components/admin/BusStopMarkers/AdminBusStopMarkers";
 import AuthPage from "./pages/AuthPage";
 import PasswordRecovery from "./pages/PasswordRecovery";
 import PostRidePage from "./pages/PostRidePage";
@@ -93,39 +94,39 @@ function AppWrapper() {
   //   };
   //   fetchUser();
   // }, []);
-useEffect(() => {
-  const fetchUser = async () => {
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (!token) {
+        setUser(null);
+        setIsAdmin(false);
+        setIsLoading(false);
+        return;
+      }
+      try {
+        const res = await axios.get("/api/users/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUser(res.data.user);
+        setIsAdmin(res.data.isAdmin);
+      } catch (err) {
+        setUser(null);
+        setIsAdmin(false);
+        localStorage.removeItem("token");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchUser();
+  }, [token]);
+
+  useEffect(() => {
+    console.log('Token changed:', token);
     if (!token) {
       setUser(null);
-      setIsAdmin(false);
-      setIsLoading(false);
       return;
     }
-    try {
-      const res = await axios.get("/api/users/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setUser(res.data.user);
-      setIsAdmin(res.data.isAdmin);
-    } catch (err) {
-      setUser(null);
-      setIsAdmin(false);
-      localStorage.removeItem("token");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  fetchUser();
-}, [token]);
-
-useEffect(() => {
-  console.log('Token changed:', token);
-  if (!token) {
-    setUser(null);
-    return;
-  }
-  // fetch user using token
-}, [token]);
+    // fetch user using token
+  }, [token]);
 
   if (isLoading) {
     return (
@@ -139,22 +140,22 @@ useEffect(() => {
     <div className="app">
       {/* Show Navbar only on homepage */}
       {location.pathname === "/" ? (
-        <Navbar user={user} setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken}/>
+        <Navbar user={user} setUser={setUser} setIsAdmin={setIsAdmin} isAdmin={isAdmin} setToken={setToken} />
       ) : (
-        <NavbarFeat user={user} setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken}/>
+        <NavbarFeat user={user} setUser={setUser} setIsAdmin={setIsAdmin} isAdmin={isAdmin} setToken={setToken} />
       )}
       <ChatBot />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/route-calculator" element={<Combii />} />
-        <Route path="/bus-info" element={<BusStopMarkers />} />
+        <Route path="/bus-info" element={<UserBusStopMarkers />} />
         <Route
           path="/login"
           element={
             user ? (
               <Navigate to="/" />
             ) : (
-              <AuthPage authType="login" setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken}/>
+              <AuthPage authType="login" setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken} />
             )
           }
         />
@@ -164,14 +165,14 @@ useEffect(() => {
             user ? (
               <Navigate to="/" />
             ) : (
-              <AuthPage authType="register" setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken}/>
+              <AuthPage authType="register" setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken} />
             )
           }
         />
         <Route
           path="/forgot-password"
           element={
-            user ? <Navigate to="/" /> : <PasswordRecovery setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken}/>
+            user ? <Navigate to="/" /> : <PasswordRecovery setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken} />
           }
         />
         <Route
@@ -238,39 +239,41 @@ useEffect(() => {
                   color: darkTheme.palette.text.primary
                 }}>
                 <Routes>
-                  <Route path="" element={<LandingPage currentUser={user} isAdmin={isAdmin}/>} />
+                  <Route path="" element={<LandingPage currentUser={user} isAdmin={isAdmin} />} />
                   {/* User Flow */}
                   <Route
                     path="user"
-                    element={user ? <UserDashboard currentUser={user}/> : <Navigate to="/login" />}
+                    element={user ? <UserDashboard currentUser={user} /> : <Navigate to="/login" />}
                   />
                   <Route
                     path="user/:parkingId"
-                    element={user ? <BookParking currentUser={user}/> : <Navigate to="/login" />}
+                    element={user ? <BookParking currentUser={user} /> : <Navigate to="/login" />}
                   />
 
                   {/* Owner Flow */}
                   <Route
                     path="owner"
-                    element={user ? <OwnerDashboard currentUser={user}/> : <Navigate to="/login" />}
+                    element={user ? <OwnerDashboard currentUser={user} /> : <Navigate to="/login" />}
                   />
                   <Route
                     path="owner/new"
-                    element={user ? <NewParkingForm currentUser={user}/> : <Navigate to="/login" />}
+                    element={user ? <NewParkingForm currentUser={user} /> : <Navigate to="/login" />}
                   />
                   <Route
                     path="owner/:parkingId"
-                    element={user || isAdmin ? <ParkingDetails currentUser={user} isAdmin={isAdmin}/> : <Navigate to="/login" />}
+                    element={user || isAdmin ? <ParkingDetails currentUser={user} isAdmin={isAdmin} /> : <Navigate to="/login" />}
                   />
                   <Route
                     path="owner/:parkingId/edit"
-                    element={user ? <EditParkingForm currentUser={user}/> : <Navigate to="/login" />}
+                    element={user ? <EditParkingForm currentUser={user} /> : <Navigate to="/login" />}
                   />
                 </Routes>
               </Box>
             </MuiThemeProvider>
           }
         />
+        {/* <Route path="admin/stops" element={isAdmin ? <AdminBusStopMarkers /> : <Navigate to="/login" />} /> */}
+
         <Route
           path="/admin/*"
           element={
@@ -284,24 +287,24 @@ useEffect(() => {
                   color: darkTheme.palette.text.primary
                 }}>
                 <Routes>
-                  <Route path="login" element={<AdminLogin setIsAdmin={setIsAdmin}/>} />
-                  <Route path="dashboard" element={isAdmin ? <AdminDashboard/> : <Navigate to="/admin/login" />} />
+                  <Route path="login" element={<AdminLogin setIsAdmin={setIsAdmin} setToken={setToken} setUser={setUser} />} />
+                  <Route path="dashboard" element={isAdmin ? <AdminDashboard setIsAdmin={setIsAdmin} setToken={setToken} /> : <Navigate to="/admin/login" />} />
                   {/* Admin Flow */}
-                  <Route path="parkingusers" element={isAdmin ? <AdminParkingUserDashboard/> : <Navigate to="/login" />} />
+                  <Route path="parkingusers" element={isAdmin ? <AdminParkingUserDashboard /> : <Navigate to="/login" />} />
                 </Routes>
               </Box>
             </MuiThemeProvider>
           }
         />
         <Route
-        path="*"
-        element={
-          <MuiThemeProvider theme={darkTheme}>
-            <CssBaseline />
-            <NotFound />
-          </MuiThemeProvider>
-        }
-      />
+          path="*"
+          element={
+            <MuiThemeProvider theme={darkTheme}>
+              <CssBaseline />
+              <NotFound />
+            </MuiThemeProvider>
+          }
+        />
       </Routes>
       <Footer />
     </div>
@@ -312,9 +315,9 @@ function App() {
   return (
     <CustomThemeProvider>
       {/* <AuthProvider>  */}
-        <Router>
-          <AppWrapper />
-        </Router>
+      <Router>
+        <AppWrapper />
+      </Router>
       {/* </AuthProvider> */}
     </CustomThemeProvider>
   );

@@ -4,12 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
 import ThemeToggle from '../ThemeToggle/ThemeToggle';
 import logo from '../../assets/logoo.png';
+import axios from 'axios';
 import './NavbarFeat.css';
 // import { useAuth } from '../../context/AuthContext';
 
 // const { logout } = useAuth();
 
-const NavbarFeat = ({ user, setUser, setToken }) => {
+const NavbarFeat = ({ user, setUser, setToken, setIsAdmin, isAdmin }) => {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -17,13 +18,20 @@ const NavbarFeat = ({ user, setUser, setToken }) => {
   const location = useLocation();
   const navRef = useRef(null);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-    setToken(null);
-    // useAuth.logout();
-    navigate("/");
-  };
+  const handleLogout = async () => {
+      try {
+        await axios.post('/api/users/logout', { withCredentials: true });
+      } catch (error) {
+        console.error('Logout API call failed:', error);
+        // Optionally, show a message or handle failure
+      }
+      localStorage.removeItem("token");
+      setUser(null);
+      setIsAdmin(false);
+      setToken(null);
+      // useAuth.logout();
+      navigate("/");
+    };
 
   // Handle scroll effect
   useEffect(() => {
@@ -121,7 +129,7 @@ const NavbarFeat = ({ user, setUser, setToken }) => {
         </div>
 
         <div className="navbar-feat-auth-buttons">
-          {user ? (
+          {(user || isAdmin) ? (
             <>
               <motion.span
                 className="navbar-feat-welcome-user"
@@ -129,7 +137,7 @@ const NavbarFeat = ({ user, setUser, setToken }) => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                Welcome, {user.username}
+                Welcome, {user ? user.username : 'admin'}
               </motion.span>
               <motion.button
                 className="navbar-feat-logout-btn"
@@ -208,10 +216,10 @@ const NavbarFeat = ({ user, setUser, setToken }) => {
               ))}
             </div>
             <div className="navbar-feat-mobile-auth-buttons">
-              {user ? (
+              {user || isAdmin ? (
                 <>
                   <div >
-                    <button className="navbar-feat-mobile-welcome-user">Welcome, {user.name || user.email}</button>
+                    <button className="navbar-feat-mobile-welcome-user">Welcome, {user ? user.name || user.email : 'admin'}</button>
                   </div>
                   <button
                     className="navbar-feat-logout-btn"

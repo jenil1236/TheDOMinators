@@ -7,24 +7,24 @@ const router = express.Router();
 // 🔑 Admin login endpoint (validates master key)
 router.get('/login', (req, res) => {
   const { key } = req.query;
-  // console.log(key);
   const masterKeys = process.env.ADMIN_KEYS?.split(',') || [];
 
   if (masterKeys.includes(key)) {
     req.session.isAdmin = true;
 
-    req.session.save(err => {
-      if (err) {
-        console.error('Session save error:', err);
-        return res.status(500).json({ message: 'Session error' });
-      }
-
-      return res.status(200).json({ message: 'Admin authenticated successfully' });
-    });
+    const responseData = {
+      user: null,
+      isAdmin: true,
+      token: 'abc',
+      message: 'Admin authenticated successfully'
+    };
+    console.log('Response data:', responseData);  // <---- LOG HERE);
+    res.status(200).json(responseData);
   } else {
+    console.log('Invalid master key:', key);  // <---- LOG INVALID KEY
     res.status(401).json({ message: 'Invalid master key' });
   }
-});
+})
 
 
 

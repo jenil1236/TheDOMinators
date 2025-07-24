@@ -58,10 +58,10 @@ export const loginUser = (req, res) => {
     email: req.user.email,
   }
   const token = jwt.sign(
-    { userId: user._id }, // Payload
-    process.env.JWT_SECRET, // Secret key (must be set in .env)
-    { expiresIn: "7d" }     // Optional: token expiry
-  );
+      { userId: user ? user._id : 'admin'}, // Payload
+      process.env.JWT_SECRET, // Secret key (must be set in .env)
+      { expiresIn: "7d" }     // Optional: token expiry
+    );
   res.status(200).json({
     user,
     token,
@@ -71,19 +71,18 @@ export const loginUser = (req, res) => {
 };
 
 export const logoutUser = (req, res) => {
-  req.logout((err) => {
+  req.session.destroy((err) => {
     if (err) return res.status(500).json({ message: "Logout failed" });
-    req.session.isAdmin = false;
-    req.session.destroy(() => {
-      res.clearCookie("connect.sid");
-      res.status(200).json({ message: "Logged out successfully" });
-    });
+
+    res.clearCookie("connect.sid"); // Name depends on session config
+    res.status(200).json({ message: "Logged out successfully" });
   });
 };
 
+
 export const getMe = (req, res) => {
   if (req.isAdmin)
-    return res.json({ isAdmin: req.isAdmin });
+    return res.json({ isAdmin: true, user: null });
   else if (req.isAuthenticated()) {
     return res.status(200).json({
       user: {
