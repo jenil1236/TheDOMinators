@@ -13,7 +13,8 @@ import HomePage from "./pages/HomePage";
 import Footer from "./components/Footer/Footer";
 import ChatBot from "./components/user/ChatBot/ChatBot";
 import Combii from "./components/Calculator/Combii";
-import BusStopMarkers from "./components/user/BusStopMarkers/BusStopMarkers";
+// import BusStopMarkers from "./components/user/BusStopMarkers/BusStopMarkers";
+import BusStopMarkers from "./components/admin/BusStopMarkers/BusStopMarkers";
 import AuthPage from "./pages/AuthPage";
 import PasswordRecovery from "./pages/PasswordRecovery";
 import PostRidePage from "./pages/PostRidePage";
@@ -158,11 +159,12 @@ function AppWrapper() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <Router>
-        <AppWrapper />
-      </Router>
-    </ThemeProvider>
+    // <ThemeProvider>
+    //   <Router>
+    //     <AppWrapper />
+    //   </Router>
+    // </ThemeProvider>
+    <BusStopMarkers/>
   );
 }
 
