@@ -28,15 +28,13 @@ const AuthPage = ({ authType, setUser, setToken, setIsAdmin }) => {
         ? { email: formData.email, password: formData.password }
         : formData;
 
-      const res = await axios.post(endpoint, payload);
+      const res = await axios.post(endpoint, payload, {withCredentials: true});
 
       // Optional: only if your backend sends a token (JWT-based)
         if(res.data.token) {
 
           localStorage.setItem("token", res.data.token);
-          setToken(res.data.token);
-          console.log("Token state updated:", token);
-          
+          setToken(res.data.token);          
           // ✅ Fetch user from session and update AuthContext
           
           setUser(res.data.user); // optional, only if needed in this component

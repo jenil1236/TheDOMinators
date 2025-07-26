@@ -20,7 +20,7 @@ const Navbar = ({ user, setUser, setToken, setisAdmin, isAdmin }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.get('/api/users/logout', { withCredentials: true });
+      await axios.post('/api/users/logout', { withCredentials: true });
     } catch (error) {
       console.error('Logout API call failed:', error);
       // Optionally, show a message or handle failure
