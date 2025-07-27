@@ -116,6 +116,19 @@ function AdminDashboard({setIsAdmin}) {
         >
           View BRTS Stops
         </DashboardButton>
+        <DashboardButton
+          variant="contained"
+          startIcon={<People />}
+          onClick={() => navigate("/admin/reports")}
+          sx={{
+            background: `linear-gradient(135deg, ${darkTheme.accent} 0%, #3ab795 100%)`,
+            '&:hover': {
+              background: `linear-gradient(135deg, #3ab795 0%, #2a9d7f 100%)`
+            }
+          }}
+        >
+          View Reports
+        </DashboardButton>
       </Stack>
     </Box>
   );

@@ -17,12 +17,12 @@ const Footer = () => {
     { title: 'Car Pooling', path: '/car-pooling' },
     { title: 'Route + Fare', path: '/route-calculator' },
     { title: 'Bus Booking', path: '/bus-info' },
-    { title: 'Future Transport', path: '/future-transport' }
+    { title: 'Future Transport', path: '/future-transport' },
   ];
   
   const infoLinks = [
     { title: 'About Us', path: '#' },
-    { title: 'Contact', path: '#' },
+    { title: 'Contact / Report', path: '/reports' },
     { title: 'Privacy Policy', path: '#' },
     { title: 'Terms of Service', path: '#' },
     { title: 'Careers', path: '#' }
@@ -70,6 +70,7 @@ const Footer = () => {
               </motion.li>
             ))}
           </ul>
+          
         </div>
         
         <div className="footer-column">

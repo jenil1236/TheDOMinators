@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 // import { useAuth } from "./context/AuthContext";
 import { 
   Box, 
-  Button, 
   AppBar, 
   Toolbar, 
   Typography,
@@ -13,9 +12,6 @@ import {
   LocalParking,
   Person,
   AdminPanelSettings,
-  Login,
-  HowToReg,
-  Logout
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 

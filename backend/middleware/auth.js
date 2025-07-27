@@ -1,5 +1,7 @@
+import User from "../models/User.js";
+
 export const protect = (req, res, next) => {
-  if (req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
         req.session.isAdmin = false;
         req.isAdmin = false;
         return next();
@@ -10,13 +12,10 @@ export const protect = (req, res, next) => {
     res.status(401).json({ message: "Not authorized" });
 };
 
-export const isAdmin = (req, res, next) => {
-    const adminKeys = process.env.ADMIN_KEYS.split(',');
-    const { key } = req.body;
-    if (key && adminKeys.includes(key)) {
-        req.session.isAdmin = true;
-        return next();
-    }
-    res.status(401).json({ message: "Not authorized" });
+export const BanUser = async (req, res, next) => {
+    const id = req.user._id;
+    const user = await User.findById(id);
+    if (user.isBanned === true)
+        return res.status(403).json({ message: "You have been banned " })
+    return next();
 }
-

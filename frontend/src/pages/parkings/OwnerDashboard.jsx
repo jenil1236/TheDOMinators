@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import Skeleton from '@mui/material/Skeleton';
 import ParkingNavbar from "../../ParkingNavbar";

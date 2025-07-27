@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import Otp from "../models/Otp.js";
 import { sendOTP } from "../utils/sendMail.js";
 import CarpoolUser from "../models/CarpoolUser.js";
+import Report from "../models/reportUser.js";
 import jwt from 'jsonwebtoken';
 
 export const registerUser = async (req, res, next) => {
@@ -124,3 +125,17 @@ export const resetPassword = async (req, res) => {
   await Otp.deleteMany({ email });
   res.json({ message: "Password reset successful" });
 };
+
+export const reportUser = async (req, res) => {
+  try {
+    console.log(req.body);
+    const {reportedUser, comment, username} = req.body;
+    const report = new Report({username, reportedUser, comment});
+    await report.save();
+    res.status(200).json('Report was submitted successfully');
+  } catch (e) {
+    console.log(e);
+    res.status(500).json('Report submission failed');
+  }
+  
+}

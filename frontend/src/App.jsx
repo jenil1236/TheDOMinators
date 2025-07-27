@@ -33,8 +33,8 @@ import GetYourChats from "./pages/GetYourChats";
 import ChatRidesPage from "./pages/chatRidesPage";
 import NavbarFeat from "./components/NavbarFeat/NavbarFeat";
 import FutureTransport from "./pages/FutureTransport";
+import Report from "./pages/Report";
 
-import AdminLogin from "./pages/users/AdminLogin";
 
 // User Pages
 import UserDashboard from "./pages/parkings/UserDashboard";
@@ -50,8 +50,10 @@ import ParkingDetails from "./pages/parkings/ParkingDetails";
 import LandingPage from "./pages/parkings/LandingPage";
 
 // Admin
+import AdminLogin from "./pages/users/AdminLogin";
 import AdminDashboard from "./pages/users/AdminDashboard";
 import AdminParkingUserDashboard from "./pages/users/AdminParkingUserDashboard";
+import AdminReports from "./pages/users/AdminReports";
 
 // 404 Page
 import NotFound from "./NotFound";
@@ -72,28 +74,6 @@ function AppWrapper() {
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
 
-
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const token = localStorage.getItem("token");
-  //     if (token) {
-  //       try {
-  //         const res = await axios.get("/api/users/me", {
-  //           headers: { Authorization: `Bearer ${token}` },
-  //         });
-  //         setUser(res.data.user); 
-  //         console.log(res.data)
-  //         setIsAdmin(res.data.isAdmin);
-  //       } catch (err) {
-  //         setUser(null);
-  //         setIsAdmin(false);
-  //         localStorage.removeItem("token");
-  //       }
-  //     }
-  //     setIsLoading(false);
-  //   };
-  //   fetchUser();
-  // }, []);
   useEffect(() => {
     const fetchUser = async () => {
       if (!token) {
@@ -118,15 +98,6 @@ function AppWrapper() {
     };
     fetchUser();
   }, [token]);
-
-  // useEffect(() => {
-  //   console.log('Token changed:', token);
-  //   if (!token) {
-  //     setUser(null);
-  //     return;
-  //   }
-  //   // fetch user using token
-  // }, [token]);
 
   if (isLoading) {
     return (
@@ -226,6 +197,25 @@ function AppWrapper() {
         >
           <Route path=":chatId" element={<GetYourChats />} />
         </Route>
+
+        <Route
+          path="/reports/"
+          element={<MuiThemeProvider theme={darkTheme}>
+            <CssBaseline />
+            <Box component="main"
+              sx={{
+                minHeight: 'calc(100vh - 64px)',
+                padding: { xs: '16px', md: '24px' },
+                background: darkTheme.palette.background.default,
+                color: darkTheme.palette.text.primary
+              }}>
+
+              {user ? <Report user={user}/> : <Navigate to="/" />}
+            </Box>
+          </MuiThemeProvider>
+          }
+        />
+
         <Route
           path="/parkings/*"
           element={
@@ -291,6 +281,7 @@ function AppWrapper() {
                   <Route path="dashboard" element={isAdmin ? <AdminDashboard setIsAdmin={setIsAdmin} setToken={setToken} /> : <Navigate to="/admin/login" />} />
                   {/* Admin Flow */}
                   <Route path="parkingusers" element={isAdmin ? <AdminParkingUserDashboard /> : <Navigate to="/login" />} />
+                  <Route path="reports" element={isAdmin ? <AdminReports/> : <Navigate to="/login" />} />
                 </Routes>
               </Box>
             </MuiThemeProvider>
