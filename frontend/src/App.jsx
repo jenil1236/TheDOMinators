@@ -35,6 +35,7 @@ import NavbarFeat from "./components/NavbarFeat/NavbarFeat";
 import FutureTransport from "./pages/FutureTransport";
 
 import AdminLogin from "./pages/users/AdminLogin";
+import AdminPage from "./pages/users/AdminPage";
 
 // User Pages
 import UserDashboard from "./pages/parkings/UserDashboard";
@@ -50,7 +51,7 @@ import ParkingDetails from "./pages/parkings/ParkingDetails";
 import LandingPage from "./pages/parkings/LandingPage";
 
 // Admin
-import AdminDashboard from "./pages/users/AdminDashboard";
+import AdminDashboard from "./pages/users/AdminSidebar";
 import AdminParkingUserDashboard from "./pages/users/AdminParkingUserDashboard";
 
 // 404 Page
@@ -139,12 +140,12 @@ function AppWrapper() {
   return (
     <div className="app">
       {/* Show Navbar only on homepage */}
-      {location.pathname === "/" ? (
+      {isAdmin ? "" : location.pathname === "/" ? (
         <Navbar user={user} setUser={setUser} setIsAdmin={setIsAdmin} isAdmin={isAdmin} setToken={setToken} />
       ) : (
         <NavbarFeat user={user} setUser={setUser} setIsAdmin={setIsAdmin} isAdmin={isAdmin} setToken={setToken} />
       )}
-      <ChatBot />
+      {isAdmin ? "" : <ChatBot />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/route-calculator" element={<Combii />} />
@@ -225,7 +226,14 @@ function AppWrapper() {
           element={user ? <GetYourChats /> : <Navigate to="/login" />}
         >
           <Route path=":chatId" element={<GetYourChats />} />
+
+
         </Route>
+        <Route path="/admin/login" element={<AdminLogin setIsAdmin={setIsAdmin} setToken={setToken} setUser={setUser} />} />
+        <Route path="/admin/*" element={isAdmin ? <AdminPage isAdmin={isAdmin} setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken}/> : <NotFound/>} />
+        {/* <Route path="/admin/dashboard" element={isAdmin ? <AdminDashboard setIsAdmin={setIsAdmin} setToken={setToken} /> : <NotFound/>} />
+        <Route path="/admin/parkingusers" element={isAdmin ? <AdminParkingUserDashboard /> : <NotFound/>} />
+        <Route path="/admin/stops" element={isAdmin ? <AdminBusStopMarkers /> : <NotFound/>} /> */}
         <Route
           path="/parkings/*"
           element={
@@ -272,31 +280,6 @@ function AppWrapper() {
             </MuiThemeProvider>
           }
         />
-        {/* <Route path="admin/stops" element={isAdmin ? <AdminBusStopMarkers /> : <Navigate to="/login" />} /> */}
-
-        <Route
-          path="/admin/*"
-          element={
-            <MuiThemeProvider theme={darkTheme}>
-              <CssBaseline />
-              <Box component="main"
-                sx={{
-                  minHeight: 'calc(100vh - 64px)',
-                  padding: { xs: '16px', md: '24px' },
-                  background: darkTheme.palette.background.default,
-                  color: darkTheme.palette.text.primary
-                }}>
-                <Routes>
-                  <Route path="login" element={<AdminLogin setIsAdmin={setIsAdmin} setToken={setToken} setUser={setUser} />} />
-                  <Route path="dashboard" element={isAdmin ? <AdminDashboard setIsAdmin={setIsAdmin} setToken={setToken} /> : <Navigate to="/admin/login" />} />
-                  {/* Admin Flow */}
-                  <Route path="parkingusers" element={isAdmin ? <AdminParkingUserDashboard /> : <Navigate to="/login" />} />
-                  <Route path="stops" element={isAdmin ? <AdminBusStopMarkers /> : <Navigate to="/login" />} />
-                </Routes>
-              </Box>
-            </MuiThemeProvider>
-          }
-        />
         <Route
           path="*"
           element={
@@ -307,7 +290,7 @@ function AppWrapper() {
           }
         />
       </Routes>
-      <Footer />
+      {isAdmin?"":<Footer />}
     </div>
   );
 }

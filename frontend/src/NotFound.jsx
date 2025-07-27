@@ -29,18 +29,6 @@ export default function NotFound() {
       <Typography variant="h4" sx={{ color: '#4DA6FF' }}>
         Page Not Found
       </Typography>
-      <Button 
-        component={Link} 
-        to="/parkings" 
-        variant="contained"
-        size="large"
-        sx={{
-          mt: 2,
-          fontSize: '1.1rem',
-        }}
-      >
-        Go to Home
-      </Button>
     </Box>
   );
 }

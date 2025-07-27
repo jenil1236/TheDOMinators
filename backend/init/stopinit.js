@@ -1,15 +1,46 @@
 import mongoose from "mongoose";
 import Stop from "../models/stop.js";
+import dotenv from "dotenv";
+dotenv.config(); 
 
-main()
-.then(()=>{
-    console.log("connected to database");
-})
-.catch(err => console.log(err));
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, 
+    // await mongoose.connect('mongodb://localhost:27017/TransitFlow', {
+     
+    );
+    console.log(`MongoDB connected: ${mongoose.connection.host}`);
+  } catch (error) {
+    console.error("MongoDB connection failed:", error);
+    process.exit(1);
+  }
+};
 
-async function main(){
-    await mongoose.connect('mongodb://127.0.0.1:27017/TransitFlow');
-}
+connectDB()
+  .then(() => {
+    console.log("Database connected successfully");
+    // server.listen(PORT, () => {
+    //   console.log(`🚀 Server is running on port ${PORT}`);
+    // });
+  })
+  .catch((error) => {
+    console.error("Database connection failed:", error);
+  });
+
+
+
+
+
+// main()
+// .then(()=>{
+//     console.log("connected to database");
+// })
+// .catch(err => console.log(err));
+
+// async function main(){
+//     await mongoose.connect('mongodb://127.0.0.1:27017/TransitFlow');
+// }
+
 
 Stop.deleteMany({})
 .then(()=>{
