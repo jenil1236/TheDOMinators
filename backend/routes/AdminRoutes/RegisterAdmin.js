@@ -1,6 +1,7 @@
 import express from 'express';
 import Parking from '../../models/parking.js';
 import ParkingUser from '../../models/parkinguser.js';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -11,11 +12,16 @@ router.get('/login', (req, res) => {
 
   if (masterKeys.includes(key)) {
     req.session.isAdmin = true;
+    const token = jwt.sign(
+          { userId: 'admin'}, // Payload
+          process.env.JWT_SECRET, // Secret key (must be set in .env)
+          { expiresIn: "7d" }     // Optional: token expiry
+        );
 
     const responseData = {
       user: null,
       isAdmin: true,
-      token: 'abc',
+      token,
       message: 'Admin authenticated successfully'
     };
     console.log('Response data:', responseData);  // <---- LOG HERE);

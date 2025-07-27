@@ -119,14 +119,14 @@ function AppWrapper() {
     fetchUser();
   }, [token]);
 
-  useEffect(() => {
-    console.log('Token changed:', token);
-    if (!token) {
-      setUser(null);
-      return;
-    }
-    // fetch user using token
-  }, [token]);
+  // useEffect(() => {
+  //   console.log('Token changed:', token);
+  //   if (!token) {
+  //     setUser(null);
+  //     return;
+  //   }
+  //   // fetch user using token
+  // }, [token]);
 
   if (isLoading) {
     return (

@@ -6,48 +6,55 @@ import { sendOTP } from "../utils/sendMail.js";
 import CarpoolUser from "../models/CarpoolUser.js";
 import jwt from 'jsonwebtoken';
 
-export const registerUser = async (req, res) => {
+export const registerUser = async (req, res, next) => {
   const { username, email, password } = req.body;
 
   try {
+    // 🚨 Validation
     if (!username || !email || !password) {
       return res.status(400).json({ message: "Please fill all fields" });
     }
 
+    // ❌ User already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // 👤 Create new user
-    const user = await User.create({ username, email, password });
+    // 👤 Create user
+    const newUser = new User({ username, email, password });
+    await newUser.save();
 
-    // 🚗 Create linked CarpoolUser (or any related schema)
-    const carpoolUser = new CarpoolUser({ user: user._id });
+    // 🚗 Create linked CarpoolUser
+    const carpoolUser = new CarpoolUser({ user: newUser._id });
     await carpoolUser.save();
 
-    // 🔐 Create JWT token
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    // ✅ Log the user in (creates req.user and session)
+    req.login(newUser, async (err) => {
+      if (err) return next(err); // use express error handler
 
-    // ✅ Send response
-    res.status(201).json({
-      user: {
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-      },
-      token, // <-- Include token in response
-      message: "User registered successfully",
-      isAdmin: req.session?.isAdmin || false
+      // 🎟️ JWT token (optional if you're also using session)
+      const token = jwt.sign(
+        { userId: newUser._id },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+
+      return res.status(201).json({
+        user: {
+          _id: newUser._id,
+          username: newUser.username,
+          email: newUser.email,
+        },
+        token,
+        message: "User registered and logged in successfully",
+        isAdmin: req.session?.isAdmin || false
+      });
     });
 
   } catch (error) {
     console.error("Registration error:", error);
-    res.status(500).json({ message: "Error registering user" });
+    return res.status(500).json({ message: "Error registering user" });
   }
 };
 
