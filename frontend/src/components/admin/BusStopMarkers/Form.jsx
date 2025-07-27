@@ -91,95 +91,100 @@ function Form({ Stop, setStops, mode }) {
     return (
         <>
             <div className="form-container">
-                  <h2 className="form-title">
-    {mode === "add" ? "Add New Bus Stop" : "Edit Bus Stop"}
-  </h2>
+                <h2 className="form-title">
+                    {mode === "add" ? "Add New Bus Stop" : "Edit Bus Stop"}
+                </h2>
                 <form onSubmit={mode === "update" ? handleUpdateSubmit : handleAddSubmit}>
-                    <label htmlFor="name">
-                        Name:
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value={stop.name}
-                            placeholder="Enter name of the stop"
-                            onChange={handleStop}
-                        />
-                    </label>
-                    <label htmlFor="details">
-                        Details:
-                        <input
-                            type="text"
-                            id="details"
-                            name="details"
-                            value={stop.details}
-                            placeholder="Enter details of the stop (address)"
-                            onChange={handleStop}
-                            disabled={mode === "update"}
-                        />
-                    </label>
-                    <label htmlFor="lat">
-                        Latitude:
-                        <input type="text" name="lat" id="lat" value={stop.lat} placeholder="Enter latitude" onChange={handleStop} disabled={mode === "update"} />
-                    </label>
-                    <label htmlFor="lng">
-                        Longitude:
-                        <input type="text" name="lng" id="lng" value={stop.lng} placeholder="Enter longitude" onChange={handleStop} disabled={mode === "update"} />
-                    </label>
-                    {mode === "add" && (
-                        <>
-                            <button type="button" onClick={handleToggleLocate}>
-                                {showLocate ? "HIDE LOCATE" : "LOCATE"}
-                            </button>
-                            {showLocate && <Locate updateStop={updateStop} />}
-                        </>
-                    )}
-                    <h3>Timetable</h3>
-                    {stop.timetable.map((t, index) => (
-                        <div data-id={t._id} key={t._id}>
-                            <label htmlFor={`bus_number_${index}`}>
-                                Bus number:
-                                <input
-                                    type="text"
-                                    id={`bus_number_${index}`}
-                                    value={t.bus_number}
-                                    onChange={(e) =>
-                                        handleTimetableChange(index, "bus_number", e.target.value)
-                                    }
-                                />
-                            </label>
-                            <label htmlFor={`destination_${index}`}>
-                                Destination:
-                                <input
-                                    type="text"
-                                    id={`destination_${index}`}
-                                    value={t.destination}
-                                    onChange={(e) =>
-                                        handleTimetableChange(index, "destination", e.target.value)
-                                    }
-                                />
-                            </label>
-                            <label htmlFor={`time_${index}`}>
-                                Time:
-                                <input
-                                    type="text"
-                                    id={`time_${index}`}
-                                    value={t.time}
-                                    onChange={(e) =>
-                                        handleTimetableChange(index, "time", e.target.value)
-                                    }
-                                />
-                            </label>
-                            <div className="button-group">
-                                <button type="button" onClick={() => handleDelete(index)} className="delete-button">
-                                    DELETE
+                    <div className="basic-info-section">
+                        <label htmlFor="name">
+                            Name:
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                value={stop.name}
+                                placeholder="Enter name of the stop"
+                                onChange={handleStop}
+                            />
+                        </label>
+                        <label htmlFor="details">
+                            Details:
+                            <input
+                                type="text"
+                                id="details"
+                                name="details"
+                                value={stop.details}
+                                placeholder="Enter details of the stop (address)"
+                                onChange={handleStop}
+                                disabled={mode === "update"}
+                            />
+                        </label>
+                        <label htmlFor="lat">
+                            Latitude:
+                            <input type="text" name="lat" id="lat" value={stop.lat} placeholder="Enter latitude" onChange={handleStop} disabled={mode === "update"} />
+                        </label>
+                        <label htmlFor="lng">
+                            Longitude:
+                            <input type="text" name="lng" id="lng" value={stop.lng} placeholder="Enter longitude" onChange={handleStop} disabled={mode === "update"} />
+                        </label>
+                        {mode === "add" && (
+                            <>
+                                <button type="button" onClick={handleToggleLocate} className="locate-button">
+                                    {showLocate ? "HIDE LOCATE" : "LOCATE ON MAP"}
                                 </button>
-                            </div>
-                        </div>
-                    ))}
+                                {showLocate && <Locate updateStop={updateStop} />}
+                            </>
+                        )}
+                    </div>
 
-                    <h3>Add new</h3>
-                    <div>
+                    <div className="timetable-section">
+                        <h3>Existing Timetable</h3>
+                        {stop.timetable.map((t, index) => (
+                            <div className="timetable-item" data-id={t._id} key={t._id}>
+                                <label htmlFor={`bus_number_${index}`}>
+                                    Bus number:
+                                    <input
+                                        type="text"
+                                        id={`bus_number_${index}`}
+                                        value={t.bus_number}
+                                        onChange={(e) =>
+                                            handleTimetableChange(index, "bus_number", e.target.value)
+                                        }
+                                    />
+                                </label>
+                                <label htmlFor={`destination_${index}`}>
+                                    Destination:
+                                    <input
+                                        type="text"
+                                        id={`destination_${index}`}
+                                        value={t.destination}
+                                        onChange={(e) =>
+                                            handleTimetableChange(index, "destination", e.target.value)
+                                        }
+                                    />
+                                </label>
+                                <label htmlFor={`time_${index}`}>
+                                    Time:
+                                    <input
+                                        type="text"
+                                        id={`time_${index}`}
+                                        value={t.time}
+                                        onChange={(e) =>
+                                            handleTimetableChange(index, "time", e.target.value)
+                                        }
+                                    />
+                                </label>
+                                <div className="button-group">
+                                    <button type="button" onClick={() => handleDelete(index)} className="delete-button">
+                                        DELETE
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="timetable-section">
+                        <h3>Add New Timetable Entry</h3>
                         <label htmlFor="bus_number">
                             Bus number:
                             <input
@@ -214,14 +219,19 @@ function Form({ Stop, setStops, mode }) {
                             />
                         </label>
                         <div className="button-group">
-                            <button type="button" onClick={handleAdd} disabled={!obj.bus_number || !obj.destination || !obj.time} className="timetable-add">
-                                ADD
+                            <button 
+                                type="button" 
+                                onClick={handleAdd} 
+                                disabled={!obj.bus_number || !obj.destination || !obj.time} 
+                                className="timetable-add"
+                            >
+                                ADD TO TIMETABLE
                             </button>
                         </div>
                     </div>
 
                     <button type="submit" className="submit-button">
-                        {mode === "add" ? "ADD" : "UPDATE"}
+                        {mode === "add" ? "ADD BUS STOP" : "UPDATE BUS STOP"}
                     </button>
                 </form>
             </div>

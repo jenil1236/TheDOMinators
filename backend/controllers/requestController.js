@@ -191,6 +191,9 @@ export const getSentRequests = async(req, res) => {
 };
 
 export const getAllJoinRequestsAdmin = async (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).json({ message: 'Unauthorized admin access' });
+  }
   try {
     const requests = await JoinRequest.find()
       .populate({

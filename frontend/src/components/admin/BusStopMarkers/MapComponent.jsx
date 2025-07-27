@@ -18,7 +18,7 @@ const MapComponent = ({ busStops, focus }) => {
           map,
           title: stop.name,
           icon: {
-            url: "./bus_stop_icon.png",
+            url: "/bus_stop_icon.png",
             scaledSize: new window.google.maps.Size(32, 32),
           },
         });
@@ -28,7 +28,7 @@ const MapComponent = ({ busStops, focus }) => {
             <div class="title">${stop.name}</div>
             ${stop.timetable.map((bus) => `
               <div class="bus-item">
-                <div class="bus-icon"><img src="./bus.svg" alt="Bus" width="16" height="16"></div>
+                <div class="bus-icon"><img src="/bus.svg" alt="Bus" width="16" height="16"></div>
                 <div class="bus-badge badge-blue">${bus.bus_number}</div>
                 <div class="bus-details">
                   <div class="destination">${bus.destination}</div>

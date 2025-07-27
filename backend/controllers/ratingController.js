@@ -124,6 +124,9 @@ export const getUserRatings = async (req, res) => {
 
 // ✅ Admin: Get all ratings in the system
 export const getAllRatingsAdmin = async (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).json({ message: 'Unauthorized admin access' });
+  }
   try {
     const ratings = await Rating.find()
       .populate({

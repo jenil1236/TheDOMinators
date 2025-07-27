@@ -87,7 +87,7 @@ const HomePage = () => {
       title: "Smart Parking",
       description: "Find available parking spots in real-time across campus or city centers. Reserve your spot in advance and get directions directly to your parking space. Our AI-powered system predicts parking availability and guides you to the nearest open spot.",
       video: smartParking,
-      link: "/smart-parking"
+      link: "/parkings"
     },
     {
       title: "Car Pooling",

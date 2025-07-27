@@ -1,6 +1,9 @@
 #map {
     height: 100vh;
-    width: 70vw;
+    width: 65vw;
+    margin:auto;
+    position: absolute;
+    left:30px;
 }
 
 /* Optional: Styling the InfoWindow */
@@ -82,6 +85,7 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 200px;
+    color: black;
 }
 
 .time {

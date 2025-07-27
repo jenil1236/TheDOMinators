@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+// import { useAuth } from "../context/AuthContext";
 
 const Register = ({ setUser }) => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const Register = ({ setUser }) => {
     password: "",
   });
   const [error, setError] = useState("");
+  // const { refreshAuth } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -18,10 +20,19 @@ const Register = ({ setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/users/register", formData);
+      const res = await axios.post("/api/users/register");
       localStorage.setItem("token", res.data.token);
+        setToken(res.data.token);;
+        setToken(res.data.token);;
       console.log(res.data);
       setUser(res.data);
+      // const res2 = await axios.post("/api/users/register", formData, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   withCredentials: true
+      // });
+      // await refreshAuth(); // ✅ fetch current user from session
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");

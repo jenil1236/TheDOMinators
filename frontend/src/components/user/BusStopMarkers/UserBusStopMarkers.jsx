@@ -3,9 +3,9 @@ import darkTheme from '../../utils/theme';
 import MapComponent from './MapComponent';
 import Sidebar from './Sidebar';
 import { useState, useEffect } from 'react';
-import "./BusStopMarkers.css";
+import "./UserBusStopMarkers.css";
 
-function BusStopMarkers() {
+function UserBusStopMarkers() {
   const [busStops, setBusStops] = useState([]);
   const [busData, setData] = useState([]);
 
@@ -49,7 +49,7 @@ function BusStopMarkers() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <div className="layout-container">
+      <div className="user-layout-container">
         <MapComponent busStops={busStops} />
         <Sidebar busData={busData} setData={setData} />
       </div>
@@ -57,4 +57,4 @@ function BusStopMarkers() {
   );
 }
 
-export default BusStopMarkers;
+export default UserBusStopMarkers;

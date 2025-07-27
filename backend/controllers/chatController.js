@@ -180,7 +180,7 @@ export const getOrCreateChat = async (req, res) => {
     if (currentUserId.toString() === otherUserId.toString()) {
       return res.status(400).json({ message: "Cannot start a chat with yourself." });
     }
-// aa
+    // aa
     // ✅ Ensure other user exists
     const otherUser = await CarpoolUser.findById(otherUserId);
     if (!otherUser) {
@@ -228,23 +228,23 @@ export const getOrCreateChat = async (req, res) => {
 export const sendMessage = async (req, res) => {
   try {
     const { chatId, text } = req.body;
-const senderUser = await CarpoolUser.findOne({ user: req.user._id });
-if (!senderUser) {
-  return res.status(404).json({ message: "Carpool profile not found." });
-}
-const senderId = senderUser._id;
+    const senderUser = await CarpoolUser.findOne({ user: req.user._id });
+    if (!senderUser) {
+      return res.status(404).json({ message: "Carpool profile not found." });
+    }
+    const senderId = senderUser._id;
 
-const chat = await Chat.findById(chatId);
+    const chat = await Chat.findById(chatId);
     if (!chat) return res.status(404).json({ message: "Chat not found" });
 
-// Check if sender is a participant (convert to string)
-const isParticipant = chat.participants.some(participantId =>
-  participantId.toString() === senderId.toString()
-);
+    // Check if sender is a participant (convert to string)
+    const isParticipant = chat.participants.some(participantId =>
+      participantId.toString() === senderId.toString()
+    );
 
-if (!isParticipant) {
-  return res.status(403).json({ message: "You are not a participant in this chat." });
-}
+    if (!isParticipant) {
+      return res.status(403).json({ message: "You are not a participant in this chat." });
+    }
 
     const message = new Message({
       chat: chatId,
@@ -375,7 +375,9 @@ export const getChatMessages = async (req, res) => {
 };
 
 export const getAllMessages = async (req, res) => {
-  try {
+  if (!req.isAdmin) {
+    return res.status(403).json({ message: 'Unauthorized admin access' });
+  } try {
     const messages = await Message.find()
       .populate({
         path: "sender",

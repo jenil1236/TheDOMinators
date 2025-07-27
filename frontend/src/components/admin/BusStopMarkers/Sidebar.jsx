@@ -1,7 +1,7 @@
 import "./Sidebar.css";
 import Modal from './Modal';
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion,AnimatePresence  } from 'framer-motion';
 
 function Sidebar({ busStops, setStops, focus, setFocus }) {
     const [showModal, setShowModal] = useState(false);
@@ -63,46 +63,62 @@ function Sidebar({ busStops, setStops, focus, setFocus }) {
                         value={query}
                         onChange={(e) => handleSearch(e.target.value)}
                     />
-                    <button type="button" onClick={handleAdd}>ADD STOP</button>
+                    <button className="add-button" type="button" onClick={handleAdd}>ADD STOP</button>
                 </div>
                 <ul type="none">
-                    {filteredStops.map((stop, index) => (
-                        <motion.li
-                            className="stop"
-                            data-id={stop._id}
-                            key={stop._id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.05, duration: 0.3, ease: 'easeOut' }}
-                            onClick={() => handleFocus(stop._id)}
-                        >
-                            <h3>{stop.name}</h3>
-                            <p>{stop.details}</p>
-                            <button
-                                type="button"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleUpdate(stop._id);
-                                }}
+                    <AnimatePresence>
+                        {filteredStops.length > 0 ? (
+                            filteredStops.map((stop, index) => (
+                                <motion.li
+                                    className="stop"
+                                    data-id={stop._id}
+                                    key={stop._id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.9 }}
+                                    transition={{ delay: index * 0.05, duration: 0.3, ease: 'easeOut' }}
+                                    onClick={() => handleFocus(stop._id)}
+                                >
+                                    <h3>{stop.name}</h3>
+                                    <p>{stop.details}</p>
+                                    <div className="button-group">
+                                        <button
+                                            type="button"
+                                            className="update"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleUpdate(stop._id);
+                                            }}
+                                        >
+                                            UPDATE
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="delete"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDelete(stop._id);
+                                            }}
+                                        >
+                                            DELETE
+                                        </button>
+                                    </div>
+                                </motion.li>
+                            ))
+                        ) : (
+                            <motion.div
+                                className="no-results"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.3 }}
                             >
-                                UPDATE
-                            </button>
-
-                            <button
-                                type="button"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDelete(stop._id);
-                                }}
-                            >
-                                DELETE
-                            </button>
-                        </motion.li>
-                    ))}
+                                No Bus Stops Found
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </ul>
             </div>
-            <Modal currStop={Stop} show={showModal} onClose={() => setShowModal(false)} setStops={setStops} mode={mode}>
-            </Modal>
+            <Modal currStop={Stop} show={showModal} onClose={() => setShowModal(false)} setStops={setStops} mode={mode} />
         </>
     );
 }

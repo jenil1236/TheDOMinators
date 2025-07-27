@@ -4,93 +4,82 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  /* Dark overlay */
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 0;
+  backdrop-filter: blur(4px);
 }
 
 .modal-box {
   position: relative;
-  background-color: #fff;
+  background-color: #161a20;
   border-radius: 12px;
-  padding: 20px;
-  width: 420px;
-  max-width: 90%;
+  border: 1px solid #30363d;
+  padding: 0;
+  width: 500px;
+  max-width: 90vw;
   max-height: 90vh;
-  /* ✅ Prevents overflowing */
   display: flex;
   flex-direction: column;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  animation: fadeInUp 1s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
 }
 
 .close-button {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: none;
+  background: #1e2229;
   border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #444;
-}
-
-.modal-content {
-  flex-grow: 1;
-  overflow-y: auto; /* ✅ allow vertical scroll */
-  padding-right: 6px; /* optional, for scrollbar spacing */
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* changed from space-between */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #e6edf3;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 100;
+  transition: all 0.2s ease;
 }
 
+.close-button:hover {
+  background: #dc3545;
+  transform: rotate(90deg);
+}
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(20px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-.modal-box {
-  max-height: 90vh;
-  overflow: hidden; /* hide external scroll */
-  display: flex;
-  flex-direction: column;
-}
-
 .modal-content {
   flex-grow: 1;
   overflow-y: auto;
-  padding-right: 6px;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: thin;
+  scrollbar-color: #30363d #161a20;
 }
 
 .modal-content::-webkit-scrollbar {
-  width: 0px;  /* Chrome/Safari/Opera */
-  background: transparent;
+  width: 6px;
 }
-.close-button {
-  position: absolute;
-  top: 16px;
-  right: 20px;
-  background: #fff;
-  border: none;
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  color: #333;
-  z-index: 100;
-  padding: 2px 6px;
-  border-radius: 4px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: #30363d;
+  border-radius: 3px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background-color: #161a20;
 }
