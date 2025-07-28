@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useAuth } from "../../context/AuthContext";
 import Search from "../../components/Search";
 import { motion, AnimatePresence } from "framer-motion";
 import Skeleton from '@mui/material/Skeleton';
@@ -35,8 +34,6 @@ import {
   AdminPanelSettings,
   Person,
   Business,
-  Star,
-  StarBorder,
   ElectricCar,
   TwoWheeler,
   Directions
@@ -66,7 +63,7 @@ const ParkingCard = styled(Card)(({ theme }) => ({
   border: `1px solid ${darkTheme.background}`,
   transition: 'all 0.3s ease',
   height: '100%',
-  minHeight: '330px',
+  minHeight: '300px',
   display: 'flex',
   flexDirection: 'column',
   '&:hover': {
@@ -470,20 +467,6 @@ function LandingPage({ currentUser, isAdmin }) {
                         <AttachMoney sx={{ color: darkTheme.accent }} />
                         <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
                           ₹{parking.rate} / hour
-                        </Typography>
-                      </Box>
-
-                      <Box display="flex" alignItems="center" mb={2} sx={{ gap: 1 }}>
-                        <Box sx={{ display: 'flex' }}>
-                          {Array.from({ length: parking.rating }).map((_, index) => (
-                            <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index}/>
-                          ))}
-                          {Array.from({ length: 5 - parking.rating }).map((_, index) => (
-                            <StarBorder sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index}/>
-                          ))}
-                        </Box>
-                        <Typography variant="body2" sx={{ color: darkTheme.textSecondary }}>
-                          ({parking.rating}/5)
                         </Typography>
                       </Box>
 

@@ -7,8 +7,6 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
-// import { useAuth } from "./context/AuthContext";
-// import { AuthProvider } from "./context/AuthContext"; 
 import { ThemeProvider as CustomThemeProvider } from "./context/ThemeContext";
 import { Box, CircularProgress, CssBaseline, ThemeProvider as MuiThemeProvider } from "@mui/material";
 import Navbar from "./components/Navbar/Navbar";
@@ -305,11 +303,9 @@ function AppWrapper() {
 function App() {
   return (
     <CustomThemeProvider>
-      {/* <AuthProvider>  */}
       <Router>
         <AppWrapper />
       </Router>
-      {/* </AuthProvider> */}
     </CustomThemeProvider>
   );
 }

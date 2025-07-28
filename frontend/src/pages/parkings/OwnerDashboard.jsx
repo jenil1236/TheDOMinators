@@ -24,8 +24,6 @@ import {
   AttachMoney,
   Edit,
   Add,
-  Star,
-  StarBorder,
   ElectricCar
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
@@ -50,7 +48,7 @@ const darkTheme = {
 const ParkingCard = styled(Card)(({ theme }) => ({
   background: darkTheme.surface,
   borderRadius: '8px',
-  minHeight: '365px',
+  minHeight: '335px',
   border: `1px solid ${darkTheme.background}`,
   transition: 'all 0.3s ease',
   height: '100%',
@@ -251,20 +249,6 @@ function OwnerDashboard({ currentUser }) {
                       <AttachMoney sx={{ color: darkTheme.accent }} />
                       <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
                         ₹{parking.rate} / hour
-                      </Typography>
-                    </Box>
-
-                    <Box display="flex" alignItems="center" mb={2} sx={{ gap: 1 }}>
-                      <Box sx={{ display: 'flex' }}>
-                        {Array.from({ length: parking.rating }).map((_, index) => (
-                          <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index} />
-                        ))}
-                        {Array.from({ length: 5 - parking.rating }).map((_, index) => (
-                          <StarBorder sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index} />
-                        ))}
-                      </Box>
-                      <Typography variant="body2" sx={{ color: darkTheme.textSecondary }}>
-                        ({parking.rating}/5)
                       </Typography>
                     </Box>
 
