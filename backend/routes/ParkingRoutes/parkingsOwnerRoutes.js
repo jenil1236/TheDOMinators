@@ -35,14 +35,12 @@ router.post("/new", protect, async (req, res, next) => {
       openTime,
       closeTime,
     } = req.body;
-    const rating = Math.floor(Math.random() * 5) + 1;
     const parking = new Parking({
       name,
       location,
       totalSlots,
       availableSlots,
       rate,
-      rating,
       EVCharging,
       BikeWash,
       openTime,

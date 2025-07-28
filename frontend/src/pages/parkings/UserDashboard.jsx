@@ -20,7 +20,7 @@ import {
   ListItem,
   ListItemText,
   ListItemAvatar,
-  useTheme
+  IconButton,
 } from "@mui/material";
 import {
   DirectionsCar,
@@ -57,7 +57,7 @@ const ParkingCard = styled(Card)(({ theme }) => ({
   border: `1px solid ${darkTheme.background}`,
   transition: 'all 0.3s ease',
   height: '100%',
-  minHeight: '365px',
+  minHeight: '335px',
   display: 'flex',
   flexDirection: 'column',
   '&:hover': {
@@ -114,14 +114,13 @@ const parkingVariants = {
 };
 
 function UserDashboard({ currentUser }) {
-  // const { currentUser } = useAuth();
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [search, setSearch] = useState("");
   const [recommendations, setRecommendations] = useState([]);
   const [allParkings, setAllParkings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const theme = useTheme();
+
 
   useEffect(() => {
     fetch("/api/parkings/user", {
@@ -233,7 +232,7 @@ function UserDashboard({ currentUser }) {
 
   return (
     <Box sx={{ padding: 3 }}>
-      <ParkingNavbar currentUser={currentUser} isAdmin={false}/>
+      <ParkingNavbar currentUser={currentUser} isAdmin={false} />
       {/* User Info Section */}
       <Paper elevation={0} sx={{
         background: darkTheme.surface,
@@ -364,7 +363,7 @@ function UserDashboard({ currentUser }) {
                 whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                <ParkingCard sx={{ minHeight: '365px' }}>
+                <ParkingCard sx={{ minHeight: '335px' }}>
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Box display="flex" alignItems="center" mb={2}>
                       <FontAwesomeIcon
@@ -398,20 +397,6 @@ function UserDashboard({ currentUser }) {
                       <AttachMoney sx={{ color: darkTheme.accent }} />
                       <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
                         ₹{parking.rate} / hour
-                      </Typography>
-                    </Box>
-
-                    <Box display="flex" alignItems="center" mb={2} sx={{ gap: 1 }}>
-                      <Box sx={{ display: 'flex' }}>
-                        {Array.from({ length: parking.rating }).map((_, index) => (
-                          <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index} />
-                        ))}
-                        {Array.from({ length: 5 - parking.rating }).map((_, index) => (
-                          <StarBorder sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index} />
-                        ))}
-                      </Box>
-                      <Typography variant="body2" sx={{ color: darkTheme.textSecondary }}>
-                        ({parking.rating}/5)
                       </Typography>
                     </Box>
 
@@ -549,20 +534,6 @@ function UserDashboard({ currentUser }) {
                       <AttachMoney sx={{ color: darkTheme.accent }} />
                       <Typography variant="body1" sx={{ color: darkTheme.textPrimary }}>
                         ₹{parking.rate} / hour
-                      </Typography>
-                    </Box>
-
-                    <Box display="flex" alignItems="center" mb={2} sx={{ gap: 1 }}>
-                      <Box sx={{ display: 'flex' }}>
-                        {Array.from({ length: parking.rating }).map((_, index) => (
-                          <Star sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index} />
-                        ))}
-                        {Array.from({ length: 5 - parking.rating }).map((_, index) => (
-                          <StarBorder sx={{ color: '#ffc107', fontSize: '1.2rem' }} key={index} />
-                        ))}
-                      </Box>
-                      <Typography variant="body2" sx={{ color: darkTheme.textSecondary }}>
-                        ({parking.rating}/5)
                       </Typography>
                     </Box>
 

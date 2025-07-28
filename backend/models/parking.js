@@ -18,9 +18,6 @@ const parkingSchema = new Schema({
         type: Number,
         required: true
     },
-    rating: {
-        type: Number,
-    },
     EVCharging: Boolean,
     BikeWash: Boolean,
     geometry: {
@@ -61,6 +58,6 @@ const parkingSchema = new Schema({
                 enum: ['car', 'auto', 'bike'],
             }
         }
-    ],
+    ]
 })
 export default mongoose.model('Parking', parkingSchema);

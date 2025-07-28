@@ -56,6 +56,7 @@ import AdminSidebar from "./pages/users/AdminSidebar";
 import AdminDashboard from "./pages/users/AdminDashboard";
 import AdminParkingUserDashboard from "./pages/users/AdminParkingUserDashboard";
 import AdminReports from "./pages/users/AdminReports";
+import AdminMessages from "./pages/users/AdminMessages";
 
 // 404 Page
 import NotFound from "./NotFound";
@@ -292,6 +293,7 @@ function AppWrapper() {
                   <Route path="parkingusers" element={isAdmin ? <AdminParkingUserDashboard /> : <Navigate to="/login" />} />
                   <Route path="reports" element={isAdmin ? <AdminReports/> : <Navigate to="/login" />} />
                   <Route path="stops" element={isAdmin ? <AdminBusStopMarkers/> : <Navigate to="/login" />} />
+                  {/* <Route path="messages" element={isAdmin ? <AdminMessages/> : <Navigate to="/login" />} /> */}
                 </Routes>
               </Box>
             </MuiThemeProvider>
@@ -315,11 +317,9 @@ function AppWrapper() {
 function App() {
   return (
     <CustomThemeProvider>
-      {/* <AuthProvider>  */}
       <Router>
         <AppWrapper />
       </Router>
-      {/* </AuthProvider> */}
     </CustomThemeProvider>
   );
 }

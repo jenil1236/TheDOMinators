@@ -1,0 +1,150 @@
+/* Main container */
+.adminMessages-container {
+  padding: 24px;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+/* Title styling */
+.adminMessages-title {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #30363d;
+  font-weight: 600;
+}
+
+/* Grid layout */
+.adminMessages-grid {
+  margin-top: 16px;
+}
+
+/* Card styling */
+.adminMessages-cardContent {
+  padding: 20px !important;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header with score and date */
+.adminMessages-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* Score badge */
+.adminMessages-score {
+  font-size: 0.9rem;
+}
+
+/* Comment text */
+.adminMessages-comment {
+  margin: 16px 0;
+  padding: 12px;
+  background-color: rgba(0, 107, 214, 0.05);
+  border-radius: 6px;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+/* Ride information */
+.adminMessages-rideInfo {
+  margin: 12px 0;
+  padding: 8px 0;
+  border-top: 1px dashed #30363d;
+  border-bottom: 1px dashed #30363d;
+}
+
+.adminMessages-route {
+  font-weight: 500;
+  color: #e6edf3;
+}
+
+.adminMessages-rideDate {
+  color: #9ba3b4;
+  display: block;
+  margin-top: 4px;
+}
+
+/* Users section */
+.adminMessages-users {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.adminMessages-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.adminMessages-user:hover {
+  background-color: rgba(0, 107, 214, 0.1);
+}
+
+.adminMessages-avatar {
+  width: 28px !important;
+  height: 28px !important;
+  font-size: 0.8rem !important;
+  background-color: #006bd6 !important;
+}
+
+.adminMessages-username {
+  font-weight: 500;
+}
+
+.adminMessages-userRole {
+  font-size: 0.7rem;
+  color: #9ba3b4;
+}
+
+.adminMessages-reviewedFor {
+  color: #9ba3b4;
+  font-size: 0.8rem;
+}
+
+/* Tooltip content */
+.adminMessages-userTooltip {
+  padding: 8px;
+  font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .adminMessages-container {
+    padding: 16px;
+  }
+  
+  .adminMessages-title {
+    font-size: 1.5rem;
+  }
+  
+  .adminMessages-users {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .adminMessages-reviewedFor {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .adminMessages-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .adminMessages-cardContent {
+    padding: 16px !important;
+  }
+}

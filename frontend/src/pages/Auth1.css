@@ -443,19 +443,19 @@ p {
   text-align: center;
 }
 
-h2 {
+/* h2 {
   font-weight: 700;
   margin: 0 0 20px;
   font-size: 28px;
   color: #343a40;
-}
+} */
 
-p {
+/* p {
   font-size: 14px;
   line-height: 1.5;
   margin: 20px 0 30px;
   color: #6c757d;
-}
+} */
 
 .input-group {
   margin-bottom: 15px;

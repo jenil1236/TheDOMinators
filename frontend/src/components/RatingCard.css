@@ -1,24 +1,25 @@
 .rating-card {
-  background: #fff;
+  background-color: #161b22;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  padding: 20px;
-  margin-bottom: 15px;
-  transition: transform 0.2s ease;
+  padding: 1.5rem;
+  border: 1px solid #30363d;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .rating-card:hover {
+  box-shadow: 0 10px 20px rgba(0, 123, 255, 0.2);
+  border-color: #007bff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .rating-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #eee;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #30363d;
 }
 
 .user-info {
@@ -28,62 +29,71 @@
 
 .username {
   font-weight: 600;
-  color: #333;
-  margin-bottom: 4px;
+  color: #58a6ff;
+  margin-bottom: 0.25rem;
 }
 
 .email {
   font-size: 0.85rem;
-  color: #666;
+  color: #8b949e;
 }
 
 .rating-score {
   display: flex;
+  gap: 0.25rem;
 }
 
 .star {
-  font-size: 1.2rem;
-  color: #ddd;
-  margin-left: 3px;
+  font-size: 1.25rem;
+  color: #30363d;
 }
 
 .star.filled {
-  color: #ffc107;
+  color: #ffd33d;
 }
 
 .ride-info {
-  margin-bottom: 12px;
+  margin-bottom: 1.5rem;
 }
 
 .ride-info p {
-  margin: 5px 0;
-  color: #555;
+  margin: 0.5rem 0;
   font-size: 0.95rem;
+  color: #c9d1d9;
+}
+
+.ride-info strong {
+  color: #8b949e;
+  font-weight: 500;
 }
 
 .comment {
-  padding: 10px;
-  background: #f8f9fa;
+  padding: 1rem;
+  background-color: rgba(88, 166, 255, 0.05);
   border-radius: 6px;
-  font-style: italic;
-  color: #444;
+  border-left: 3px solid #58a6ff;
 }
 
 .comment p {
   margin: 0;
+  font-style: italic;
+  color: #e6edf3;
+  line-height: 1.5;
 }
 
 @media (max-width: 768px) {
-  .rating-card {
-    padding: 15px;
-  }
-  
   .rating-header {
     flex-direction: column;
-    align-items: flex-start;
+    gap: 1rem;
   }
   
   .rating-score {
-    margin-top: 8px;
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .rating-card {
+    padding: 1.25rem;
   }
 }

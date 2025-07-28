@@ -49,14 +49,14 @@ const ChatRidesPage = () => {
       {rides.length === 0 ? (
         <p className="no-rides">No rides found to start chats</p>
       ) : (
-        <div className="rides-container">
+        <div className="rides-containero">
           {rides.map(ride => (
-            <div key={ride._id} className="ride-card">
+            <div key={ride._id} className="ride-cardo">
               <div className="ride-info">
                 <h3>{ride.pickupLocation} → {ride.dropLocation}</h3>
                 <p><strong>Date:</strong> {new Date(ride.date).toLocaleDateString()}</p>
                 <p><strong>Time:</strong> {ride.time}</p>
-                <p><strong>Status:</strong> <span className={`status-${ride.status}`}>{ride.status}</span></p>
+                <p><strong>Status:</strong> <span className={`stat-${ride.status}`}>{ride.status}</span></p>
                 <p><strong>Vehicle:</strong> {ride.vehicleDetails.model} ({ride.vehicleDetails.number})</p>
               </div>
 

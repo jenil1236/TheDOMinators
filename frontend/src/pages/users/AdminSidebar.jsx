@@ -16,8 +16,10 @@ import {
     Place as StopsIcon,
     Assessment as ReportsIcon,
     Logout as LogoutIcon,
-    Dashboard as DashboardIcon 
+    Dashboard as DashboardIcon,
+    ChatBubbleOutline as MessagesIcon
 } from '@mui/icons-material';
+
 import "./AdminSidebar.css"
 import axios from "axios";
 
@@ -47,6 +49,7 @@ const AdminSidebar = ({setUser,setIsAdmin,setToken,expanded,setExpanded}) => {
         { text: 'View Parking Users', icon: <UsersIcon />, path: '/admin/parkingusers' },
         { text: 'View BRTS Stops', icon: <StopsIcon />, path: '/admin/stops' },
         { text: 'View Reports', icon: <ReportsIcon />, path: '/admin/reports' },
+        { text: 'View Messages', icon: <MessagesIcon  />, path: '/admin/messages' },
     ];
 
     const handleLogout = async () => {

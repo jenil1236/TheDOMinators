@@ -28,6 +28,7 @@ import { indianCities, getDistance } from "../utils/indian-cities-data";
 import { Zap, Car, Plane, Rocket } from "lucide-react";
 import IframeToggle from "../components/FutureTransport/iframe-toggle";
 import "./FutureTransport.css";
+import "../styles/globals.css";
 
 const timeSlots = [
   "Morning Rush (7-9 AM)",
@@ -112,7 +113,7 @@ export default function FutureTransport() {
       {/* Header */}
       <div className="relative overflow-hidden bg-gradient-to-r from-blue-600/20 to-cyan-600/20 backdrop-blur-sm border-b border-blue-500/20">
         <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px]" />
-        <div className="relative container mx-auto px-4 py-8">
+        <div className="relative containerft mx-auto px-4 py-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-white bg-clip-text text-transparent mb-4">
               Smart Mobility 2035
@@ -123,10 +124,10 @@ export default function FutureTransport() {
             </p>
 
             {/* Input Controls */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mx-auto w-full">
               <Select value={selectedCity} onValueChange={setSelectedCity}>
                 <SelectTrigger className="bg-black/20 border-blue-500/30 text-white">
-                  <SelectValue placeholder="Source City" />
+                  <SelectValue placeholder="Source City"/>
                 </SelectTrigger>
                 <SelectContent className="max-h-60 bg-white">
                   {indianCities.map((city) => (
@@ -208,7 +209,7 @@ export default function FutureTransport() {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="containerft mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid text-white w-full grid-cols-4 bg-black/20 border border-blue-500/30">
             <TabsTrigger
