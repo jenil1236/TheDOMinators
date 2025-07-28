@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Search from "../../components/Search";
 import { motion, AnimatePresence } from "framer-motion";

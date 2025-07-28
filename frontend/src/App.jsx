@@ -17,7 +17,7 @@ import Footer from "./components/Footer/Footer";
 import ChatBot from "./components/user/ChatBot/ChatBot";
 import Combii from "./components/Calculator/Combii";
 import UserBusStopMarkers from "./components/user/BusStopMarkers/UserBusStopMarkers";
-import AdminBusStopMarkers from "./components/admin/BusStopMarkers/AdminBusStopMarkers";
+// import AdminBusStopMarkers from "./components/admin/BusStopMarkers/AdminBusStopMarkers";
 import AuthPage from "./pages/AuthPage";
 import PasswordRecovery from "./pages/PasswordRecovery";
 import PostRidePage from "./pages/PostRidePage";
@@ -33,9 +33,8 @@ import GetYourChats from "./pages/GetYourChats";
 import ChatRidesPage from "./pages/chatRidesPage";
 import NavbarFeat from "./components/NavbarFeat/NavbarFeat";
 import FutureTransport from "./pages/FutureTransport";
+import Report from "./pages/Report";
 
-import AdminLogin from "./pages/users/AdminLogin";
-import AdminPage from "./pages/users/AdminPage";
 
 // User Pages
 import UserDashboard from "./pages/parkings/UserDashboard";
@@ -51,8 +50,10 @@ import ParkingDetails from "./pages/parkings/ParkingDetails";
 import LandingPage from "./pages/parkings/LandingPage";
 
 // Admin
-import AdminDashboard from "./pages/users/AdminSidebar";
+import AdminLogin from "./pages/users/AdminLogin";
+import AdminDashboard from "./pages/users/AdminDashboard";
 import AdminParkingUserDashboard from "./pages/users/AdminParkingUserDashboard";
+import AdminReports from "./pages/users/AdminReports";
 
 // 404 Page
 import NotFound from "./NotFound";
@@ -73,28 +74,6 @@ function AppWrapper() {
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
 
-
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const token = localStorage.getItem("token");
-  //     if (token) {
-  //       try {
-  //         const res = await axios.get("/api/users/me", {
-  //           headers: { Authorization: `Bearer ${token}` },
-  //         });
-  //         setUser(res.data.user); 
-  //         console.log(res.data)
-  //         setIsAdmin(res.data.isAdmin);
-  //       } catch (err) {
-  //         setUser(null);
-  //         setIsAdmin(false);
-  //         localStorage.removeItem("token");
-  //       }
-  //     }
-  //     setIsLoading(false);
-  //   };
-  //   fetchUser();
-  // }, []);
   useEffect(() => {
     const fetchUser = async () => {
       if (!token) {
@@ -119,15 +98,6 @@ function AppWrapper() {
     };
     fetchUser();
   }, [token]);
-
-  // useEffect(() => {
-  //   console.log('Token changed:', token);
-  //   if (!token) {
-  //     setUser(null);
-  //     return;
-  //   }
-  //   // fetch user using token
-  // }, [token]);
 
   if (isLoading) {
     return (
@@ -229,11 +199,25 @@ function AppWrapper() {
 
 
         </Route>
-        <Route path="/admin/login" element={<AdminLogin setIsAdmin={setIsAdmin} setToken={setToken} setUser={setUser} />} />
-        <Route path="/admin/*" element={isAdmin ? <AdminPage isAdmin={isAdmin} setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken}/> : <NotFound/>} />
-        {/* <Route path="/admin/dashboard" element={isAdmin ? <AdminDashboard setIsAdmin={setIsAdmin} setToken={setToken} /> : <NotFound/>} />
-        <Route path="/admin/parkingusers" element={isAdmin ? <AdminParkingUserDashboard /> : <NotFound/>} />
-        <Route path="/admin/stops" element={isAdmin ? <AdminBusStopMarkers /> : <NotFound/>} /> */}
+
+        <Route
+          path="/reports/"
+          element={<MuiThemeProvider theme={darkTheme}>
+            <CssBaseline />
+            <Box component="main"
+              sx={{
+                minHeight: 'calc(100vh - 64px)',
+                padding: { xs: '16px', md: '24px' },
+                background: darkTheme.palette.background.default,
+                color: darkTheme.palette.text.primary
+              }}>
+
+              {user ? <Report user={user}/> : <Navigate to="/" />}
+            </Box>
+          </MuiThemeProvider>
+          }
+        />
+
         <Route
           path="/parkings/*"
           element={
@@ -275,6 +259,31 @@ function AppWrapper() {
                     path="owner/:parkingId/edit"
                     element={user ? <EditParkingForm currentUser={user} /> : <Navigate to="/login" />}
                   />
+                </Routes>
+              </Box>
+            </MuiThemeProvider>
+          }
+        />
+        {/* <Route path="admin/stops" element={isAdmin ? <AdminBusStopMarkers /> : <Navigate to="/login" />} /> */}
+
+        <Route
+          path="/admin/*"
+          element={
+            <MuiThemeProvider theme={darkTheme}>
+              <CssBaseline />
+              <Box component="main"
+                sx={{
+                  minHeight: 'calc(100vh - 64px)',
+                  padding: { xs: '16px', md: '24px' },
+                  background: darkTheme.palette.background.default,
+                  color: darkTheme.palette.text.primary
+                }}>
+                <Routes>
+                  <Route path="login" element={<AdminLogin setIsAdmin={setIsAdmin} setToken={setToken} setUser={setUser} />} />
+                  <Route path="dashboard" element={isAdmin ? <AdminDashboard setIsAdmin={setIsAdmin} setToken={setToken} /> : <Navigate to="/admin/login" />} />
+                  {/* Admin Flow */}
+                  <Route path="parkingusers" element={isAdmin ? <AdminParkingUserDashboard /> : <Navigate to="/login" />} />
+                  <Route path="reports" element={isAdmin ? <AdminReports/> : <Navigate to="/login" />} />
                 </Routes>
               </Box>
             </MuiThemeProvider>

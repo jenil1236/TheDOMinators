@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import NotFound from "../../NotFound"
 import axios from 'axios';
 
 function AdminLogin({ setIsAdmin, setUser, setToken }) {
@@ -41,7 +40,12 @@ function AdminLogin({ setIsAdmin, setUser, setToken }) {
     setError('No key provided');
   }
 }, [location.search]);
-  return <NotFound/>
+  return (
+    <div>
+      <h2>Admin Login</h2>
+      {error ? <p style={{ color: 'red' }}>{error}</p> : <p>Checking key...</p>}
+    </div>
+  );
 }
 
 export default AdminLogin;

@@ -19,6 +19,7 @@ import registerAdmin from "./routes/AdminRoutes/RegisterAdmin.js"
 import parkingAdmin from './routes/AdminRoutes/ParkingAdmin.js';
 import stopAdmin from "./routes/AdminRoutes/StopAdmin.js";
 import carpoolAdmin from "./routes/AdminRoutes/CarPoolAdmin.js";
+import functionAdmin from "./routes/AdminRoutes/FunctionAdmin.js";
 import parkingRoutes from './routes/ParkingRoutes/parkingRoutes.js';
 import parkingsUserRoutes from './routes/ParkingRoutes/parkingsUserRoutes.js';
 import parkingsOwnerRoutes from './routes/ParkingRoutes/parkingsOwnerRoutes.js';
@@ -64,7 +65,7 @@ app.use((req, res, next) => {
 //     return res.json({ isAdmin: req.isAdmin });  
 //   else if (!req.isAuthenticated()) {
 //     return res.status(401).json({ user: null, isAdmin: false });
-//   }
+//   } 
 //   res.json({
 //     _id: req.user._id,
 //     username: req.user.username, 
@@ -90,6 +91,7 @@ app.use('/api/admin', registerAdmin);
 app.use('/api/admin/parkingusers', parkingAdmin);
 app.use('/api/admin', carpoolAdmin);
 app.use("/api/admin/stops", stopAdmin);
+app.use("/api/admin", functionAdmin);
 app.use('/api/parkings/user', parkingsUserRoutes);
 app.use('/api/parkings/owner', parkingsOwnerRoutes);
 
