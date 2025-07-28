@@ -7,6 +7,7 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
+import { ThemeProvider } from '@mui/material/styles';
 // import { useAuth } from "./context/AuthContext";
 // import { AuthProvider } from "./context/AuthContext"; 
 import { ThemeProvider as CustomThemeProvider } from "./context/ThemeContext";
@@ -17,7 +18,7 @@ import Footer from "./components/Footer/Footer";
 import ChatBot from "./components/user/ChatBot/ChatBot";
 import Combii from "./components/Calculator/Combii";
 import UserBusStopMarkers from "./components/user/BusStopMarkers/UserBusStopMarkers";
-// import AdminBusStopMarkers from "./components/admin/BusStopMarkers/AdminBusStopMarkers";
+import AdminBusStopMarkers from "./components/admin/BusStopMarkers/AdminBusStopMarkers";
 import AuthPage from "./pages/AuthPage";
 import PasswordRecovery from "./pages/PasswordRecovery";
 import PostRidePage from "./pages/PostRidePage";
@@ -51,6 +52,7 @@ import LandingPage from "./pages/parkings/LandingPage";
 
 // Admin
 import AdminLogin from "./pages/users/AdminLogin";
+import AdminSidebar from "./pages/users/AdminSidebar";
 import AdminDashboard from "./pages/users/AdminDashboard";
 import AdminParkingUserDashboard from "./pages/users/AdminParkingUserDashboard";
 import AdminReports from "./pages/users/AdminReports";
@@ -73,6 +75,7 @@ function AppWrapper() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -116,6 +119,9 @@ function AppWrapper() {
         <NavbarFeat user={user} setUser={setUser} setIsAdmin={setIsAdmin} isAdmin={isAdmin} setToken={setToken} />
       )}
       {isAdmin ? "" : <ChatBot />}
+      <ThemeProvider theme={darkTheme}>
+      {isAdmin?<AdminSidebar setIsAdmin={setIsAdmin} setUser={setUser} setToken={setToken} expanded={expanded} setExpanded={setExpanded}/>:""}
+    </ThemeProvider>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/route-calculator" element={<Combii />} />
@@ -209,7 +215,7 @@ function AppWrapper() {
                 minHeight: 'calc(100vh - 64px)',
                 padding: { xs: '16px', md: '24px' },
                 background: darkTheme.palette.background.default,
-                color: darkTheme.palette.text.primary
+                color: darkTheme.palette.text.primary,
               }}>
 
               {user ? <Report user={user}/> : <Navigate to="/" />}
@@ -228,7 +234,8 @@ function AppWrapper() {
                   minHeight: 'calc(100vh - 64px)',
                   padding: { xs: '16px', md: '24px' },
                   background: darkTheme.palette.background.default,
-                  color: darkTheme.palette.text.primary
+                  color: darkTheme.palette.text.primary,
+                  ml: isAdmin ? (expanded ? '250px' : '64px') : 0
                 }}>
                 <Routes>
                   <Route path="" element={<LandingPage currentUser={user} isAdmin={isAdmin} />} />
@@ -265,7 +272,6 @@ function AppWrapper() {
           }
         />
         {/* <Route path="admin/stops" element={isAdmin ? <AdminBusStopMarkers /> : <Navigate to="/login" />} /> */}
-
         <Route
           path="/admin/*"
           element={
@@ -276,7 +282,8 @@ function AppWrapper() {
                   minHeight: 'calc(100vh - 64px)',
                   padding: { xs: '16px', md: '24px' },
                   background: darkTheme.palette.background.default,
-                  color: darkTheme.palette.text.primary
+                  color: darkTheme.palette.text.primary,
+                  ml: expanded ? '250px' : '64px'
                 }}>
                 <Routes>
                   <Route path="login" element={<AdminLogin setIsAdmin={setIsAdmin} setToken={setToken} setUser={setUser} />} />
@@ -284,6 +291,7 @@ function AppWrapper() {
                   {/* Admin Flow */}
                   <Route path="parkingusers" element={isAdmin ? <AdminParkingUserDashboard /> : <Navigate to="/login" />} />
                   <Route path="reports" element={isAdmin ? <AdminReports/> : <Navigate to="/login" />} />
+                  <Route path="stops" element={isAdmin ? <AdminBusStopMarkers/> : <Navigate to="/login" />} />
                 </Routes>
               </Box>
             </MuiThemeProvider>

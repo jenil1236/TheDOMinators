@@ -231,7 +231,6 @@ function LandingPage({ currentUser, isAdmin }) {
 
   return (
     <Box>
-      <ParkingNavbar currentUser={currentUser} isAdmin={isAdmin}/>
       {currentUser ? (
         <motion.div
           initial={{ opacity: 0 }}
