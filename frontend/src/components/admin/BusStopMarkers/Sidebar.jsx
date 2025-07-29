@@ -55,7 +55,7 @@ function Sidebar({ busStops, setStops, focus, setFocus }) {
 
     return (
         <>
-            <div className="sidebar">
+            <div className="adminsidebar">
                 <div className="sidebar-header">
                     <input
                         type="text"

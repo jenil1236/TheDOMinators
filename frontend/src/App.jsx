@@ -57,6 +57,9 @@ import AdminDashboard from "./pages/users/AdminDashboard";
 import AdminParkingUserDashboard from "./pages/users/AdminParkingUserDashboard";
 import AdminReports from "./pages/users/AdminReports";
 import AdminMessages from "./pages/users/AdminMessages";
+import AdminRatings from "./pages/users/AdminRatings";
+import AdminRequests from "./pages/users/AdminRequests";
+import AdminRides from "./pages/users/AdminRides";
 
 // 404 Page
 import NotFound from "./NotFound";
@@ -293,7 +296,10 @@ function AppWrapper() {
                   <Route path="parkingusers" element={isAdmin ? <AdminParkingUserDashboard /> : <Navigate to="/login" />} />
                   <Route path="reports" element={isAdmin ? <AdminReports/> : <Navigate to="/login" />} />
                   <Route path="stops" element={isAdmin ? <AdminBusStopMarkers/> : <Navigate to="/login" />} />
-                  {/* <Route path="messages" element={isAdmin ? <AdminMessages/> : <Navigate to="/login" />} /> */}
+                  <Route path="messages" element={isAdmin ? <AdminMessages/> : <Navigate to="/login" />} />
+                  <Route path="ratings" element={isAdmin ? <AdminRatings/> : <Navigate to="/login" />} />
+                  <Route path="requests" element={isAdmin ? <AdminRequests/> : <Navigate to="/login" />} />
+                  <Route path="rides" element={isAdmin ? <AdminRides/> : <Navigate to="/login" />} />
                 </Routes>
               </Box>
             </MuiThemeProvider>

@@ -110,11 +110,12 @@ body {
     width : 15px;
 } 
 
-#map {
-    height: 80%;
+#Map {
+    height: 100%;
     width: 90%;
     margin:auto;
     margin-block: 20px;
     border-radius: 20px;
 }
+
 

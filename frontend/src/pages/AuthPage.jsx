@@ -67,7 +67,7 @@ const AuthPage = ({ authType, setUser, setToken, setIsAdmin }) => {
         }`}>
         {/* Login Form */}
         <div className="auth-form login-form">
-          <h2>Sign in</h2>
+          <h2 className="auth-h22">Sign in</h2>
           {error && <div className="error-message">{error}</div>}
           <form onSubmit={handleSubmit}>
             <div className="input-group">
@@ -148,8 +148,8 @@ const AuthPage = ({ authType, setUser, setToken, setIsAdmin }) => {
         <div className="overlay-container">
           <div className="overlay">
             <div className="overlay-panel overlay-left">
-              <h2>Welcome Back!</h2>
-              <p>To keep connected with us please login with your personal info</p>
+              <h2 className = "auth-h2">Welcome Back!</h2>
+              <p className = "auth-p">To keep connected with us please login with your personal info</p>
               <button
                 className="ghost-button"
                 onClick={toggleAuthType}
@@ -159,8 +159,8 @@ const AuthPage = ({ authType, setUser, setToken, setIsAdmin }) => {
               </button>
             </div>
             <div className="overlay-panel overlay-right">
-              <h2>Hello, Friend!</h2>
-              <p>Register with your personal details to use all of site features</p>
+              <h2 className = "auth-h2">Hello, Friend!</h2>
+              <p className = "auth-p">Register with your personal details to use all of site features</p>
               <button
                 className="ghost-button"
                 onClick={toggleAuthType}

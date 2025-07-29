@@ -1,150 +1,181 @@
-/* Main container */
-.adminMessages-container {
+/* AdminMessages.css */
+.adminmessages-container {
   padding: 24px;
-  max-width: 1800px;
-  margin: 0 auto;
+  background-color: #0d1117;
+  min-height: 100vh;
 }
 
-/* Title styling */
-.adminMessages-title {
+.adminmessages-title {
   margin-bottom: 24px;
-  padding-bottom: 16px;
+  color: #006bd6;
+  font-weight: 700;
+  text-align: center;
+  padding-bottom: 12px;
   border-bottom: 1px solid #30363d;
-  font-weight: 600;
 }
 
-/* Grid layout */
-.adminMessages-grid {
-  margin-top: 16px;
+.adminmessages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
 }
 
-/* Card styling */
-.adminMessages-cardContent {
-  padding: 20px !important;
+.adminmessages-card {
+  background-color: #161a20;
+  border: 1px solid #30363d;
+  border-radius: 8px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.adminmessages-card-header {
+  padding: 16px;
+  background-color: rgba(0, 107, 214, 0.1);
+  border-bottom: 1px solid #30363d;
+}
+
+.adminmessages-chat-id {
+  color: #006bd6;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.adminmessages-participants {
+  color: #9ba3b4;
+  font-size: 0.875rem;
+}
+
+.adminmessages-divider {
+  background-color: #30363d;
+  margin: 0;
+}
+
+.adminmessages-messages-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 400px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.adminmessages-message {
+  display: flex;
+  max-width: 80%;
+}
+
+.adminmessages-driver {
+  align-self: flex-start;
+}
+
+.adminmessages-passenger {
+  align-self: flex-end;
+}
+
+.adminmessages-message-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.adminmessages-driver .adminmessages-message-content {
+  flex-direction: row;
+}
+
+.adminmessages-passenger .adminmessages-message-content {
+  flex-direction: row-reverse;
+}
+
+.adminmessages-avatar {
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  background-color: #006bd6;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.adminmessages-passenger .adminmessages-avatar {
+  background-color: #00FFA3;
+  color: #1e1e1e;
+}
+
+.adminmessages-message-text {
   display: flex;
   flex-direction: column;
 }
 
-/* Header with score and date */
-.adminMessages-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-/* Score badge */
-.adminMessages-score {
-  font-size: 0.9rem;
-}
-
-/* Comment text */
-.adminMessages-comment {
-  margin: 16px 0;
-  padding: 12px;
-  background-color: rgba(0, 107, 214, 0.05);
-  border-radius: 6px;
-  line-height: 1.5;
-  flex-grow: 1;
-}
-
-/* Ride information */
-.adminMessages-rideInfo {
-  margin: 12px 0;
-  padding: 8px 0;
-  border-top: 1px dashed #30363d;
-  border-bottom: 1px dashed #30363d;
-}
-
-.adminMessages-route {
-  font-weight: 500;
+.adminmessages-message-body {
   color: #e6edf3;
+  padding: 8px 12px;
+  border-radius: 6px;
+  word-wrap: break-word;
+  line-height: 1.4;
 }
 
-.adminMessages-rideDate {
-  color: #9ba3b4;
-  display: block;
+.adminmessages-driver .adminmessages-message-body {
+  background-color: rgba(0, 107, 214, 0.2);
+  border: 1px solid rgba(0, 107, 214, 0.4);
+}
+
+.adminmessages-passenger .adminmessages-message-body {
+  background-color: rgba(0, 255, 163, 0.1);
+  border: 1px solid rgba(0, 255, 163, 0.3);
+}
+
+.adminmessages-timestamp {
+  color: #6e7681;
+  font-size: 0.75rem;
   margin-top: 4px;
+  align-self: flex-end;
 }
 
-/* Users section */
-.adminMessages-users {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  margin-top: 12px;
+/* Scrollbar styling */
+.adminmessages-messages-container::-webkit-scrollbar {
+  width: 6px;
 }
 
-.adminMessages-user {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 4px 8px;
-  border-radius: 4px;
+.adminmessages-messages-container::-webkit-scrollbar-track {
+  background: #161a20;
 }
 
-.adminMessages-user:hover {
-  background-color: rgba(0, 107, 214, 0.1);
-}
-
-.adminMessages-avatar {
-  width: 28px !important;
-  height: 28px !important;
-  font-size: 0.8rem !important;
-  background-color: #006bd6 !important;
-}
-
-.adminMessages-username {
-  font-weight: 500;
-}
-
-.adminMessages-userRole {
-  font-size: 0.7rem;
-  color: #9ba3b4;
-}
-
-.adminMessages-reviewedFor {
-  color: #9ba3b4;
-  font-size: 0.8rem;
-}
-
-/* Tooltip content */
-.adminMessages-userTooltip {
-  padding: 8px;
-  font-size: 0.9rem;
+.adminmessages-messages-container::-webkit-scrollbar-thumb {
+  background-color: #30363d;
+  border-radius: 3px;
 }
 
 /* Responsive adjustments */
-@media (max-width: 900px) {
-  .adminMessages-container {
-    padding: 16px;
-  }
-  
-  .adminMessages-title {
-    font-size: 1.5rem;
-  }
-  
-  .adminMessages-users {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-  
-  .adminMessages-reviewedFor {
-    display: none;
-  }
-}
-
-@media (max-width: 600px) {
-  .adminMessages-grid {
+@media (max-width: 768px) {
+  .adminmessages-grid {
     grid-template-columns: 1fr;
   }
   
-  .adminMessages-cardContent {
-    padding: 16px !important;
+  .adminmessages-container {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .adminmessages-message {
+    max-width: 90%;
+  }
+  
+  .adminmessages-message-body {
+    padding: 6px 10px;
+    font-size: 0.875rem;
+  }
+  
+  .adminmessages-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
   }
 }

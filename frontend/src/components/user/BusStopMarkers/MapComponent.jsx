@@ -7,7 +7,7 @@ const MapComponent = ({ busStops }) => {
 
   useEffect(() => {
     function initMap() {
-      const map = new window.google.maps.Map(document.getElementById("map"), {
+      const map = new window.google.maps.Map(document.getElementById("Map"), {
         center: { lat: 21.1702, lng: 72.8311 },
         zoom: 14,
         disableDefaultUI: false, // Keep default map styling
@@ -121,7 +121,7 @@ const MapComponent = ({ busStops }) => {
   }, [busStops]);
 
   return (
-    <Box sx={{ width: '70vw', height: '100vh' }}>
+    <Box sx={{ width: '70vw', height: '80vh' }}>
       {/* Heading Section with Blue Accent */}
       <Box sx={{
         padding: '16px 30px 12px',
@@ -151,7 +151,7 @@ const MapComponent = ({ busStops }) => {
       </Box>
 
       {/* Map Container */}
-      <Box id="map"/>
+      <Box id="Map"/>
     </Box>
   );
 };

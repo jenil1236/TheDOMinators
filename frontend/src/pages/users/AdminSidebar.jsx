@@ -17,7 +17,10 @@ import {
     Assessment as ReportsIcon,
     Logout as LogoutIcon,
     Dashboard as DashboardIcon,
-    ChatBubbleOutline as MessagesIcon
+    ChatBubbleOutline as MessagesIcon,
+    Star as StarIcon,
+    MarkEmailUnread as MarkEmailUnreadIcon,
+    Commute as CommuteIcon 
 } from '@mui/icons-material';
 
 import "./AdminSidebar.css"
@@ -50,6 +53,9 @@ const AdminSidebar = ({setUser,setIsAdmin,setToken,expanded,setExpanded}) => {
         { text: 'View BRTS Stops', icon: <StopsIcon />, path: '/admin/stops' },
         { text: 'View Reports', icon: <ReportsIcon />, path: '/admin/reports' },
         { text: 'View Messages', icon: <MessagesIcon  />, path: '/admin/messages' },
+        { text: 'View Ratings', icon: <StarIcon />, path: '/admin/ratings' },
+        { text: 'View Requests', icon: <MarkEmailUnreadIcon />, path: '/admin/requests' },
+        { text: 'View Rides', icon: <CommuteIcon  />, path: '/admin/rides' },
     ];
 
     const handleLogout = async () => {
