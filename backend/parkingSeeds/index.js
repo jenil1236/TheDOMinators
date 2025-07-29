@@ -3,9 +3,8 @@ import Parking from '../models/parking.js';
 import User from '../models/user.js';
 import ParkingUser from '../models/parkinguser.js';
 import parkingData from './cities.js';
-const dbUrl = 'mongodb://127.0.0.1:27017/Transport';
 
-mongoose.connect(dbUrl);
+mongoose.connect(process.env.MONGODB_URI);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, 'connection error: '));
 db.once('open', () => {
@@ -15,8 +14,7 @@ db.once('open', () => {
 
 const seedDB = async () => {
     await Parking.deleteMany({});
-    const owner = await User.findById('687e883ed306de134073387e');
-    const parkingowner = await ParkingUser.findOne({ user: owner._id });
+    const owner = await User.findById('687e8442cc100d826d385948');
     if (!owner) {
         console.log('owner not found')
         process.exit(1);
@@ -24,6 +22,7 @@ const seedDB = async () => {
     else {
         console.log(owner);
     }
+    const parkingowner = await ParkingUser.findOne({ user: owner._id });
     for (const data of parkingData) {
         const parking = new Parking({
             ...data,

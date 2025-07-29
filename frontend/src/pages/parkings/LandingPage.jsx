@@ -166,8 +166,8 @@ function LandingPage({ currentUser, isAdmin }) {
     const map = new window.maptilersdk.Map({
       container: "cluster-map",
       style: window.maptilersdk.MapStyle.STREETS,
-      center: [72.8311, 21.1702],
-      zoom: 10,
+      center: [78.9629, 20.5937],
+      zoom: 3.5,
     });
 
     allParkings.forEach(parking => {
