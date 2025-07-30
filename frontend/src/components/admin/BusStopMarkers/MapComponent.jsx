@@ -25,7 +25,7 @@ const MapComponent = ({ busStops, focus }) => {
 
         const infoContent = `
           <div class="brts-container">
-            <div class="title">${stop.name}</div>
+            <div class="Title">${stop.name}</div>
             ${stop.timetable.map((bus) => `
               <div class="bus-item">
                 <div class="bus-icon"><img src="/bus.svg" alt="Bus" width="16" height="16"></div>

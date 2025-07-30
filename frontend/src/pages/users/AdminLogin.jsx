@@ -40,12 +40,7 @@ function AdminLogin({ setIsAdmin, setUser, setToken }) {
     setError('No key provided');
   }
 }, [location.search]);
-  return (
-    <div>
-      <h2>Admin Login</h2>
-      {error ? <p style={{ color: 'red' }}>{error}</p> : <p>Checking key...</p>}
-    </div>
-  );
+  return;
 }
 
 export default AdminLogin;

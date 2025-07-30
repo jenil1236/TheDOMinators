@@ -2,11 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import './FeatureBlock.css';
-import future from '/src/assets/videos/future.mp4';
-import smartParking from '/src/assets/videos/parking.mp4';
-import carPooling from '/src/assets/videos/carpool.mp4';
-import route from '/src/assets/videos/routefare.mp4';
-import busBooking from '/src/assets/videos/bus.mp4';
+// import future from '/src/assets/videos/future.mp4';
+// import smartParking from '/src/assets/videos/parking.mp4';
+// import carPooling from '/src/assets/videos/carpool.mp4';
+// import route from '/src/assets/videos/routefare.mp4';
+// import busBooking from '/src/assets/videos/bus.mp4';
 
 const FeatureBlock = ({ title, description, video, link, reverse }) => {
   return (

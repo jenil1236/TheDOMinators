@@ -96,7 +96,7 @@ function Form({ Stop, setStops, mode }) {
                 </h2>
                 <form onSubmit={mode === "update" ? handleUpdateSubmit : handleAddSubmit}>
                     <div className="basic-info-section">
-                        <label htmlFor="name">
+                        <label htmlFor="name" className="form-label">
                             Name:
                             <input
                                 type="text"
@@ -107,7 +107,7 @@ function Form({ Stop, setStops, mode }) {
                                 onChange={handleStop}
                             />
                         </label>
-                        <label htmlFor="details">
+                        <label htmlFor="details" className="form-label">
                             Details:
                             <input
                                 type="text"
@@ -117,19 +117,20 @@ function Form({ Stop, setStops, mode }) {
                                 placeholder="Enter details of the stop (address)"
                                 onChange={handleStop}
                                 disabled={mode === "update"}
+                                className="form"
                             />
                         </label>
-                        <label htmlFor="lat">
+                        <label htmlFor="lat" className="form-label">
                             Latitude:
-                            <input type="text" name="lat" id="lat" value={stop.lat} placeholder="Enter latitude" onChange={handleStop} disabled={mode === "update"} />
+                            <input type="text" className="form" name="lat" id="lat" value={stop.lat} placeholder="Enter latitude" onChange={handleStop} disabled={mode === "update"} />
                         </label>
-                        <label htmlFor="lng">
+                        <label htmlFor="lng" className="form-label">
                             Longitude:
-                            <input type="text" name="lng" id="lng" value={stop.lng} placeholder="Enter longitude" onChange={handleStop} disabled={mode === "update"} />
+                            <input type="text" className="form" name="lng" id="lng" value={stop.lng} placeholder="Enter longitude" onChange={handleStop} disabled={mode === "update"} />
                         </label>
                         {mode === "add" && (
                             <>
-                                <button type="button" onClick={handleToggleLocate} className="locate-button">
+                                <button type="button" onClick={handleToggleLocate} className="locate-button butn">
                                     {showLocate ? "HIDE LOCATE" : "LOCATE ON MAP"}
                                 </button>
                                 {showLocate && <Locate updateStop={updateStop} />}
@@ -141,10 +142,10 @@ function Form({ Stop, setStops, mode }) {
                         <h3>Existing Timetable</h3>
                         {stop.timetable.map((t, index) => (
                             <div className="timetable-item" data-id={t._id} key={t._id}>
-                                <label htmlFor={`bus_number_${index}`}>
+                                <label htmlFor={`bus_number_${index}`} className="form-label">
                                     Bus number:
                                     <input
-                                        type="text"
+                                        type="text" className="form"
                                         id={`bus_number_${index}`}
                                         value={t.bus_number}
                                         onChange={(e) =>
@@ -152,10 +153,10 @@ function Form({ Stop, setStops, mode }) {
                                         }
                                     />
                                 </label>
-                                <label htmlFor={`destination_${index}`}>
+                                <label htmlFor={`destination_${index}`} className="form-label">
                                     Destination:
                                     <input
-                                        type="text"
+                                        type="text" className="form"
                                         id={`destination_${index}`}
                                         value={t.destination}
                                         onChange={(e) =>
@@ -163,10 +164,10 @@ function Form({ Stop, setStops, mode }) {
                                         }
                                     />
                                 </label>
-                                <label htmlFor={`time_${index}`}>
+                                <label htmlFor={`time_${index}`} className="form-label">
                                     Time:
                                     <input
-                                        type="text"
+                                        type="text" className="form"
                                         id={`time_${index}`}
                                         value={t.time}
                                         onChange={(e) =>
@@ -175,7 +176,7 @@ function Form({ Stop, setStops, mode }) {
                                     />
                                 </label>
                                 <div className="button-group">
-                                    <button type="button" onClick={() => handleDelete(index)} className="delete-button">
+                                    <button type="button" onClick={() => handleDelete(index)} className="delete-button butn">
                                         DELETE
                                     </button>
                                 </div>
@@ -185,7 +186,7 @@ function Form({ Stop, setStops, mode }) {
 
                     <div className="timetable-section">
                         <h3>Add New Timetable Entry</h3>
-                        <label htmlFor="bus_number">
+                        <label htmlFor="bus_number" className="form-label">
                             Bus number:
                             <input
                                 type="text"
@@ -196,7 +197,7 @@ function Form({ Stop, setStops, mode }) {
                                 placeholder="Enter bus number"
                             />
                         </label>
-                        <label htmlFor="destination">
+                        <label htmlFor="destination" className="form-label">
                             Destination:
                             <input
                                 type="text"
@@ -207,7 +208,7 @@ function Form({ Stop, setStops, mode }) {
                                 placeholder="Enter destination"
                             />
                         </label>
-                        <label htmlFor="time">
+                        <label htmlFor="time" className="form-label">
                             Time:
                             <input
                                 type="text"
@@ -223,14 +224,14 @@ function Form({ Stop, setStops, mode }) {
                                 type="button" 
                                 onClick={handleAdd} 
                                 disabled={!obj.bus_number || !obj.destination || !obj.time} 
-                                className="timetable-add"
+                                className="timetable-add butn"
                             >
                                 ADD TO TIMETABLE
                             </button>
                         </div>
                     </div>
 
-                    <button type="submit" className="submit-button">
+                    <button type="submit" className="submit-button butn">
                         {mode === "add" ? "ADD BUS STOP" : "UPDATE BUS STOP"}
                     </button>
                 </form>

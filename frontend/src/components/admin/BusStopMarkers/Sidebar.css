@@ -1,4 +1,4 @@
-.sidebar {
+.adminsidebar {
     width: 30vw;
     height: 100vh;
     background-color: #161a20;
@@ -13,13 +13,13 @@
     color: #e6edf3;
 }
 
-.sidebar::-webkit-scrollbar {
+.adminsidebar::-webkit-scrollbar {
     display: none;
 }
 
 /* Fade effect at top and bottom */
-.sidebar::before,
-.sidebar::after {
+.adminsidebar::before,
+.adminsidebar::after {
     content: '';
     position: sticky;
     left: 0;
@@ -29,17 +29,17 @@
     z-index: 10;
 }
 
-.sidebar::before {
+.adminsidebar::before {
     top: 0;
     background: linear-gradient(to bottom, #161a20 0%, transparent 100%);
 }
 
-.sidebar::after {
+.adminsidebar::after {
     bottom: 0;
     background: linear-gradient(to top, #161a20 0%, transparent 100%);
 }
 
-.sidebar-header {
+.adminsidebar-header {
     position: sticky;
     top: 0;
     background-color: #161a20;
@@ -48,7 +48,7 @@
     z-index: 5;
 }
 
-.sidebar input[type="text"] {
+.adminsidebar input[type="text"] {
     width: 100%;
     padding: 10px 15px;
     border: 1px solid #30363d;
@@ -59,17 +59,17 @@
     margin-bottom: 10px;
 }
 
-.sidebar input[type="text"]::placeholder {
+.adminsidebar input[type="text"]::placeholder {
     color: #6e7681;
 }
 
-.sidebar input[type="text"]:focus {
+.adminsidebar input[type="text"]:focus {
     border-color: #006bd6;
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 107, 214, 0.3);
 }
 
-.sidebar .add-button {
+.adminsidebar .add-button {
     width: 100%;
     padding: 10px;
     background: linear-gradient(135deg, #007bff 0%, #0052a3 100%);
@@ -81,7 +81,7 @@
     transition: all 0.2s ease;
 }
 
-.sidebar .add-button:hover {
+.adminsidebar .add-button:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 107, 214, 0.3);
 }
@@ -157,7 +157,7 @@ ul {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .sidebar {
+    .adminsidebar {
         width: 100vw;
         height: 40vh;
         border-right: none;

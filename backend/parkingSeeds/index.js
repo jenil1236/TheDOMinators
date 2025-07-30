@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Parking from '../models/parking.js';
-import User from '../models/user.js';
+import User from '../models/User.js';
 import ParkingUser from '../models/parkinguser.js';
 import parkingData from './cities.js';
 
