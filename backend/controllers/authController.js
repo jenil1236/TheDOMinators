@@ -130,12 +130,17 @@ export const reportUser = async (req, res) => {
   try {
     console.log(req.body);
     const {reportedUser, comment, username} = req.body;
-    const report = new Report({username, reportedUser, comment});
-    await report.save();
-    res.status(200).json('Report was submitted successfully');
+    const user = await User.findOne({username: reportedUser});
+    if(user) {
+      const report = new Report({username, reportedUser, comment});
+      await report.save();
+      res.status(200).json({ message: 'Report was submitted successfully'});
+    } else {
+      res.status(200).json({ message: "User doesn't exist" });
+    }
   } catch (e) {
     console.log(e);
-    res.status(500).json('Report submission failed');
+    res.status(500).json({ message: 'Report submission failed' });
   }
   
 }
