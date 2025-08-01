@@ -11,3 +11,4 @@ uvicorn
 sentence-transformers
 pypdf
 chromadb
+langchain_tavily
