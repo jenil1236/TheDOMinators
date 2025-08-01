@@ -95,7 +95,7 @@ const ChatBot = () => {
     <>
       {!isOpen ? (
         <motion.div
-          className="chat-bot-button chatbot-theme"
+          className="chatbot-button chatbot-theme"
           onClick={() => {
             setIsOpen(true);
             if(messages.length === 0){
@@ -105,7 +105,7 @@ const ChatBot = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         >
-          <div className="chat-icon">
+          <div className="chatbot-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
@@ -114,14 +114,14 @@ const ChatBot = () => {
         </motion.div>
       ) : (
         <motion.div
-          className="chat-bot-container chatbot-theme"
+          className="chatbot-container chatbot-theme"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
         >
-          <div className="chat-header">
+          <div className="chatbot-header">
             <div className="header-content">
-              <div className="bot-avatar">
+              <div className="chatbot-avatar">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="11" width="18" height="10" rx="2"></rect>
                   <circle cx="12" cy="5" r="2"></circle>
@@ -143,7 +143,7 @@ const ChatBot = () => {
             </button>
           </div>
 
-          <div className="chat-messages">
+          <div className="chatbot-messages">
             {messages.map(message => (
               <motion.div
                 key={message.id}
@@ -151,9 +151,9 @@ const ChatBot = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                <div className="message-content">
+                <div className="chatbot-message-content">
                   {message.sender === 'bot' && (
-                    <div className="message-avatar bot-avatar">
+                    <div className="message-avatar chatbot-avatar">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="3" y="11" width="18" height="10" rx="2"></rect>
                         <circle cx="12" cy="5" r="2"></circle>
@@ -174,12 +174,12 @@ const ChatBot = () => {
             ))}
             {isLoading && (
               <motion.div 
-                className="message bot"
+                className="message chatbot"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                <div className="message-content">
-                  <div className="message-avatar bot-avatar">
+                <div className="chatbot-message-content">
+                  <div className="message-avatar chatbot-avatar">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="3" y="11" width="18" height="10" rx="2"></rect>
                       <circle cx="12" cy="5" r="2"></circle>
@@ -196,7 +196,7 @@ const ChatBot = () => {
             <div ref={endOfMessagesRef} />
           </div>
 
-          <div className="chat-input">
+          <div className="chatbot-input">
             <input
               type="text"
               value={inputValue}
