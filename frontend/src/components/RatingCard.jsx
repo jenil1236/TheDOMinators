@@ -1,5 +1,5 @@
 import React from "react";
-import "./ratingCard.css";
+import "./RatingCard.css";
 
 const RatingCard = ({ rating }) => {
   const formattedDate = new Date(rating.ride.date).toLocaleDateString();
