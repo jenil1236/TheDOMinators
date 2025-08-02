@@ -14,7 +14,7 @@
 
 //   // Initialize socket connection
 //   useEffect(() => {
-//     const newSocket = io('http://localhost:5000', {
+//     const newSocket = io('https://thedominators.onrender.com', {
 //       withCredentials: true,
 //       transports: ['websocket']
 //     });
@@ -32,7 +32,7 @@
 //     const fetchMessages = async () => {
 //       try {
 //         const response = await axios.get(
-//           `http://localhost:5000/api/chats/${chatId}/messages`,
+//           `https://thedominators.onrender.com/api/chats/${chatId}/messages`,
 //           { withCredentials: true }
 //         );
 //         setMessages(response.data);
@@ -77,7 +77,7 @@
 
 //     try {
 //       const response = await axios.post(
-//         'http://localhost:5000/api/chats/send',
+//         'https://thedominators.onrender.com/api/chats/send',
 //         { chatId, text: newMessage },
 //         { withCredentials: true }
 //       );
@@ -150,7 +150,7 @@ const ChatWindow = ({ chatId }) => {
 
   // Initialize socket connection
   useEffect(() => {
-    const newSocket = io('http://localhost:5000', {
+    const newSocket = io('https://thedominators.onrender.com', {
       withCredentials: true,
       transports: ['websocket']
     });
@@ -168,7 +168,7 @@ const ChatWindow = ({ chatId }) => {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/chats/${chatId}/messages`,
+          `https://thedominators.onrender.com/api/chats/${chatId}/messages`,
           { withCredentials: true }
         );
         setMessages(response.data);
@@ -236,7 +236,7 @@ const ChatWindow = ({ chatId }) => {
 
     try {
       await axios.post(
-        'http://localhost:5000/api/chats/send',
+        'https://thedominators.onrender.com/api/chats/send',
         { chatId, text: newMessage },
         { withCredentials: true }
       );

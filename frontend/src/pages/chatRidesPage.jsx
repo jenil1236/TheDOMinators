@@ -13,8 +13,8 @@ const ChatRidesPage = () => {
     const fetchData = async () => {
       try {
         const [ridesResponse, userResponse] = await Promise.all([
-          axios.get('http://localhost:5000/api/rides/chatrides', { withCredentials: true }),
-          axios.get('http://localhost:5000/api/carpool/me', { withCredentials: true })
+          axios.get('https://thedominators.onrender.com/api/rides/chatrides', { withCredentials: true }),
+          axios.get('https://thedominators.onrender.com/api/carpool/me', { withCredentials: true })
         ]);
         setRides(ridesResponse.data);
         setCurrentUser(userResponse.data);
@@ -31,7 +31,7 @@ const ChatRidesPage = () => {
   const handleStartChat = async (userId) => {
     try {
       await axios.post(
-        'http://localhost:5000/api/chats/start',
+        'https://thedominators.onrender.com/api/chats/start',
         { userId },
         { withCredentials: true }
       );

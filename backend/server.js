@@ -32,7 +32,7 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: "http://localhost:5173",  // ✅ must be exact
+  origin: "https://transitflow-delta.vercel.app",  // ✅ must be exact
   credentials: true
 }));
 
@@ -101,7 +101,7 @@ app.use('/api/visits',visitRoutes)
 const server = http.createServer(app);
 const io = new SocketIO(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://transitflow-delta.vercel.app",
     methods: ["GET", "POST"],
     credentials: true
   }

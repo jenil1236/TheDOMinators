@@ -13,8 +13,8 @@
 //     const fetchData = async () => {
 //       try {
 //         const [historyResponse, userResponse] = await Promise.all([
-//           axios.get("http://localhost:5000/api/rides/history", { withCredentials: true }),
-//           axios.get("http://localhost:5000/api/carpool/me", { withCredentials: true })
+//           axios.get("https://thedominators.onrender.com/api/rides/history", { withCredentials: true }),
+//           axios.get("https://thedominators.onrender.com/api/carpool/me", { withCredentials: true })
 //         ]);
 //         setRides(historyResponse.data || []);
 //         setCurrentUserId(userResponse.data._id);
@@ -30,12 +30,12 @@
 
 //   const handleRatingSubmit = async (rideId, toUserId, score, comment) => {
 //     try {
-//       await axios.post("http://localhost:5000/api/ratings", 
+//       await axios.post("https://thedominators.onrender.com/api/ratings", 
 //         { rideId, toUserId, score, comment },
 //         { withCredentials: true }
 //       );
 //       // Refresh ride history to show updated ratings
-//       const response = await axios.get("http://localhost:5000/api/rides/history", {
+//       const response = await axios.get("https://thedominators.onrender.com/api/rides/history", {
 //         withCredentials: true,
 //       });
 //       setRides(response.data || []);
@@ -83,8 +83,8 @@ const RideHistoryPage = () => {
     const fetchData = async () => {
       try {
         const [historyResponse, userResponse] = await Promise.all([
-          axios.get("http://localhost:5000/api/rides/history", { withCredentials: true }),
-          axios.get("http://localhost:5000/api/carpool/me", { withCredentials: true })
+          axios.get("https://thedominators.onrender.com/api/rides/history", { withCredentials: true }),
+          axios.get("https://thedominators.onrender.com/api/carpool/me", { withCredentials: true })
         ]);
         setRides(historyResponse.data || []);
         setCurrentUserId(userResponse.data._id);
@@ -100,13 +100,13 @@ const RideHistoryPage = () => {
 
   const handleRatingSubmit = async (rideId, toUserId, score, comment) => {
   try {
-    const res = await axios.post("http://localhost:5000/api/ratings", 
+    const res = await axios.post("https://thedominators.onrender.com/api/ratings", 
       { rideId, toUserId, score, comment },
       { withCredentials: true }
     );
 
     // Refresh rides after successful rating
-    const response = await axios.get("http://localhost:5000/api/rides/history", {
+    const response = await axios.get("https://thedominators.onrender.com/api/rides/history", {
       withCredentials: true,
     });
     setRides(response.data || []);

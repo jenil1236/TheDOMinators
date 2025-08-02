@@ -14,7 +14,7 @@
 // //   useEffect(() => {
 // //     const fetchChats = async () => {
 // //       try {
-// //         const response = await axios.get('http://localhost:5000/api/chats/my-chats', {
+// //         const response = await axios.get('https://thedominators.onrender.com/api/chats/my-chats', {
 // //           withCredentials: true
 // //         });
 // //         setChats(response.data);
@@ -82,7 +82,7 @@
 //   useEffect(() => {
 //     const fetchChats = async () => {
 //       try {
-//         const response = await axios.get('http://localhost:5000/api/chats/my-chats', {
+//         const response = await axios.get('https://thedominators.onrender.com/api/chats/my-chats', {
 //           withCredentials: true
 //         });
 //         setChats(response.data);
@@ -182,7 +182,7 @@ const ChatList = () => {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/chats/my-chats', {
+        const response = await axios.get('https://thedominators.onrender.com/api/chats/my-chats', {
           withCredentials: true
         });
         setChats(response.data);

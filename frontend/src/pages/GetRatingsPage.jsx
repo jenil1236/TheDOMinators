@@ -14,13 +14,13 @@ const GetRatingsPage = () => {
       try {
         setLoading(true);
         const carpoolUserRes = await axios.get(
-          "http://localhost:5000/api/carpool/me",
+          "https://thedominators.onrender.com/api/carpool/me",
           { withCredentials: true }
         );
         const carpoolUserId = carpoolUserRes.data._id;
 
         const ratingsRes = await axios.get(
-          `http://localhost:5000/api/ratings/${carpoolUserId}`,
+          `https://thedominators.onrender.com/api/ratings/${carpoolUserId}`,
           { withCredentials: true }
         );
         

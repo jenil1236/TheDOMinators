@@ -8,7 +8,7 @@
 
 //   const fetchBookedRides = async () => {
 //     try {
-//       const response = await axios.get("http://localhost:5000/api/rides/booked", {
+//       const response = await axios.get("https://thedominators.onrender.com/api/rides/booked", {
 //         withCredentials: true,
 //       });
 //       setBookedRides(response.data);
@@ -53,7 +53,7 @@ const BookedRidesPage = () => {
 
   const fetchBookedRides = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/rides/booked", {
+      const response = await axios.get("https://thedominators.onrender.com/api/rides/booked", {
         withCredentials: true,
       });
       setBookedRides(response.data);
