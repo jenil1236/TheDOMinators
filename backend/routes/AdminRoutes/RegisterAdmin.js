@@ -2,11 +2,12 @@ import express from 'express';
 import Parking from '../../models/parking.js';
 import ParkingUser from '../../models/parkinguser.js';
 import jwt from 'jsonwebtoken';
+import axios from "axios";
 
 const router = express.Router();
-
+ 
 // 🔑 Admin login endpoint (validates master key)
-router.get('/login', (req, res) => {
+router.get('/login',async (req, res) => {
   const { key } = req.query;
   const masterKeys = process.env.ADMIN_KEYS?.split(',') || [];
 
@@ -17,7 +18,6 @@ router.get('/login', (req, res) => {
           process.env.JWT_SECRET, // Secret key (must be set in .env)
           { expiresIn: "7d" }     // Optional: token expiry
         );
-
     const responseData = {
       user: null,
       isAdmin: true,

@@ -23,13 +23,14 @@ import functionAdmin from "./routes/AdminRoutes/FunctionAdmin.js";
 import parkingRoutes from './routes/ParkingRoutes/parkingRoutes.js';
 import parkingsUserRoutes from './routes/ParkingRoutes/parkingsUserRoutes.js';
 import parkingsOwnerRoutes from './routes/ParkingRoutes/parkingsOwnerRoutes.js';
+import visitRoutes from './routes/visits.js';
 import clearParking from './utils/clearParking.js';
- 
+
 dotenv.config(); 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
-app.use(express.json()); 
+app.use(express.json());
 app.use(cors({
   origin: "http://localhost:5173",  // ✅ must be exact
   credentials: true
@@ -94,6 +95,7 @@ app.use("/api/admin/stops", stopAdmin);
 app.use("/api/admin", functionAdmin);
 app.use('/api/parkings/user', parkingsUserRoutes);
 app.use('/api/parkings/owner', parkingsOwnerRoutes);
+app.use('/api/visits',visitRoutes)
 
 // 🧠 SOCKET.IO
 const server = http.createServer(app);

@@ -522,7 +522,7 @@ function LandingPage({ currentUser, isAdmin }) {
                               background: 'rgba(220, 220, 170, 0.1)'
                             }
                           }}
-                          onClick={() => navigate(`/parkings/owner/${parking._id}`)}
+                          onClick={() => navigate(`/admin/parkings/owner/${parking._id}`)}
                           startIcon={<AdminPanelSettings />}
                         >
                           Manage

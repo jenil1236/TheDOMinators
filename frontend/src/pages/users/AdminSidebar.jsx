@@ -48,7 +48,7 @@ const AdminSidebar = ({setUser,setIsAdmin,setToken,expanded,setExpanded}) => {
 
     const navItems = [
         { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin/dashboard' },
-        { text: 'View Parkings', icon: <ParkingIcon />, path: '/parkings' },
+        { text: 'View Parkings', icon: <ParkingIcon />, path: '/admin/parkings' },
         { text: 'View Parking Users', icon: <UsersIcon />, path: '/admin/parkingusers' },
         { text: 'View BRTS Stops', icon: <StopsIcon />, path: '/admin/stops' },
         { text: 'View Reports', icon: <ReportsIcon />, path: '/admin/reports' },

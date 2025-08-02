@@ -80,8 +80,16 @@ function AppWrapper() {
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [expanded, setExpanded] = useState(false);
-
+  const isAdminPath = location.pathname.startsWith('/admin');
   useEffect(() => {
+    const calcVisits = async () => {
+      try {
+        await axios.post("/api/visits");
+      } catch (err) {
+        console.error("Error recording visit:", err);
+      }
+    };
+    calcVisits();
     const fetchUser = async () => {
       if (!token) {
         setUser(null);
@@ -117,15 +125,15 @@ function AppWrapper() {
   return (
     <div className="app">
       {/* Show Navbar only on homepage */}
-      {isAdmin ? "" : location.pathname === "/" ? (
+      {isAdmin && isAdminPath ? "" : location.pathname === "/" ? (
         <Navbar user={user} setUser={setUser} setIsAdmin={setIsAdmin} isAdmin={isAdmin} setToken={setToken} />
       ) : (
         <NavbarFeat user={user} setUser={setUser} setIsAdmin={setIsAdmin} isAdmin={isAdmin} setToken={setToken} />
       )}
-      {isAdmin ? "" : <ChatBot />}
+      {isAdmin && isAdminPath ? "" : <ChatBot />}
       <ThemeProvider theme={darkTheme}>
-      {isAdmin?<AdminSidebar setIsAdmin={setIsAdmin} setUser={setUser} setToken={setToken} expanded={expanded} setExpanded={setExpanded}/>:""}
-    </ThemeProvider>
+        {isAdmin && isAdminPath ? <AdminSidebar setIsAdmin={setIsAdmin} setUser={setUser} setToken={setToken} expanded={expanded} setExpanded={setExpanded} /> : ""}
+      </ThemeProvider>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/route-calculator" element={<Combii />} />
@@ -133,7 +141,7 @@ function AppWrapper() {
         <Route
           path="/login"
           element={
-            user ? (
+            user || isAdmin ? (
               <Navigate to="/" />
             ) : (
               <AuthPage authType="login" setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken} />
@@ -143,7 +151,7 @@ function AppWrapper() {
         <Route
           path="/register"
           element={
-            user ? (
+            user || isAdmin ? (
               <Navigate to="/" />
             ) : (
               <AuthPage authType="register" setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken} />
@@ -153,57 +161,57 @@ function AppWrapper() {
         <Route
           path="/forgot-password"
           element={
-            user ? <Navigate to="/" /> : <PasswordRecovery setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken} />
+            user || isAdmin ? <Navigate to="/" /> : <PasswordRecovery setUser={setUser} setIsAdmin={setIsAdmin} setToken={setToken} />
           }
         />
         <Route
           path="/post-ride"
-          element={user ? <PostRidePage /> : <Navigate to="/login" />}
+          element={user || isAdmin ? <PostRidePage /> : <Navigate to="/login" />}
         />
         <Route
           path="/car-pooling"
-          element={user ? <CarpoolHomePage /> : <Navigate to="/login" />}
+          element={user || isAdmin ? <CarpoolHomePage /> : <Navigate to="/login" />}
         />
         <Route
           path="/search-ride"
-          element={user ? <SearchRidePage /> : <Navigate to="/login" />}
+          element={user || isAdmin ? <SearchRidePage /> : <Navigate to="/login" />}
         />
         <Route
           path="/posted-rides"
-          element={user ? <PostedRidesPage /> : <Navigate to="/login" />}
+          element={user || isAdmin ? <PostedRidesPage /> : <Navigate to="/login" />}
         />
         <Route
           path="/ride-history"
-          element={user ? <RideHistoryPage /> : <Navigate to="/login" />}
+          element={user || isAdmin ? <RideHistoryPage /> : <Navigate to="/login" />}
         />
         <Route
           path="/booked-rides"
-          element={user ? <BookedRidesPage /> : <Navigate to="/login" />}
+          element={user || isAdmin ? <BookedRidesPage /> : <Navigate to="/login" />}
         />
         <Route
           path="/sent-requests"
-          element={user ? <SentRequestsPage /> : <Navigate to="/login" />}
+          element={user || isAdmin ? <SentRequestsPage /> : <Navigate to="/login" />}
         />
         <Route
           path="/received-requests"
-          element={user ? <ReceivedRequestsPage /> : <Navigate to="/login" />}
+          element={user || isAdmin ? <ReceivedRequestsPage /> : <Navigate to="/login" />}
         />
         <Route
           path="/get-ratings"
-          element={user ? <GetRatingsPage /> : <Navigate to="/login" />}
+          element={user || isAdmin ? <GetRatingsPage /> : <Navigate to="/login" />}
         />
         <Route
           path="/chat-rides"
-          element={user ? <ChatRidesPage /> : <Navigate to="/login" />}
+          element={user || isAdmin ? <ChatRidesPage /> : <Navigate to="/login" />}
         />
         <Route
           path="/future-transport"
-          element={user ? <FutureTransport /> : <Navigate to="/login" />}
+          element={user || isAdmin ? <FutureTransport /> : <Navigate to="/login" />}
         />
 
         <Route
           path="/chats"
-          element={user ? <GetYourChats /> : <Navigate to="/login" />}
+          element={user || isAdmin ? <GetYourChats /> : <Navigate to="/login" />}
         >
           <Route path=":chatId" element={<GetYourChats />} />
 
@@ -222,7 +230,7 @@ function AppWrapper() {
                 color: darkTheme.palette.text.primary,
               }}>
 
-              {user ? <Report user={user}/> : <Navigate to="/" />}
+              {user || isAdmin ? <Report user={user} /> : <Navigate to="/" />}
             </Box>
           </MuiThemeProvider>
           }
@@ -290,16 +298,23 @@ function AppWrapper() {
                   ml: expanded ? '250px' : '64px'
                 }}>
                 <Routes>
+                  <Route path="" element={isAdmin ? <Navigate to="/admin/dashboard" /> : <NotFound />} />
                   <Route path="login" element={<AdminLogin setIsAdmin={setIsAdmin} setToken={setToken} setUser={setUser} />} />
-                  <Route path="dashboard" element={isAdmin ? <AdminDashboard setIsAdmin={setIsAdmin} setToken={setToken} /> : <Navigate to="/admin/login" />} />
+                  <Route path="dashboard" element={isAdmin ? <AdminDashboard setIsAdmin={setIsAdmin} setToken={setToken} /> : <NotFound />} />
                   {/* Admin Flow */}
-                  <Route path="parkingusers" element={isAdmin ? <AdminParkingUserDashboard /> : <Navigate to="/login" />} />
-                  <Route path="reports" element={isAdmin ? <AdminReports/> : <Navigate to="/login" />} />
-                  <Route path="stops" element={isAdmin ? <AdminBusStopMarkers/> : <Navigate to="/login" />} />
-                  <Route path="messages" element={isAdmin ? <AdminMessages/> : <Navigate to="/login" />} />
-                  <Route path="ratings" element={isAdmin ? <AdminRatings/> : <Navigate to="/login" />} />
-                  <Route path="requests" element={isAdmin ? <AdminRequests/> : <Navigate to="/login" />} />
-                  <Route path="rides" element={isAdmin ? <AdminRides/> : <Navigate to="/login" />} />
+                  <Route path="parkingusers" element={isAdmin ? <AdminParkingUserDashboard /> : <NotFound />} />
+                  <Route path="reports" element={isAdmin ? <AdminReports /> : <NotFound />} />
+                  <Route path="stops" element={isAdmin ? <AdminBusStopMarkers /> : <NotFound />} />
+                  <Route path="messages" element={isAdmin ? <AdminMessages /> : <NotFound />} />
+                  <Route path="ratings" element={isAdmin ? <AdminRatings /> : <NotFound />} />
+                  <Route path="requests" element={isAdmin ? <AdminRequests /> : <NotFound />} />
+                  <Route path="rides" element={isAdmin ? <AdminRides /> : <NotFound />} />
+                  <Route path="parkings" element={<LandingPage currentUser={user} isAdmin={isAdmin} />} />
+                  {/* User Flow */}
+                  <Route
+                    path="parkings/owner/:parkingId"
+                    element={user || isAdmin ? <ParkingDetails currentUser={user} isAdmin={isAdmin} /> : <NotFound />}
+                  />
                 </Routes>
               </Box>
             </MuiThemeProvider>
@@ -315,7 +330,7 @@ function AppWrapper() {
           }
         />
       </Routes>
-      {isAdmin?"":<Footer />}
+      {isAdmin && isAdminPath ? "" : <Footer />}
     </div>
   );
 }
