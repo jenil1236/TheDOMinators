@@ -79,14 +79,17 @@ export const loginUser = (req, res) => {
 };
 
 export const logoutUser = (req, res) => {
-  req.session.destroy((err) => {
+  req.logout(function(err) {
     if (err) return res.status(500).json({ message: "Logout failed" });
 
-    res.clearCookie("connect.sid"); // Name depends on session config
-    res.status(200).json({ message: "Logged out successfully" });
+    req.session.destroy((err) => {
+      if (err) return res.status(500).json({ message: "Logout failed" });
+
+      res.clearCookie("connect.sid"); // adjust if you're using a different session cookie name
+      res.status(200).json({ message: "Logged out successfully" });
+    });
   });
 };
-
 
 export const getMe = (req, res) => {
   if (req.isAdmin)

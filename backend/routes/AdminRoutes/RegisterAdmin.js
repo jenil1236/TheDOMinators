@@ -12,6 +12,8 @@ router.get('/login',async (req, res) => {
   const masterKeys = process.env.ADMIN_KEYS?.split(',') || [];
 
   if (masterKeys.includes(key)) {
+    delete req.user;
+    delete req.session.passport;
     req.session.isAdmin = true;
     const token = jwt.sign(
           { userId: 'admin'}, // Payload
