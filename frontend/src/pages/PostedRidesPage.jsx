@@ -65,7 +65,7 @@ const PostedRidesPage = () => {
     try {
       setLoading(true);
       const res = await axios.get("/api/rides/posted", {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}`, },
       });
       setRides(res.data);
     } catch (err) {

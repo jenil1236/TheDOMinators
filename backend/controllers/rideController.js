@@ -4,36 +4,36 @@ import CarpoolUser from "../models/CarpoolUser.js";
 import JoinRequest from "../models/JoinRequest.js";
 
 export const postRide = async (req, res) => {
-  
+
   try {
     const {
-       pickupLocation,
-       dropLocation,
-       time,
-       date,
-       availableSeats,
+      pickupLocation,
+      dropLocation,
+      time,
+      date,
+      availableSeats,
       vehicleDetails,
       pricePerSeat
     } = req.body;
 
     // Step 1: Find the CarpoolUser associated with this User
-const carpoolUser = await CarpoolUser.findOne({ user: req.user._id });
+    const carpoolUser = await CarpoolUser.findOne({ user: req.user._id });
 
-if (!carpoolUser) {
-  return res.status(404).json({ message: "CarpoolUser profile not found" });
-}
+    if (!carpoolUser) {
+      return res.status(404).json({ message: "CarpoolUser profile not found" });
+    }
 
-// Step 2: Use CarpoolUser _id in the ride
-const ride = new Ride({
-  driver: carpoolUser._id,
-  pickupLocation,
-  dropLocation,
-  date,
-  time,
-  availableSeats,
-  vehicleDetails,
-  pricePerSeat
-});
+    // Step 2: Use CarpoolUser _id in the ride
+    const ride = new Ride({
+      driver: carpoolUser._id,
+      pickupLocation,
+      dropLocation,
+      date,
+      time,
+      availableSeats,
+      vehicleDetails,
+      pricePerSeat
+    });
 
 
     await ride.save();
@@ -228,13 +228,13 @@ export const getRideHistory = async (req, res) => {
       status: { $in: ["completed", "cancelled"] }
     })
       .populate({
-  path: "driver",
-  select: "_id user",
-  populate: {
-    path: "user",
-    select: "username email"
-  }
-})
+        path: "driver",
+        select: "_id user",
+        populate: {
+          path: "user",
+          select: "username email"
+        }
+      })
 
       .populate({
         path: "bookedUsers",
@@ -255,35 +255,35 @@ export const getRideHistory = async (req, res) => {
         status: ride.status,
         vehicleDetails: ride.vehicleDetails,
         driver: {
-  _id: ride.driver?._id,
-  username: ride.driver?.user?.username,
-  email: ride.driver?.user?.email
-},
+          _id: ride.driver?._id,
+          username: ride.driver?.user?.username,
+          email: ride.driver?.user?.email
+        },
 
         bookedUsers: [],
       };
 
       // Fetch all join requests for this ride
-const joinRequests = await JoinRequest.find({ 
-  ride: ride._id, 
-  status: "accepted" // ✅ only accepted requests
-})
-.populate({
-  path: "fromUser", // ✅ this matches your schema
-  populate: { path: "user", select: "username email" }
-})
+      const joinRequests = await JoinRequest.find({
+        ride: ride._id,
+        status: "accepted" // ✅ only accepted requests
+      })
+        .populate({
+          path: "fromUser", // ✅ this matches your schema
+          populate: { path: "user", select: "username email" }
+        })
 
       // Add each booked user's name, email, and seatsBooked
       for (const req of joinRequests) {
-  if (req.fromUser?.user) {
-    rideData.bookedUsers.push({
-      _id: req.fromUser._id, 
-      username: req.fromUser.user.username,
-      email: req.fromUser.user.email,
-      seatsBooked: req.seatsRequested,
-    });
-  }
-}
+        if (req.fromUser?.user) {
+          rideData.bookedUsers.push({
+            _id: req.fromUser._id,
+            username: req.fromUser.user.username,
+            email: req.fromUser.user.email,
+            seatsBooked: req.seatsRequested,
+          });
+        }
+      }
 
 
       cleanedHistory.push(rideData);
@@ -354,13 +354,13 @@ export const getRidesforChat = async (req, res) => {
       status: { $in: ["completed", "upcoming"] }
     })
       .populate({
-  path: "driver",
-  select: "_id user",
-  populate: {
-    path: "user",
-    select: "username email"
-  }
-})
+        path: "driver",
+        select: "_id user",
+        populate: {
+          path: "user",
+          select: "username email"
+        }
+      })
 
       .populate({
         path: "bookedUsers",
@@ -381,35 +381,35 @@ export const getRidesforChat = async (req, res) => {
         status: ride.status,
         vehicleDetails: ride.vehicleDetails,
         driver: {
-  _id: ride.driver?._id,
-  username: ride.driver?.user?.username,
-  email: ride.driver?.user?.email
-},
+          _id: ride.driver?._id,
+          username: ride.driver?.user?.username,
+          email: ride.driver?.user?.email
+        },
 
         bookedUsers: [],
       };
 
       // Fetch all join requests for this ride
-const joinRequests = await JoinRequest.find({ 
-  ride: ride._id, 
-  status: "accepted" // ✅ only accepted requests
-})
-.populate({
-  path: "fromUser", // ✅ this matches your schema
-  populate: { path: "user", select: "username email" }
-})
+      const joinRequests = await JoinRequest.find({
+        ride: ride._id,
+        status: "accepted" // ✅ only accepted requests
+      })
+        .populate({
+          path: "fromUser", // ✅ this matches your schema
+          populate: { path: "user", select: "username email" }
+        })
 
       // Add each booked user's name, email, and seatsBooked
       for (const req of joinRequests) {
-  if (req.fromUser?.user) {
-    rideData.bookedUsers.push({
-      _id: req.fromUser._id, 
-      username: req.fromUser.user.username,
-      email: req.fromUser.user.email,
-      seatsBooked: req.seatsRequested,
-    });
-  }
-}
+        if (req.fromUser?.user) {
+          rideData.bookedUsers.push({
+            _id: req.fromUser._id,
+            username: req.fromUser.user.username,
+            email: req.fromUser.user.email,
+            seatsBooked: req.seatsRequested,
+          });
+        }
+      }
 
 
       cleanedHistory.push(rideData);
