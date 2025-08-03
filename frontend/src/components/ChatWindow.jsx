@@ -168,7 +168,7 @@ const ChatWindow = ({ chatId }) => {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(
-          `https://thedominators.onrender.com/api/chats/${chatId}/messages`,
+          `/api/chats/${chatId}/messages`,
           { withCredentials: true }
         );
         setMessages(response.data);
@@ -236,7 +236,7 @@ const ChatWindow = ({ chatId }) => {
 
     try {
       await axios.post(
-        'https://thedominators.onrender.com/api/chats/send',
+        '/api/chats/send',
         { chatId, text: newMessage },
         { withCredentials: true }
       );

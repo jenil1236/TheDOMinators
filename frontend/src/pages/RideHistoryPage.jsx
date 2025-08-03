@@ -103,13 +103,13 @@ const RideHistoryPage = () => {
 
   const handleRatingSubmit = async (rideId, toUserId, score, comment) => {
   try {
-    const res = await axios.post("https://thedominators.onrender.com/api/ratings", 
+    const res = await axios.post("/api/ratings", 
       { rideId, toUserId, score, comment },
       { withCredentials: true }
     );
 
     // Refresh rides after successful rating
-    const response = await axios.get("https://thedominators.onrender.com/api/rides/history", {
+    const response = await axios.get("/api/rides/history", {
       withCredentials: true,
     });
     setRides(response.data || []);

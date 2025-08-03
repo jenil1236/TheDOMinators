@@ -53,9 +53,9 @@ const BookedRidesPage = () => {
 
   const fetchBookedRides = async () => {
     try {
-      const response = await axios.get("https://thedominators.onrender.com/api/rides/booked", {
-        withCredentials: true,
-      });
+      const response = await axios.get("/api/rides/booked", { 
+            headers: { Authorization: `Bearer ${token}`, }           
+          });
       setBookedRides(response.data);
     } catch (error) {
       console.error("Error fetching booked rides:", error);
