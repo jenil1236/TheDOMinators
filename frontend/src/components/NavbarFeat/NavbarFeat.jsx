@@ -65,7 +65,7 @@ const NavbarFeat = ({ user, setUser, setToken, setIsAdmin, isAdmin }) => {
     { name: 'Route + Fare', path: '/route-calculator' },
     { name: 'Bus Booking', path: '/bus-info' },
     { name: 'Future Transport', path: '/future-transport' },
-    { name: 'FAQ', path: '/#faq' }
+    { name: 'Alerts', path: '/announcements' }
   ];
 
   const scrollToFAQ = () => {
@@ -219,7 +219,7 @@ const NavbarFeat = ({ user, setUser, setToken, setIsAdmin, isAdmin }) => {
               {user || isAdmin ? (
                 <>
                   <div >
-                    <button className="navbar-feat-mobile-welcome-user">Welcome, {user ? user.name || user.email : 'admin'}</button>
+                    <button className="navbar-feat-mobile-welcome-user">Welcome, {user ? user.username || user.email : 'admin'}</button>
                   </div>
                   <button
                     className="navbar-feat-logout-btn"

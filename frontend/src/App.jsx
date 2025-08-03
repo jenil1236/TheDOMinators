@@ -35,7 +35,7 @@ import ChatRidesPage from "./pages/chatRidesPage";
 import NavbarFeat from "./components/NavbarFeat/NavbarFeat";
 import FutureTransport from "./pages/FutureTransport";
 import Report from "./pages/Report";
-
+import AnnouncementsPage from "./pages/AnnouncementsPage";
 
 // User Pages
 import UserDashboard from "./pages/parkings/UserDashboard";
@@ -207,6 +207,11 @@ function AppWrapper() {
         <Route
           path="/future-transport"
           element={user || isAdmin ? <FutureTransport /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/announcements"
+          element={user ? <AnnouncementsPage /> : <AnnouncementsPage />}
         />
 
         <Route

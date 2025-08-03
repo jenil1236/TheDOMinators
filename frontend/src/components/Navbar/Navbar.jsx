@@ -8,7 +8,6 @@
 // // import { useAuth } from '../../context/AuthContext'
 // import './Navbar.css';
 
-// // const { logout } = useAuth();
 
 // const Navbar = ({ user, setUser, setToken, setisAdmin, isAdmin }) => {
 //   const navigate = useNavigate();
@@ -321,7 +320,7 @@ const Navbar = ({ user, setUser, setToken, setisAdmin, isAdmin }) => {
     { name: 'Route + Fare', path: '/route-calculator' },
     { name: 'Bus Booking', path: '/bus-info' },
     { name: 'Future Transport', path: '/future-transport' },
-    { name: 'FAQ', path: '/#faq' }
+    { name: 'Alerts', path: '/announcements' }
   ];
 
   const scrollToFAQ = () => {
@@ -349,12 +348,12 @@ const Navbar = ({ user, setUser, setToken, setisAdmin, isAdmin }) => {
             whileTap={{ scale: 0.95 }}
           >
             <img src={logo} alt="TransitFlow Logo" className="logo-img" />
-            <Link to="/">
+            <a href='#'>
               <div className="logo-text">
                 <span className="logo-name">Transit</span>
                 <span className="logo-highlight">Flow</span>
               </div>
-            </Link>
+            </a>
           </motion.div>
         </div>
 
@@ -473,7 +472,7 @@ const Navbar = ({ user, setUser, setToken, setisAdmin, isAdmin }) => {
             <div className="mobile-auth-buttons">
               {user || isAdmin ? (
                 <>
-                  <div className="mobile-welcome-user">Welcome, {user ? user.name || user.email : 'Admin'}</div>
+                  <div className="mobile-welcome-user">Welcome, {user ? user.username || user.email : 'Admin'}</div>
                   <button
                     className="mobile-logout-btn"
                     onClick={() => {

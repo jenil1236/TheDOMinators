@@ -24,7 +24,9 @@ import parkingRoutes from './routes/ParkingRoutes/parkingRoutes.js';
 import parkingsUserRoutes from './routes/ParkingRoutes/parkingsUserRoutes.js';
 import parkingsOwnerRoutes from './routes/ParkingRoutes/parkingsOwnerRoutes.js';
 import visitRoutes from './routes/visits.js';
+import adminAnnouncementRoutes from './routes/AdminRoutes/AnnouncementAdmin.js';
 import clearParking from './utils/clearParking.js';
+import announcementRoutes from './routes/announcement.js';
 
 dotenv.config(); 
 const PORT = process.env.PORT || 5000;
@@ -95,7 +97,9 @@ app.use("/api/admin/stops", stopAdmin);
 app.use("/api/admin", functionAdmin);
 app.use('/api/parkings/user', parkingsUserRoutes);
 app.use('/api/parkings/owner', parkingsOwnerRoutes);
-app.use('/api/visits',visitRoutes)
+app.use('/api/visits',visitRoutes);
+app.use('/api/admin/announcements', adminAnnouncementRoutes);
+app.use('/api/announcements', announcementRoutes);
 
 // 🧠 SOCKET.IO
 const server = http.createServer(app);
