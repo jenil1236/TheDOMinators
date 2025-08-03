@@ -8,7 +8,7 @@ const Hero = () => {
     <div className="hero-section">
       <div className="video-overlay" />
       <video autoPlay muted loop className="hero-video">
-        <source src={herotransport} type="video/mp4" />
+        <source src={herotransport} />
         Your browser does not support the video tag.
       </video>
 
