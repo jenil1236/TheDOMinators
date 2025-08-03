@@ -83,8 +83,13 @@ const RideHistoryPage = () => {
     const fetchData = async () => {
       try {
         const [historyResponse, userResponse] = await Promise.all([
-          axios.get("https://thedominators.onrender.com/api/rides/history", { withCredentials: true }),
-          axios.get("https://thedominators.onrender.com/api/carpool/me", { withCredentials: true })
+          axios.get("https://thedominators.onrender.com/api/rides/history", { 
+            headers: { Authorization: `Bearer ${token}`, },
+            withCredentials: true
+           }),
+          axios.get("https://thedominators.onrender.com/api/carpool/me", { 
+            headers: { Authorization: `Bearer ${token}`, },
+            withCredentials: true })
         ]);
         setRides(historyResponse.data || []);
         setCurrentUserId(userResponse.data._id);
