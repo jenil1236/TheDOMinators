@@ -78,6 +78,7 @@ const RideHistoryPage = () => {
   const [loading, setLoading] = useState(true);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [errorMessages, setErrorMessages] = useState({});
+  const token = localStorage.getItem("carpool-token");
 
   useEffect(() => {
     const fetchData = async () => {
