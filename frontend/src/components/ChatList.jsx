@@ -182,7 +182,7 @@ const ChatList = () => {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await axios.get('https://thedominators.onrender.com/api/chats/my-chats', {
+        const response = await axios.get('/api/chats/my-chats', {
           withCredentials: true
         });
         setChats(response.data);

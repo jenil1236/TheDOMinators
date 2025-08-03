@@ -50,12 +50,9 @@ import BookedRideCard from "../components/BookedRideCard";
 const BookedRidesPage = () => {
   const [bookedRides, setBookedRides] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const fetchBookedRides = async () => {
     try {
-      const response = await axios.get("/api/rides/booked", { 
-            headers: { Authorization: `Bearer ${token}`, }           
-          });
+      const response = await axios.get("/api/rides/booked", { withCredentials: true });
       setBookedRides(response.data);
     } catch (error) {
       console.error("Error fetching booked rides:", error);
