@@ -60,6 +60,7 @@ import AdminMessages from "./pages/users/AdminMessages";
 import AdminRatings from "./pages/users/AdminRatings";
 import AdminRequests from "./pages/users/AdminRequests";
 import AdminRides from "./pages/users/AdminRides";
+import AdminAnnouncements from "./pages/users/AdminAnnouncements";
 
 // 404 Page
 import NotFound from "./NotFound";
@@ -315,6 +316,7 @@ function AppWrapper() {
                   <Route path="requests" element={isAdmin ? <AdminRequests /> : <NotFound />} />
                   <Route path="rides" element={isAdmin ? <AdminRides /> : <NotFound />} />
                   <Route path="parkings" element={<LandingPage currentUser={user} isAdmin={isAdmin} />} />
+                  <Route path="announcements" element={<AdminAnnouncements/>} />
                   {/* User Flow */}
                   <Route
                     path="parkings/owner/:parkingId"
