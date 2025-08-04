@@ -1,14 +1,40 @@
+# fastapi
+# langchain
+# langchain_community
+# langchain_core
+# langchain_google_genai
+# langchain_huggingface
+# langgraph
+# pydantic
+# python-dotenv
+# uvicorn
+# sentence-transformers
+# pypdf
+# chromadb
+# langchain_tavily
+# Core dependencies for deployed application (FETCH ONLY)
+# Core LangChain Ecosystem (pinned to stable versions)
+langchain               # More stable than 0.1.0
+langchain-community     # Updated for AstraDB compatibility
+langchain-google-genai  # Supports latest Gemini models
+langchain-astradb       # Bug fixes since 0.1.0
+langgraph               # Critical bug fixes since 0.0.26
+
+# VectorStore/Embedding Dependencies
+google-generativeai     # Required for embedding-001 model
+astrapy                 # AstraDB Python driver
+
+# Search Tools
+tavily-python           # Latest Tavily API version
+
+# Web Framework (FastAPI)
 fastapi
-langchain
-langchain_community
-langchain_core
-langchain_google_genai
-langchain_huggingface
-langgraph
-pydantic
+uvicorn                 # Required for Python 3.11+ compatibility
+
+# Essential Utilities
+pydantic                # Critical security fixes
 python-dotenv
-uvicorn
-sentence-transformers
-pypdf
-chromadb
-langchain_tavily
+typing-extensions       # Required for LangChain type hints
+
+# PDF Processing (if still needed)
+pypdf                   # For your PDF loader

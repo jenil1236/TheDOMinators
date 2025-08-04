@@ -288,6 +288,8 @@ Capabilities and Data to Retrieve via Tavily:
 
         COVID-19 or other travel advisories
 
+        Give response in Indian rupees.
+
 Behavioral Rules:
 
     Always invoke Tavily for transport queries; never rely solely on internal memory for schedules, routes, or fares.
