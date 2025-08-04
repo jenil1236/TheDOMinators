@@ -20,7 +20,8 @@ import {
     ChatBubbleOutline as MessagesIcon,
     Star as StarIcon,
     MarkEmailUnread as MarkEmailUnreadIcon,
-    Commute as CommuteIcon 
+    Commute as CommuteIcon,
+    Announcement as AnnouncementIcon
 } from '@mui/icons-material';
 
 import "./AdminSidebar.css"
@@ -56,6 +57,7 @@ const AdminSidebar = ({setUser,setIsAdmin,setToken,expanded,setExpanded}) => {
         { text: 'View Ratings', icon: <StarIcon />, path: '/admin/ratings' },
         { text: 'View Requests', icon: <MarkEmailUnreadIcon />, path: '/admin/requests' },
         { text: 'View Rides', icon: <CommuteIcon  />, path: '/admin/rides' },
+        { text: 'View Announcements', icon: <AnnouncementIcon  />, path: '/admin/announcements' },
     ];
 
     const handleLogout = async () => {
