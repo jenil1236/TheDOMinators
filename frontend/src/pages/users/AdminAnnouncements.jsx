@@ -60,7 +60,7 @@ const AdminAnnouncements = () => {
     try {
       if (currentId) {
         // Update existing announcement
-        await axios.patch(`/api/admin/announcements/${currentId}`, {
+        await axios.put(`/api/admin/announcements/${currentId}`, {
           title: formData.title,
           content: formData.content
         }, {
