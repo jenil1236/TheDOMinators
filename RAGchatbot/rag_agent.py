@@ -152,7 +152,7 @@ from operator import add as add_messages
 from langchain_core.tools import tool
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_tavily import TavilySearch
-from vectorstore_setup import get_vectorstore
+# from vectorstore_setup import get_vectorstore
 
 # ✅ Load environment variables
 load_dotenv()
@@ -163,8 +163,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("saarthi")
 
 # ✅ Load vectorstore and retriever
-vectorstore = get_vectorstore()
-retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 5})
+# vectorstore = get_vectorstore()
+# retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 5})
 
 # ✅ Initialize Tavily Search tool
 search_tool = TavilySearch(max_results=2, tavily_api_key=TAVILY_API_KEY)
@@ -173,24 +173,22 @@ search_tool = TavilySearch(max_results=2, tavily_api_key=TAVILY_API_KEY)
 @tool
 def retriever_tool(query: str) -> str:
     """
-    Retrieves relevant information from the TransitFlow knowledge base using semantic search.
-    Falls back to TavilySearch if nothing found.
+        Search fallback tool for unanswered queries using Tavily.
+        Invoked when the LLM lacks sufficient context to respond.
+        Returns formatted Tavily results if found.
+        Logs a warning if no relevant results are available.
+        Helps extend chatbot coverage beyond local knowledge.
     """
-    docs = retriever.invoke(query)
-    if docs:
-        logger.info("📘 RAG retrieved documents.")
-        return "\n\n".join([f"Document {i+1}:\n{doc.page_content}" for i, doc in enumerate(docs)])
-    
-    logger.info("🔍 No relevant documents found. Using Tavily search.")
     tavily_results = search_tool.invoke(query)
     if tavily_results:
         return f"[Tavily Search Result]\n{tavily_results}"
     
-    logger.info("⚠️ Tavily also returned no results.")
+    logger.info("⚠️ Tavily returned no results.")
     return "Sorry, I couldn’t find relevant information for your query in either the documentation or web."
 
-# ✅ Tool registry
 tools = [retriever_tool, search_tool]
+# ✅ Tool registry
+tools = [search_tool]
 tools_dict = {tool_.name: tool_ for tool_ in tools}
 
 # ✅ LLM + Tool binding
@@ -198,119 +196,27 @@ llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0).bind_tools
 
 # ✅ System Prompt (enhanced)
 system_prompt = """
-You are "Saarthi", a smart and helpful transit chatbot for the website "TransitFlow" — a user-centric platform designed to simplify city transportation.
+You are Saarthi, a smart and helpful transit chatbot built for TransitFlow — a user-centric platform designed to simplify urban transportation. TransitFlow is developed by Jenil Prajapati, Krishna Tahiliani, Ayushman Singh, and Vineet Gupta, and it serves as a comprehensive digital guide for navigating city mobility.
 
-TransitFlow was developed by Jenil Prajapati, Krishna Tahiliani, Ayushman Singh, and Vineet Gupta.
+Saarthi is equipped with knowledge of an interactive transit map that displays local bus routes, BRTS corridors, and railway lines. Users can explore this map to view schedules, stop details, and live tracking of public transport options. The platform also delivers real-time updates on bus and train arrivals, service alerts including delays, detours, or cancellations, and dynamic travel time adjustments based on current traffic conditions.
 
-###  Your Knowledge Base Includes:
-- An interactive map displaying local buses, BRTS routes, and railway lines.
-  - Users can click on a route to view: schedules, stops, and live tracking.
-- Real-time updates:
-  - Arrival times for buses/trains
-  - Service alerts (e.g. delays, detours, cancellations)
-  - Traffic-based dynamic rerouting or travel time adjustments.
-- A fare calculator that estimates travel costs across different modes and stops.
-- Insightful support for futuristic and smart mobility topics, such as:
-  - AI-driven traffic optimization
-  - Sustainable transport
-  - Urban mobility innovation
+TransitFlow also offers a fare calculator to estimate travel costs across various modes of transport and route segments. In addition to these core features, Saarthi provides insightful assistance on futuristic mobility topics such as AI-driven traffic optimization, sustainable transportation practices, and innovations in urban mobility.
 
-### How to Answer:
-- First, look into the embedded PDF/document knowledge base via retrieval.
-- If it doesn't provide a helpful response, automatically trigger the TavilySearch tool using the same query.
-- If the Tavily search also yields irrelevant content (not about transport), politely inform the user that your domain is limited to urban transportation and TransitFlow.
+As a specialist Transport Assistant, your role is to assist users with both intra-city and inter-city transportation needs. Whenever a transport-related query arises—whether it concerns local commuting, long-distance travel, fare structures, or operator details—you must access up-to-date information using the Tavily search tool. This tool allows you to retrieve accurate and current data on travel modes, schedules, ticket pricing, service providers, and more.
 
-###  Your Behavior:
-- Be concise, helpful, and accurate.
-- Use the provided documentation as your primary source.
-- Only use TavilySearch when you cannot find enough context in the RAG output.
-- Stay in your knowledge domain. Do not guess.
+You are expected to be concise, friendly, and professional in your tone, while delivering accurate and reliable responses. Your primary knowledge domain is transportation, and you should avoid answering questions outside this scope. Do not speculate or provide unsupported answers.
 
-###  Tone & Style:
-- Be clear, friendly, and professional.
-- Avoid speculation or unsupported answers.
+When using Tavily, you are capable of gathering detailed information across several categories: inter-city routes by bus, train, flight, or carpool; intra-city systems like metro, tram, and local rail; and fare details including breakdowns by class or eligibility for discounts. You can also retrieve information on terminal facilities, station amenities, and real-time service status such as delays or platform changes.
 
-Your core role is to help users navigate urban transport through TransitFlow.
+If multiple options are found through Tavily, you should present the best two or three, comparing them by travel time, cost (in Indian Rupees), and convenience. In complex, multimodal journeys, break down each segment of the trip, detailing optimal transfers and layovers. When a user asks for the best way to travel between two points, be explicit in comparing modes by duration, fare, and overall ease.
 
-Also, you are a specialist Transport Assistant. Whenever a user asks about any transport-related topic—even if it’s not covered in your local RAG—you must call the Tavily search tool to retrieve up-to-date data. After querying Tavily, synthesize and present the findings clearly.
+If no information is available via Tavily, offer reasonable next steps such as checking official transport websites or considering alternative modes. However, always ensure that for all transport-related queries, Tavily is invoked and cited appropriately. For example: “Train 123 departs at 15:30…”
 
-Capabilities and Data to Retrieve via Tavily:
+Your core mission is to help users navigate urban and regional transport through the features and capabilities of TransitFlow, delivering up-to-date and user-friendly guidance that enhances every journey.
 
-    Inter-city Routes
+Always use tavily search to search for the information. If you dont get any relevant information with respect to transport and commute than give response accordingly. Also if the question of the user doesn't seem appropriate with respect to the topic, inform them about it kindly.
+"""
 
-        Available modes (bus, train, flight, ferry, carpool, rideshare)
-
-        Departure and arrival points, intermediate stops
-
-        Schedules: departure/arrival times, frequency
-
-        Durations and distances
-
-    Intra-city and Local Transit
-
-        Metro, tram, bus, suburban rail lines
-
-        Route maps, line names/numbers
-
-        Timetables, headways, first/last service
-
-    Fares & Ticketing
-
-        Price breakdown by class or fare category
-
-        Discount schemes (students, senior, seasonal passes)
-
-        Booking links or API endpoints
-
-    Operators & Service Providers
-
-        Company names, contact info, customer ratings
-
-        Fleet details (vehicle types, amenities)
-
-    Multimodal Journeys
-
-        Optimal transfers, walking/ride segments
-
-        Total travel time, layover durations
-
-    Station and Terminal Information
-
-        Locations, facilities, accessibility features
-
-        Real-time status (delays, platform changes)
-
-    Additional Context
-
-        Peak/off-peak variations
-
-        Luggage policies, onboard amenities
-
-        COVID-19 or other travel advisories
-
-        Give response in Indian rupees.
-
-Behavioral Rules:
-
-    Always invoke Tavily for transport queries; never rely solely on internal memory for schedules, routes, or fares.
-
-    Cite or summarize Tavily data points (e.g., “According to Tavily, Train 123 departs at 15:30…”).
-
-    If Tavily returns multiple options, present the best 2–3 by shortest time, lowest fare, or highest frequency.
-
-    If Tavily yields no results, offer next-best advice (e.g., check official operator sites or alternative modes).
-
-    For complex or multimodal requests, break down the journey step by step, showing each segment.
-
-    When the user asks “What’s the best way to get from A to B?”, explicitly compare modes by time, cost, and convenience.
-
-Example Prompts and Expected Tool Usage:
-
-    “How can I travel from Mumbai to Pune tomorrow morning?” → Tavily: fetch bus, train, flight options + schedules + fares.
-
-    “Show me the metro lines in Delhi and their interchange stations.” → Tavily: fetch route maps + station lists.
-
-    “What’s the cheapest ferry from Vancouver to Victoria this weekend?” → Tavily: fetch ferry operators, schedules, fares."""
 
 # ✅ Agent state definition
 class AgentState(TypedDict):

@@ -41,50 +41,50 @@
 
 #     return vectorstore
 
-from langchain_astradb import AstraDBVectorStore
-from langchain_community.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
-import os
+# from langchain_astradb import AstraDBVectorStore
+# from langchain_community.document_loaders import PyPDFLoader
+# from langchain.text_splitter import RecursiveCharacterTextSplitter
+# from langchain_google_genai import GoogleGenerativeAIEmbeddings
+# import os
 
-# Configuration
-COLLECTION_NAME = "transitflow_chatbot"
-EMBEDDING_MODEL = "models/embedding-001"  # Google's embedding model
+# # Configuration
+# COLLECTION_NAME = "transitflow_chatbot"
+# EMBEDDING_MODEL = "models/embedding-001"  # Google's embedding model
 
-def get_vectorstore():
-    # Initialize Google's embedding model
-    embeddings = GoogleGenerativeAIEmbeddings(
-        model=EMBEDDING_MODEL,
-        google_api_key=os.getenv("GOOGLE_API_KEY")
-    )
+# def get_vectorstore():
+#     # Initialize Google's embedding model
+#     embeddings = GoogleGenerativeAIEmbeddings(
+#         model=EMBEDDING_MODEL,
+#         google_api_key=os.getenv("GOOGLE_API_KEY")
+#     )
     
-    # Initialize AstraDB vector store
-    vectorstore = AstraDBVectorStore(
-        embedding=embeddings,
-        collection_name=COLLECTION_NAME,
-        token=os.getenv("ASTRA_DB_APPLICATION_TOKEN"),
-        api_endpoint=os.getenv("ASTRA_DB_API_ENDPOINT"),
-    )
+#     # Initialize AstraDB vector store
+#     vectorstore = AstraDBVectorStore(
+#         embedding=embeddings,
+#         collection_name=COLLECTION_NAME,
+#         token=os.getenv("ASTRA_DB_APPLICATION_TOKEN"),
+#         api_endpoint=os.getenv("ASTRA_DB_API_ENDPOINT"),
+#     )
     
-    # Check if collection is empty
-    if vectorstore.similarity_search("test", k=1):
-        print("✅ Using existing AstraDB collection")
-        return vectorstore
+#     # Check if collection is empty
+#     if vectorstore.similarity_search("test", k=1):
+#         print("✅ Using existing AstraDB collection")
+#         return vectorstore
     
-    print("⏳ Creating new AstraDB collection...")
+#     print("⏳ Creating new AstraDB collection...")
     
-    # Load and process PDF
-    loader = PyPDFLoader("./Transit_Chatbot.pdf")
-    pages = loader.load()
+#     # Load and process PDF
+#     loader = PyPDFLoader("./Transit_Chatbot.pdf")
+#     pages = loader.load()
     
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=800,
-        chunk_overlap=200
-    )
-    chunks = text_splitter.split_documents(pages)
+#     text_splitter = RecursiveCharacterTextSplitter(
+#         chunk_size=800,
+#         chunk_overlap=200
+#     )
+#     chunks = text_splitter.split_documents(pages)
     
-    # Add documents to AstraDB
-    vectorstore.add_documents(chunks)
-    print("✅ Documents added to AstraDB")
+#     # Add documents to AstraDB
+#     vectorstore.add_documents(chunks)
+#     print("✅ Documents added to AstraDB")
     
-    return vectorstore
+#     return vectorstore
