@@ -57,7 +57,7 @@ const ChatBot = () => {
     setInputValue('');
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/ask", {
+      const res = await fetch("https://thedominators-1.onrender.com/ask", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
