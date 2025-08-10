@@ -89,7 +89,7 @@ const RideHistoryPage = () => {
           axios.get("/api/carpool/me", { 
             headers: { Authorization: `Bearer ${token}`, }})
         ]);
-        setRides(historyResponse.data || []);
+        setRides(historyResponse.data.reverse() || []);
         setCurrentUserId(userResponse.data._id);
       } catch (error) {
         console.error("Error fetching data", error);

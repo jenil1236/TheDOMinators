@@ -53,7 +53,7 @@ const AdminSidebar = ({setUser,setIsAdmin,setToken,expanded,setExpanded}) => {
         { text: 'View Parking Users', icon: <UsersIcon />, path: '/admin/parkingusers' },
         { text: 'View BRTS Stops', icon: <StopsIcon />, path: '/admin/stops' },
         { text: 'View Reports', icon: <ReportsIcon />, path: '/admin/reports' },
-        { text: 'View Messages', icon: <MessagesIcon  />, path: '/admin/messages' },
+        // { text: 'View Messages', icon: <MessagesIcon  />, path: '/admin/messages' },
         { text: 'View Ratings', icon: <StarIcon />, path: '/admin/ratings' },
         { text: 'View Requests', icon: <MarkEmailUnreadIcon />, path: '/admin/requests' },
         { text: 'View Rides', icon: <CommuteIcon  />, path: '/admin/rides' },

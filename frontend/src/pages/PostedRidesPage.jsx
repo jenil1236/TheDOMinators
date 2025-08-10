@@ -67,7 +67,7 @@ const PostedRidesPage = () => {
       const res = await axios.get("/api/rides/posted", {
         headers: { Authorization: `Bearer ${token}`, },
       });
-      setRides(res.data);
+      setRides(res.data.reverse());
     } catch (err) {
       console.error("Failed to fetch posted rides", err);
       setRides([]);

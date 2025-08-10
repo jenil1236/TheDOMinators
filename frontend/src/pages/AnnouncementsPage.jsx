@@ -11,7 +11,7 @@ const AnnouncementsPage = () => {
     const fetchAnnouncements = async () => {
       try {
         const response = await axios.get('/api/announcements',{withCredentials:true});
-        setAnnouncements(response.data);
+        setAnnouncements(response.data.reverse());
       } catch (err) {
         console.error('Error fetching announcements:', err);
         setError('Failed to load announcements');

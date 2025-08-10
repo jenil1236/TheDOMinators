@@ -18,7 +18,7 @@ const SentRequestsPage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setRequests(res.data);
+        setRequests(res.data.reverse());
       } catch (err) {
         console.error(err);
         setError('Failed to load sent requests. Please try again later.');

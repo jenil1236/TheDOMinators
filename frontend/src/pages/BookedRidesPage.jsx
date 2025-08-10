@@ -53,7 +53,7 @@ const BookedRidesPage = () => {
   const fetchBookedRides = async () => {
     try {
       const response = await axios.get("/api/rides/booked", { withCredentials: true });
-      setBookedRides(response.data);
+      setBookedRides(response.data.reverse());
     } catch (error) {
       console.error("Error fetching booked rides:", error);
     } finally {

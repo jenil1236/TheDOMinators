@@ -150,7 +150,9 @@ const SearchRidePage = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      setRides(res.data);
+      
+      setRides(res.data.reverse());
+      // rides.reverse();
       fetchSentRequests();
     } catch (err) {
       console.error(err);

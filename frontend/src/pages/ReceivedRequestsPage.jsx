@@ -121,7 +121,7 @@ const ReceivedRequestsPage = () => {
       const res = await axios.get('/api/requests/received', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setRequests(res.data);
+      setRequests(res.data.reverse());
     } catch (err) {
       console.error(err);
       setError('Failed to load received requests.');

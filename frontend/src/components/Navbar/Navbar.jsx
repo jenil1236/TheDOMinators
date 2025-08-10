@@ -317,8 +317,8 @@ const Navbar = ({ user, setUser, setToken, setisAdmin, isAdmin }) => {
   const navLinks = [
     { name: 'Smart Parking', path: '/parkings' },
     { name: 'Car Pooling', path: '/car-pooling' },
-    { name: 'Route + Fare', path: '/route-calculator' },
     { name: 'Bus Booking', path: '/bus-info' },
+    { name: 'Route + Fare', path: '/route-calculator' },
     { name: 'Future Transport', path: '/future-transport' },
     { name: 'Alerts', path: '/announcements' }
   ];
